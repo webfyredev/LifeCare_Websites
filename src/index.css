@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+.swiper-button-next, .swiper-button-prev{
+  @apply !text-white !w-6 !h-6 !font-bold
+}
+.swiper-button-next:hover, .swiper-button-prev:hover{
+    @apply !text-blue-200
+
+}
+.swiper-button-next{
+  @apply !right-5
+}
+.swiper-button-prev{
+  @apply !left-5
+}
+
+.swiper-pagination-bullet{
+  @apply !bg-white !opacity-100
+}
+.swiper-pagination-bullet-active{
+  @apply !bg-blue-400 !opacity-100
+}
