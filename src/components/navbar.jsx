@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 export default function NavBar(){
     return(
         <>
-            <nav className="w-full h-auto flex items-center justify-between border-1 border-red-500  px-10 py-3">
+            <nav className="w-full h-auto flex items-center justify-between px-10 py-3">
                 <div className="flex cursor-pointer">
                     <h3 className="font-bold text-blue-600">
                         LIFECARE

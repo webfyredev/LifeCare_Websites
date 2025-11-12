@@ -7,6 +7,7 @@ import { FaArrowRight } from "react-icons/fa";
 import aboutImg from '../images/home_about.jpg'
 import Testimonial from "../components/testimonials";
 import Blog from "../components/blog";
+import Footer_Cta from "../components/footer_CTA";
 
 export default function Home(){
     useEffect(() =>{
@@ -101,6 +102,7 @@ export default function Home(){
             </div>
             <Testimonial />
             <Blog />
+            <Footer_Cta />
         </>
     )
 }
