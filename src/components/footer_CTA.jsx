@@ -1,3 +1,6 @@
+import { motion } from "framer-motion"
+import { buttonEffects } from "../animations/effects"
+import { useState } from "react";
 export default function Footer_Cta(){
     return(
         <>
@@ -10,12 +13,12 @@ export default function Footer_Cta(){
                     our comprehensive medical services
                 </p>
                 <div className="flex mt-5 space-x-4">
-                    <button className="border-1 px-9 py-3 text-sm bg-white rounded-sm font-semibold text-blue-600 cursor-pointer">
+                    <motion.button {...buttonEffects}  className="border-1 px-9 py-3 text-sm bg-white rounded-sm font-semibold text-blue-600 cursor-pointer">
                         Book Appointment
-                    </button>
-                    <button className="border-1 border-white px-9 py-3 text-sm rounded-sm font-semibold text-white cursor-pointer">
+                    </motion.button>
+                    <motion.button {...buttonEffects} className="border-1 border-white px-9 py-3 text-sm rounded-sm font-semibold text-white cursor-pointer">
                         Explore Services
-                    </button>
+                    </motion.button>
                 </div>
             </div>
         </>

@@ -83,7 +83,7 @@ function SlideInner({ slide }){
         <div className="relative w-full h-full bg-cover bg-center overflow-hidden" style={{ backgroundImage : `url(${slide.image})`}}>
             <div className="absolute inset-0 bg-black/55" />
                 <div className={`relative z-10 h-full flex flex-col justify-center items-center px-6 lg:px-24`}>
-                    <motion.h1 className="text-5xl font-bold leading-tight text-white text-center mb-1 w-[70%]"
+                    <motion.h1 className="text-5xl font-bold leading-tight text-white text-center mb-1 w-[70%] mt-10"
                         initial = {{opacity : 0, x:40}}
                         animate = {isActive ? {opacity : 1, x :0} : {opacity : 0, x : 40}}
                         transition = {{delay : 0.15, duration : 0.7}}

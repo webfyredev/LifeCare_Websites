@@ -1,18 +1,53 @@
 import {FaUserMd, FaCalendarCheck, FaAmbulance, FaUser} from 'react-icons/fa'
-import hService1 from '../images/homeService/service1.jpg'
-import hService2 from '../images/homeService/service2.jpg'
-import hService3 from '../images/homeService/service3.jpg'
-import hService4 from '../images/homeService/service4.jpg'
-import hService5 from '../images/homeService/service5.jpg'
-import hService6 from '../images/homeService/service6.jpg'
+import hService1 from '../images/homeService/service1.webp'
+import hService2 from '../images/homeService/service2.webp'
+import hService3 from '../images/homeService/service3.webp'
+import hService4 from '../images/homeService/service4.webp'
+import hService5 from '../images/homeService/service5.webp'
+import hService6 from '../images/homeService/service6.webp'
 import testimonial1 from '../images/testimonial/test1.jpg'
 import testimonial2 from '../images/testimonial/test2.jpg'
 import testimonial3 from '../images/testimonial/test3.jpg'
 import blog1 from '../images/blog/blog1.jpg'
 import blog2 from '../images/blog/blog2.jpg'
 import blog3 from '../images/blog/blog3.jpg'
+import doctors1 from '../images/doctors/doctors1.jpg'
+import doctors2 from '../images/doctors/doctors2.jpg'
+import doctors3 from '../images/doctors/doctors3.jpg'
+import doctors4 from '../images/doctors/doctors4.jpg'
 
 
+
+export const doctors = [
+    {
+        id: 1,
+        name: "Dr. Sarah Johnson",
+        specialty: "Cardiologist",
+        image: doctors1,
+        availableDays: ["Monday", "Wednesday", "Friday"],
+    },
+    {
+        id: 2,
+        name: "Dr. David Okafor",
+        specialty: "Orthopedic Surgeon",
+        image: doctors2,
+        availableDays: ["Tuesday", "Thursday", "Saturday"],
+    },
+    {
+        id: 3,
+        name: "Dr. Emily Zhang",
+        specialty: "Pediatrician",
+        image: doctors3,
+        availableDays: ["Monday", "Tuesday", "Friday"],
+    },
+    {
+        id: 4,
+        name: "Dr. Michael Adeyemi",
+        specialty: "Neurologist",
+        image: doctors4,
+        availableDays: ["Wednesday", "Thursday", "Sunday"],
+    },
+];
 export const heroNext = [
     {
         id : 1,
