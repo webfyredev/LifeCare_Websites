@@ -13,6 +13,9 @@ import Footer from "../components/footer";
 import { buttonEffects, CardscrollLeft, cardscrollRight, scrollLeft, scrollRight, scrollUp } from "../animations/effects";
 import Appointment from "../components/appointment";
 import Doctors from "../components/doctors";
+import ChooseUs from "../components/choose";
+import Facilities from "../components/facilities";
+import FAQs from "../components/faqs";
 
 
 export default function Home(){
@@ -23,7 +26,7 @@ export default function Home(){
         <>
             <NavBar />
             <HeroSlider />
-            <div className="w-full h-auto grid grid-cols-1 sm:grid-cols-2 md:grd-cols-3 lg:grid-cols-4 gap-5 p-10 bg-blue-500">
+            <div className="w-full h-auto grid grid-cols-1 sm:grid-cols-2 md:grd-cols-3 lg:grid-cols-4 gap-5 p-10 bg-blue-500 overflow-hidden">
                 {heroNext.map((data) =>(
                     <motion.div {...CardscrollLeft} className="flex flex-col items-center bg-white rounded-md p-5">
                         <data.icon  className={`w-11 h-11 p-3.5 ${data.icon_style} rounded-full`}/>
@@ -39,9 +42,9 @@ export default function Home(){
                     </motion.div>
                 ))}
             </div>
-            <div className="bg-white py-5 px-15 flex h-120 justify-between">
-                <motion.div {...scrollUp} className="w-[50%] flex flex-col p-5">
-                    <h3 className="font-semibold text-3xl">
+            <div className="bg-white py-5 md:px-10 lg:px-15 lg:flex lg:flex-row flex flex-col h-auto lg:h-120 justify-between overflow-hidden">
+                <motion.div {...scrollUp} className="w-full lg:w-[50%] flex flex-col p-5">
+                    <h3 className="font-semibold text-2xl md:text-3xl">
                         Excellence in Healthcare Since 1998
                     </h3>
                     <p className="text-[12px] text-justify text-gray-500 mt-3">
@@ -71,13 +74,13 @@ export default function Home(){
                         Learn More About Us <FaArrowRight  className="w-2.5 h-2.5 mt-1 ml-1"/>
                     </motion.button>
                 </motion.div>
-                <motion.img {...scrollRight} src={aboutImg} className="w-[45%] p-5 object-cover" />
+                <motion.img {...scrollRight} src={aboutImg} className="w-full lg:w-[45%] h-70 md:h-100 lg:h-full p-5 object-cover" />
             </div>
-            <div className="flex flex-col items-center bg-[#F9FAFB] p-10">
+            <div className="flex flex-col items-center bg-[#F9FAFB] px-0 md:px-5 lg:px-10 py-10 overflow-hidden">
                 <motion.h3 {...scrollLeft} className="font-bold text-3xl mt-5">
                     Our Medical Services
                 </motion.h3>
-                <motion.p {...scrollUp} className="text-gray-500 w-150 text-sm text-center mt-2">
+                <motion.p {...scrollUp} className="text-gray-500 w-90 md:w-150 text-xs md:text-sm text-center mt-2">
                     We provide comprehensive healthcare services across multiple specialities, 
                     ensuring you recieve the  best possible care for your specific needs.
                 </motion.p>
@@ -107,8 +110,11 @@ export default function Home(){
             </div>
             {/* <Appointment /> */}
             <Doctors />
+            <ChooseUs />
             <Testimonial />
+            <Facilities />
             <Blog />
+            <FAQs />
             <Footer_Cta />
             {/* <AppointmentModal /> */}
             <Subscribe />

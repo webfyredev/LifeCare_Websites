@@ -23,7 +23,7 @@ export default function Footer(){
     ]
     return(
         <>
-            <footer className="flex flex-col p-10 bg-[#0F172A]">
+            <footer className="flex flex-col px-5 md:px-10 py-10 bg-[#0F172A] overflow-hidden">
                 <div className="w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                     <div className="w-full">
                         <h3 className="font-bold text-xl text-white">
@@ -137,17 +137,17 @@ export default function Footer(){
                 </div>
                 <hr  className="mt-5 text-[#0D3B66] opacity-30"/>
                 <div className="w-full p-2 mt-5 flex justify-between items-center">
-                    <p className="text-[12px] text-gray-300">
+                    <p className="text-[8px] md:text-[12px] text-gray-300">
                         &copy; {dates} <span className="hover:text-blue-400 cursor-pointer transition-all duration-300 hover:font-semibold">LifeCare Hospital</span>. All right reserved
                     </p>
                     <div className="flex space-x-4">
-                        <a href="" className="text-xs hover:font-semibold text-gray-300">
+                        <a href="" className="text-[8px] md:text-xs hover:font-semibold text-gray-300">
                             Privacy Policy
                         </a>
-                        <a href="" className="text-xs hover:font-semibold text-gray-300">
+                        <a href="" className="text-[8px] md:text-xs hover:font-semibold text-gray-300">
                             Terms of Service
                         </a>
-                        <a href="" className="text-xs hover:font-semibold text-gray-300">
+                        <a href="" className="hidden md:flex text-xs hover:font-semibold text-gray-300">
                             webfyre@gmail.com
                         </a>
                     </div>

@@ -16,7 +16,30 @@ html {
 .swiper-button-prev{
   @apply !left-5
 }
-
+#facilities .swiper-pagination-bullet{
+  @apply !bg-blue-100 !opacity-100
+}
+#facilities .swiper-pagination{
+  /* @apply !bottom-[-10px] */
+}
+#facilities .swiper{
+  @apply !h-90
+}
+@media (max-width: 640px) {
+  #facilities .swiper-button-next,
+  #facilities.swiper-button-prev {
+    display: none !important;
+  }
+}
+@media (max-width: 768px) {
+  #facilities .swiper-button-next,
+  #facilities .swiper-button-prev {
+    display: none !important;
+  }
+}
+#facilities .swiper-pagination-bullet-active{
+  @apply !bg-blue-600 !opacity-100
+}
 .swiper-pagination-bullet{
   @apply !bg-white !opacity-100
 }

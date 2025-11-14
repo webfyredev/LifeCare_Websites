@@ -1,4 +1,7 @@
-import {FaUserMd, FaCalendarCheck, FaAmbulance, FaUser} from 'react-icons/fa'
+import {FaUserMd, FaCalendarCheck, FaAmbulance, FaUser} from 'react-icons/fa';
+import { MdMedicalServices, MdVerified, MdOutlineAccessTime } from "react-icons/md";
+import { FaUserDoctor, FaHospitalUser } from "react-icons/fa6";
+import { GiHealthNormal } from "react-icons/gi";
 import hService1 from '../images/homeService/service1.webp'
 import hService2 from '../images/homeService/service2.webp'
 import hService3 from '../images/homeService/service3.webp'
@@ -21,9 +24,109 @@ import team3 from '../images/team/team (3).jpg'
 import team4 from '../images/team/team (4).jpg'
 import team5 from '../images/team/team (5).jpg'
 import team6 from '../images/team/team (6).jpg'
+import choose1 from '../images/choose/choose1.webp'
+import choose2 from '../images/choose/choose2.webp'
+import choose3 from '../images/choose/choose3.webp'
+import choose4 from '../images/choose/choose4.webp'
+import choose5 from '../images/choose/choose5.webp'
+import choose6 from '../images/choose/choose6.webp'
 
-
-
+export const faqs = [
+  {
+    id : 1,
+    question: "How can I book a medical appointment?",
+    answer: "You can book an appointment online through our booking portal, by calling our hotline, or visiting the hospital reception."
+  },
+  {
+    id : 2,
+    question: "Do you offer 24/7 emergency services?",
+    answer: "Yes, our Emergency Department operates round the clock with fully equipped staff and medical teams."
+  },
+  {
+    id :3,
+    question: "How can I find a specialist doctor?",
+    answer: "Visit the 'Find a Doctor' section to browse specialists by name, department, or medical condition."
+  },
+  {
+    id : 4,
+    question: "Which health insurance plans do you accept?",
+    answer: "We accept a wide range of insurance providers. You can view the full list on our Insurance Information page."
+  },
+  {
+    id : 5,
+    question: "Can I access my medical records online?",
+    answer: "Yes, patients can securely access their medical records through our online Patient Portal after registration."
+  },
+  {
+    id : 6,
+    question: "What should I bring for my first hospital visit?",
+    answer: "Please bring a valid ID, insurance card, previous medical reports (if any), and a list of medications you're currently using."
+  }
+];
+export const facilities = [
+    {
+      title: "Modern Operating Theatre",
+      desc: "Equipped with advanced surgical technology for safe and precise procedures.",
+      image: choose1,
+    },
+    {
+      title: "24/7 Emergency Room",
+      desc: "Rapid response emergency care with dedicated medical teams.",
+      image: choose2,
+    },
+    {
+      title: "Digital Radiology & Imaging",
+      desc: "High-resolution MRI, CT Scan, and X-Ray services for accurate diagnosis.",
+      image: choose3,
+    },
+    {
+      title: "Advanced Laboratory",
+      desc: "Automated laboratory systems for fast and reliable test results.",
+      image: choose4,
+    },
+    {
+      title: "Pharmacy & Drug Store",
+      desc: "Fully stocked pharmacy with expert pharmacists on duty.",
+      image: choose5,
+    },
+    {
+      title: "Patient Recovery Rooms",
+      desc: "Comfortable, well-equipped rooms designed for patient safety and rest.",
+      image: choose6,
+    },
+  ];
+export const chooseUs = [
+    {
+      icon: MdMedicalServices,
+      title: "Advanced Medical Technology",
+      desc: "We use the latest diagnostic and treatment equipment to ensure the best patient outcomes.",
+    },
+    {
+      icon: FaUserDoctor,
+      title: "Experienced Specialists",
+      desc: "Our team of certified doctors and surgeons bring decades of combined medical expertise.",
+    },
+    {
+      icon: MdOutlineAccessTime,
+      title: "24/7 Emergency Support",
+      desc: "Round-the-clock emergency services with fast response and dedicated care teams.",
+    },
+    {
+      icon: GiHealthNormal,
+      title: "Patient-Centered Care",
+      desc: "We prioritize compassion, comfort, and personalized attention for every patient.",
+    },
+    {
+      icon: MdVerified,
+      title: "Accredited & Certified",
+      desc: "Recognized for maintaining international healthcare standards and safety protocols.",
+    },
+    {
+      icon: FaHospitalUser,
+      title: "High Success Rate",
+      desc: "Our medical procedures and treatments have proven success supported by research and data.",
+    },
+];
 
 export const doctors = [
     {

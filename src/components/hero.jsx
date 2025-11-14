@@ -83,14 +83,14 @@ function SlideInner({ slide }){
         <div className="relative w-full h-full bg-cover bg-center overflow-hidden" style={{ backgroundImage : `url(${slide.image})`}}>
             <div className="absolute inset-0 bg-black/55" />
                 <div className={`relative z-10 h-full flex flex-col justify-center items-center px-6 lg:px-24`}>
-                    <motion.h1 className="text-5xl font-bold leading-tight text-white text-center mb-1 w-[70%] mt-10"
+                    <motion.h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-white text-center mb-1 w-full md:w-[70%] mt-15 md:mt-10"
                         initial = {{opacity : 0, x:40}}
                         animate = {isActive ? {opacity : 1, x :0} : {opacity : 0, x : 40}}
                         transition = {{delay : 0.15, duration : 0.7}}
                     >
                         {slide.title_1}
                     </motion.h1>
-                    <motion.h2 className="text-4xl font-bold leading-tight text-blue-300 text-center mb-3"
+                    <motion.h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-blue-300 text-center mb-3"
                         initial = {{opacity : 0, x:-40}}
                         animate = {isActive ? {opacity : 1, x :0} : {opacity : 0, x : 40}}
                         transition = {{delay : 0.15, duration : 0.7}}
@@ -98,7 +98,7 @@ function SlideInner({ slide }){
                         {slide.title_2}
                     </motion.h2>
                     <motion.h3
-                        className="text-xs md:text-sm leading-tight text-white text-center mb-2 w-[60%]"
+                        className="hidden md:flex md:text-xs lg:text-sm leading-tight text-white text-center mb-2 w-[60%]"
                         initial={{ opacity: 0, x: -40 }}
                         animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
                         transition={{ delay: 0.35, duration: 0.7 }}
@@ -109,26 +109,26 @@ function SlideInner({ slide }){
                         initial = {{opacity : 0, x : 40}}
                         whileInView={{opacity : 1, x : 0}}
                         transition={{duration : 1}}
-                        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 w-[55%] p-3 ">
+                        className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-5 w-[90%] md:w-[70%] lg:w-[55%] p-3">
                         {slide.buttons.map((button) => (
-                            <motion.button whileHover={{scale : 1.05}} whileTap={{scale :0.95}} className={`w-45 h-11 flex items-center ${button.bg} ${button.color} text-[13px] font-semibold justify-center cursor-pointer rounded-sm`}>
+                            <motion.button whileHover={{scale : 1.05}} whileTap={{scale :0.95}} className={`md:w-38 lg:w-45 h-11 flex items-center ${button.bg} ${button.color} text-[10px] md:text-[12px] lg:text-[13px] font-semibold justify-center cursor-pointer rounded-sm`}>
                                 {button.icon} {button.text}
                             </motion.button>
                         ))}
                     </motion.div>
                     <div 
                         
-                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-[65%] mt-10">
+                    className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 w-[80%] md:w-[65%] mt-10">
                         {hero_data.map((data) =>(
                             <motion.div 
                                 // initial = {{opacity : 0, y:-20}}
                                 // whileHover={{opacity : 1, y : 0}}
                                 // transition={{duration : 1}}
                             className="flex flex-col items-center">
-                                <h2 className="text-blue-200 text-2xl font-bold">
+                                <h2 className="text-blue-200 text-xl md:text-2xl font-bold">
                                     {data.counts}{data.value}
                                 </h2>
-                                <p className="text-xs text-white mt-1">
+                                <p className="text-xs text-white mt-1 mb-3 md:mb-0">
                                     {data.text}
                                 </p>
                             </motion.div>

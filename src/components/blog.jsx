@@ -4,14 +4,14 @@ import { motion } from "framer-motion";
 export default function Blog(){
     return(
         <>
-            <div className="w-full p-10 bg-[#F9FAFB] flex flex-col items-center mt-5">
-                <motion.h3 {...scrollLeft} className="text-3xl font-bold">
+            <div className="w-full lg:px-10 py-10 bg-[#F9FAFB] flex flex-col items-center mt-5 overflow-hidden">
+                <motion.h3 {...scrollLeft} className="text-2xl md:text-3xl font-bold">
                     Latest News & Health Tips
                 </motion.h3>
-                <motion.p {...scrollUp} className="text-gray-500 w-150 text-sm text-center mt-2">
+                <motion.p {...scrollUp} className="text-gray-500 w-90 md:w-150 text-sm text-center mt-2">
                     Stay informed with the latest medical news, health tips, and updates from our hospital
                 </motion.p>
-                <div className="w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5 p-5">
+                <div className="w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5 p-5 overflow-hidden">
                     {blogs.map((blog) =>(
                         <motion.div {...cardscrollRight} className="flex flex-col rounded-md bg-white shadow-sm">
                             <img src={blog.image} className="object-cover h-60 rounded-t-md"/>
