@@ -27,7 +27,7 @@ import team6 from '../images/team/team (6).jpg'
 import choose1 from '../images/choose/choose1.webp'
 import choose2 from '../images/choose/choose2.webp'
 import choose3 from '../images/choose/choose3.webp'
-import choose4 from '../images/choose/choose4.webp'
+import choose4 from '../images/choose/choose7.webp'
 import choose5 from '../images/choose/choose5.webp'
 import choose6 from '../images/choose/choose6.webp'
 

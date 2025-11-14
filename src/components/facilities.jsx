@@ -42,7 +42,7 @@ export default function Facilities(){
                             className="w-full h-50 object-cover"
                         />
                         <div className="p-5">
-                            <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
+                            <h3 className="text-md font-semibold mb-2">{item.title}</h3>
                             <p className="text-gray-600 text-sm">{item.desc}</p>
                         </div>
                         </motion.div>

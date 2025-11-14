@@ -90,7 +90,7 @@ function SlideInner({ slide }){
                     >
                         {slide.title_1}
                     </motion.h1>
-                    <motion.h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-blue-300 text-center mb-3"
+                    <motion.h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-blue-200 text-center mb-3"
                         initial = {{opacity : 0, x:-40}}
                         animate = {isActive ? {opacity : 1, x :0} : {opacity : 0, x : 40}}
                         transition = {{delay : 0.15, duration : 0.7}}
