@@ -15,6 +15,13 @@ import doctors1 from '../images/doctors/doctors1.jpg'
 import doctors2 from '../images/doctors/doctors2.jpg'
 import doctors3 from '../images/doctors/doctors3.jpg'
 import doctors4 from '../images/doctors/doctors4.jpg'
+import team1 from '../images/team/team (1).jpg'
+import team2 from '../images/team/team (2).jpg'
+import team3 from '../images/team/team (3).jpg'
+import team4 from '../images/team/team (4).jpg'
+import team5 from '../images/team/team (5).jpg'
+import team6 from '../images/team/team (6).jpg'
+
 
 
 
@@ -213,4 +220,78 @@ export const blogs =[
         title : 'Free Community Health Fair This Saturday',
         text : 'Join us for free health screenings, consultations and education workshops for the whole family.'
     },
+];
+
+export const about_core_values = [
+    {
+        id : 1,
+        title : 'Compassion',
+        text : 'We treat every patient with empathy, respects and  dignity',
+    },
+    {
+        id : 2,
+        title : 'Excellence',
+        text : 'We strive for  the highest standards in everything we do',
+    },
+    {
+        id : 3,
+        title : 'Innovation',
+        text : 'We embrance new technologies and treatments to improve care',
+    },
+    {
+        id : 4,
+        title : 'Integrity',
+        text : 'We conduct ourselves with honesty and transparency',
+    },
+    {
+        id : 5,
+        title : 'Collaboration',
+        text : 'We work together as a team to achieve the best outcomes',
+    },
+];
+
+export const Teams = [
+    {
+        id : 1,
+        image : team1, 
+        name : 'Dr Gamlly Blems',
+        title : 'Chief Executive Officer',
+        desc : 'With over 25 years in healthcare administration. Dr Blems leads our strategic vision and operational excellence.He holds an MD Harvard Medical School and an MBA from Wharton'
+    },
+    {
+        id : 2,
+        image : team2, 
+        name : 'Dr Micheal Coles',
+        title : 'Chief Medical Officer',
+        desc : 'Board-certified cardiologist with 20 years of  clinical experience. Dr Coles oversees all medical staff and ensures the highest standards of patient care and safety.'
+    },
+    {
+        id : 3,
+        image : team6, 
+        name : 'Colmsill Kandey',
+        title : 'Chief Nusring Officer',
+        desc : 'Kandey is recognised as a nursing leader with 18 years of experience. Kandey champions nursing excellence and leads our 800+ nursing staff in delivering patient care.'
+    },
+    {
+        id : 4,
+        image : team4, 
+        name : 'Robert Caloes',
+        title : 'Chief Financial Officer',
+        desc : 'With over 25 years in healthcare administration. Dr Blems leads our strategic vision and operational excellence.He holds an MD Harvard Medical School and an MBA from Wharton'
+    },
+    {
+        id : 5,
+        image : team5, 
+        name : 'James Brownly',
+        title : 'Chief Tecnology Officer',
+        desc : 'With over 25 years in healthcare administration. Dr Blems leads our strategic vision and operational excellence.He holds an MD Harvard Medical School and an MBA from Wharton'
+    },
+    {
+        id : 1,
+        image : team3, 
+        name : 'Stanlely Chelmson',
+        title : 'Chief Operation Officer',
+        desc : 'With over 25 years in healthcare administration. Dr Blems leads our strategic vision and operational excellence.He holds an MD Harvard Medical School and an MBA from Wharton'
+    },
+
 ]

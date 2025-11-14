@@ -46,12 +46,12 @@ export default function Footer(){
                         </h3>
                         <ul className="flex flex-col space-y-3.5">
                             <li className="text-gray-200 text-[13px] hover:text-blue-400 hover:font-semibold">
-                                <Link>
+                                <Link to="/">
                                     Home
                                 </Link>
                             </li>
                             <li className="text-gray-200 text-[13px] hover:text-blue-400 hover:font-semibold">
-                                <Link>
+                                <Link to="/about">
                                     About Us
                                 </Link>
                             </li>

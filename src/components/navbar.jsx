@@ -10,12 +10,12 @@ export default function NavBar(){
                 </div>
                 <ul className="hidden lg:flex items-center space-x-2 text-gray-600">
                     <li className="cursor-pointer px-5 text-[12px] h-9 flex items-center hover:rounded-sm hover:font-semibold hover:text-blue-600">
-                        <Link>
+                        <Link to="/" className={({isActive}) => `${isActive ? 'font-semibold text-blue-600' : 'text-gray-600'}`}>
                             Home
                         </Link>
                     </li>
                     <li className="cursor-pointer px-5 text-[12px] h-9 flex items-center hover:rounded-sm hover:font-semibold hover:text-blue-600">
-                        <Link>
+                        <Link to="/about">
                             About Us
                         </Link>
                     </li>
