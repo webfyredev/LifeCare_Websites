@@ -38,7 +38,7 @@ const slides = [
         title_1 : 'Compassionate Care',
         title_2 : 'Every Step of the Way',
         text : 'Our dedicated team of healthcare professionals provides personalized care with empathy, ensuring comfort and support throughout your healing journey',
-        buttons : [{text : 'Patient Stories', icon : <LuMessageSquareHeart  className="mr-2"/>, path : '', bg : 'bg-blue-600', color : 'text-white'}, {text : 'About Our Team', icon : <FaUsers className="mr-2"/>, path : '', bg : 'bg-red-600', color : 'text-white'}, {text : 'Find a Doctor', icon : <FaUserMd className="mr-2"/>, path : '', bg : 'border-1 border-white', color : 'text-white'},]
+        buttons : [{text : 'Patient Stories', icon : <LuMessageSquareHeart  className="mr-2"/>, path : '#testimonial', bg : 'bg-blue-600', color : 'text-white'}, {text : 'About Our Team', icon : <FaUsers className="mr-2"/>, path : '/about#aboutTeam', bg : 'bg-red-600', color : 'text-white'}, {text : 'Find a Doctor', icon : <FaUserMd className="mr-2"/>, path : '', bg : 'border-1 border-white', color : 'text-white'},]
     },
     {
         id : 4, 
@@ -52,7 +52,7 @@ const slides = [
 const hero_data = [
     {
         id : 1,
-        counts : 50,
+        counts : 20,
         value : '+',
         text : 'Years of Excellence',
     },
@@ -112,7 +112,9 @@ function SlideInner({ slide }){
                         className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-5 w-[90%] md:w-[70%] lg:w-[55%] p-3">
                         {slide.buttons.map((button) => (
                             <motion.button whileHover={{scale : 1.05}} whileTap={{scale :0.95}} className={`md:w-38 lg:w-45 h-11 flex items-center ${button.bg} ${button.color} text-[10px] md:text-[12px] lg:text-[13px] font-semibold justify-center cursor-pointer rounded-sm`}>
-                                {button.icon} {button.text}
+                                <Link to={button.path} className="flex items-center">
+                                    {button.icon} {button.text}
+                                </Link>
                             </motion.button>
                         ))}
                     </motion.div>

@@ -1,19 +1,21 @@
 import { FaEnvelope, FaLinkedin } from "react-icons/fa";
 import { Teams } from "../data/data";
+import { motion } from "framer-motion";
+import { cardscrollRight, scrollLeft, scrollRight, scrollUp } from "../animations/effects";
 export default function Team(){
     return(
         <>
-            <div className="w-full flex flex-col items-center p-10 bg-[#F9FAFB]">
-                <h3 className="text-3xl font-bold">
+            <div className="w-full flex flex-col items-center lg:p-10 bg-[#F9FAFB] overflow-hidden" id="aboutTeam">
+                <motion.h3 {...scrollLeft} className="text-2xl md:text-3xl font-bold mt-5 md:mt-0">
                     Leadership Team
-                </h3>
-                <p className="text-gray-500 w-150 text-sm mt-2 text-center">
+                </motion.h3>
+                <motion.p {...scrollUp} className="text-gray-500 w-90 md:w-150 text-sm mt-2 text-center">
                     Meet the experienced leaders who guide our mission to provide exceptional healthcare
                     to our community.
-                </p>
-                <div className="w-full mt-5 p-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                </motion.p>
+                <div className="w-full mt-5 p-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 overflow-hidden">
                     {Teams.map((team) =>(
-                        <div className=" flex flex-col mb-5 rounded-md">
+                        <motion.div {...cardscrollRight} className="w-full flex flex-col mb-5 rounded-md">
                             <img src={team.image} className="w-full h-55 object-cover object-top rounded-t-md" />
                             <div className="w-full flex flex-col p-3 rounded-b-md bg-white shadow-sm">
                                 <h3 className="text-sm font-semibold">
@@ -30,7 +32,7 @@ export default function Team(){
                                     <a href=""><FaEnvelope className="text-blue-600 cursor-pointer"/></a>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>

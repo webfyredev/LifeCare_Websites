@@ -5,7 +5,9 @@ export default function NavBar(){
             <nav className="w-full h-auto flex items-center justify-between px-10 py-3">
                 <div className="flex cursor-pointer">
                     <h3 className="font-bold text-blue-600">
-                        LIFECARE
+                        <Link to="/">
+                            LIFECARE
+                        </Link>
                     </h3>
                 </div>
                 <ul className="hidden lg:flex items-center space-x-2 text-gray-600">
@@ -20,28 +22,30 @@ export default function NavBar(){
                         </Link>
                     </li>
                     <li className="cursor-pointer px-5 text-[12px] h-9 flex items-center hover:rounded-sm hover:font-semibold hover:text-blue-600">
-                        <Link>
+                        <Link to="/services">
                             Services
                         </Link>
                     </li>
                     <li className="cursor-pointer px-5 text-[12px] h-9 flex items-center hover:rounded-sm hover:font-semibold hover:text-blue-600">
-                        <Link>
+                        <Link to="/doctors">
                             Find a Doctor
                         </Link>
                     </li>
                     <li className="cursor-pointer px-5 text-[12px] h-9 flex items-center hover:rounded-sm hover:font-semibold hover:text-blue-600">
-                        <Link>
+                        <Link to="/emergency">
                             Emergency
                         </Link>
                     </li>
                     <li className="cursor-pointer px-5 text-[12px] h-9 flex items-center hover:rounded-sm hover:font-semibold hover:text-blue-600">
-                        <Link>
+                        <Link to="/contacts">
                             Contact
                         </Link>
                     </li>
                     <div className="flex space-x-3 h-full">
                         <button className="border-1 text-xs px-4 py-2 h-full rounded-sm cursor-pointer border-blue-600 text-blue-600 font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300">
-                            Patient Portal
+                            <Link to="/patient-portal">
+                                Patient Portal
+                            </Link>
                         </button>
                         <button className="border-1 text-xs px-4 py-2 h-full rounded-sm cursor-pointer bg-blue-600 text-white font-semibold hover:bg-transparent hover:border-1 hover:border-blue-600 hover:text-blue-600 transition-all duration-300">
                             Book Appointment

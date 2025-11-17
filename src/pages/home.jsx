@@ -45,7 +45,7 @@ export default function Home(){
             <div className="bg-white py-5 md:px-10 lg:px-15 lg:flex lg:flex-row flex flex-col h-auto lg:h-120 justify-between overflow-hidden">
                 <motion.div {...scrollUp} className="w-full lg:w-[50%] flex flex-col p-5">
                     <h3 className="font-semibold text-2xl md:text-3xl">
-                        Excellence in Healthcare Since 1998
+                        Excellence in Healthcare Since 2005
                     </h3>
                     <p className="text-[12px] text-justify text-gray-500 mt-3">
                         For over 15 years, LifeCare Hospital has been at the forefront of medical Innovation
@@ -115,7 +115,11 @@ export default function Home(){
             <Facilities />
             <Blog />
             <FAQs />
-            <Footer_Cta />
+            <Footer_Cta 
+            title = 'Ready to Experience Exceptional Healthcare?'
+            text = 'Take the first step towards your health. Book an appointment with our specialists or explore our comprehensive medical services'
+            btn_text_1 = 'Book Appointment'
+            btn_text_2 = 'Explore Services'/>
             {/* <AppointmentModal /> */}
             <Subscribe />
             <Footer />

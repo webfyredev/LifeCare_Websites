@@ -11,7 +11,7 @@ export default function Subscribe(){
                     Get the latest health tips, hospital news, and important updates delivered to your inbox.
                 </p>
                 <form className="w-[45%] md:w-[65%] w-full my-3 flex justify-evenly py-2">
-                    <input type="email" placeholder="Enter your email address" className="w-[60%] h-10 text-xs px-3 rounded-sm bg-white shadow-sm"/>
+                    <input type="email" placeholder="Enter your email address" className="w-[60%] h-10 text-xs px-3 rounded-sm bg-white shadow-sm outline-blue-200"/>
                     <motion.button 
                         {...buttonEffects}
                     className="w-[35%] rounded-sm cursor-pointer text-xs font-semibold text-blue-600 bg-blue-500 text-white shadow-sm">

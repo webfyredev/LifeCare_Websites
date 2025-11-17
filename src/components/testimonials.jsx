@@ -5,7 +5,7 @@ import { CardscrollLeft, scrollLeft, scrollUp } from "../animations/effects"
 export default function Testimonial(){
     return (
         <>
-            <div className="flex items-center flex-col px-5 lg:px-10 py-10 bg-white mt-5 overflow-hidden">
+            <div className="flex items-center flex-col px-5 lg:px-10 py-10 bg-white mt-5 overflow-hidden" id="testimonial">
                 <motion.h3 {...scrollLeft} className="text-2xl md:text-3xl font-bold">
                     What Our Patients Say
                 </motion.h3>

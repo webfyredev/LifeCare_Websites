@@ -56,22 +56,22 @@ export default function Footer(){
                                 </Link>
                             </li>
                             <li className="text-gray-200 text-[13px] hover:text-blue-400 hover:font-semibold">
-                                <Link>
+                                <Link to="/services">
                                     Services
                                 </Link>
                             </li>
                             <li className="text-gray-200 text-[13px] hover:text-blue-400 hover:font-semibold">
-                                <Link>
+                                <Link to="/doctors">
                                     Find a Doctor
                                 </Link>
                             </li>
                             <li className="text-gray-200 text-[13px] hover:text-blue-400 hover:font-semibold">
-                                <Link>
+                                <Link to="/emergency">
                                     Emergency
                                 </Link>
                             </li>
                             <li className="text-gray-200 text-[13px] hover:text-blue-400 hover:font-semibold">
-                                <Link>
+                                <Link to="/contacts">
                                     Contact
                                 </Link>
                             </li>
@@ -83,7 +83,7 @@ export default function Footer(){
                         </h3>
                         <ul className="flex flex-col space-y-3.5">
                             <li className="text-gray-200 text-[13px] hover:text-blue-400 hover:font-semibold">
-                                <Link>
+                                <Link to="/patient-portal">
                                     Patient Information
                                 </Link>
                             </li>
