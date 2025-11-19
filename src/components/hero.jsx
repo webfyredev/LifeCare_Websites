@@ -22,7 +22,7 @@ const slides = [
         title_1 : 'Exceptional Healthcare',
         title_2 : 'You can Trust',
         text : 'Providing compassionate, world-class medical services with cutting-edge technology and a team of  dedicated healthcare professionals committed to your well-being.',
-        buttons : [{text : 'Book Appointment', icon : <FaCalendarCheck  className="mr-2"/>, path : '', bg : 'bg-blue-600', color : 'text-white'}, {text : 'Emergency Services', icon : <FaAmbulance  className="mr-2"/>, path : '', bg : 'bg-red-600', color : 'text-white'}, {text : 'Find a Doctor', icon : <FaUserMd  className="mr-2"/>, path : '', bg : 'border-1 border-white', color : 'text-white'},]
+        buttons : [{text : 'Book Appointment', icon : <FaCalendarCheck  className="mr-2"/>, path : '/appointments#appointments', bg : 'bg-blue-600', color : 'text-white'}, {text : 'Emergency Services', icon : <FaAmbulance  className="mr-2"/>, path : '/emergency#emergencies', bg : 'bg-red-600', color : 'text-white'}, {text : 'Find a Doctor', icon : <FaUserMd  className="mr-2"/>, path : '/doctors#findDoctors', bg : 'border-1 border-white', color : 'text-white'},]
     },
     {
         id : 2, 
@@ -30,7 +30,7 @@ const slides = [
         title_1 : 'Advanced Medical Technology',
         title_2 : 'Leading Innovation',
         text : 'Experience the future of healthcare with our state-of-the-art medical equipment, robotic surgery systems, and cutting-edge diagnostic tolls for precise treatment.',
-        buttons : [{text : 'Our Technology', icon : <MdBiotech  className="mr-2"/>, path : '', bg : 'bg-blue-600', color : 'text-white'}, {text : 'Find a Doctor', icon : <FaUserMd  className="mr-2"/>, path : '', bg : 'bg-red-600', color : 'text-white'}, {text : 'Find a Doctor', icon : <FaUserMd  className="mr-2"/>, path : '', bg : 'border-1 border-white', color : 'text-white'},]
+        buttons : [{text : 'Our Technology', icon : <MdBiotech  className="mr-2"/>, path :'/services#technology', bg : 'bg-blue-600', color : 'text-white'}, {text : 'Find a Doctor', icon : <FaUserMd  className="mr-2"/>, path : '/doctors#findDoctors', bg : 'bg-red-600', color : 'text-white'}, {text : 'Find a Doctor', icon : <FaUserMd  className="mr-2"/>, path : '/doctors#findDoctors', bg : 'border-1 border-white', color : 'text-white'},]
     },
     {
         id : 3, 
@@ -38,7 +38,7 @@ const slides = [
         title_1 : 'Compassionate Care',
         title_2 : 'Every Step of the Way',
         text : 'Our dedicated team of healthcare professionals provides personalized care with empathy, ensuring comfort and support throughout your healing journey',
-        buttons : [{text : 'Patient Stories', icon : <LuMessageSquareHeart  className="mr-2"/>, path : '#testimonial', bg : 'bg-blue-600', color : 'text-white'}, {text : 'About Our Team', icon : <FaUsers className="mr-2"/>, path : '/about#aboutTeam', bg : 'bg-red-600', color : 'text-white'}, {text : 'Find a Doctor', icon : <FaUserMd className="mr-2"/>, path : '', bg : 'border-1 border-white', color : 'text-white'},]
+        buttons : [{text : 'Patient Stories', icon : <LuMessageSquareHeart  className="mr-2"/>, path : '/#testimonial', bg : 'bg-blue-600', color : 'text-white'}, {text : 'About Our Team', icon : <FaUsers className="mr-2"/>, path : '/about#aboutTeam', bg : 'bg-red-600', color : 'text-white'}, {text : 'Find a Doctor', icon : <FaUserMd className="mr-2"/>, path : '/doctors#findDoctors', bg : 'border-1 border-white', color : 'text-white'},]
     },
     {
         id : 4, 
@@ -46,7 +46,7 @@ const slides = [
         title_1 : '24/7 Emergency Care',
         title_2 : 'Always Here for You',
         text : 'Round-the-clock emergency services with rapid response times, specialized trauma care, and immediate access to life saving treatments when you need them most', 
-        buttons : [{text : 'Emergency Info', icon : <FaExclamationTriangle className="mr-2"/>, path : '', bg : 'bg-blue-600', color : 'text-white'}, {text : 'ER Wait Times', icon : <FaClock  className="mr-2"/>, path : '', bg : 'bg-red-600', color : 'text-white'}, {text : 'Find a Doctor', icon : <FaUserMd className="mr-2" />, path : '', bg : 'border-1 border-white', color : 'text-white'},]
+        buttons : [{text : 'Emergency Info', icon : <FaExclamationTriangle className="mr-2"/>, path : '', bg : 'bg-blue-600', color : 'text-white'}, {text : 'ER Wait Times', icon : <FaClock  className="mr-2"/>, path : '', bg : 'bg-red-600', color : 'text-white'}, {text : 'Find a Doctor', icon : <FaUserMd className="mr-2" />, path : '/doctors#findDoctors', bg : 'border-1 border-white', color : 'text-white'},]
     },
 ];
 const hero_data = [
@@ -81,7 +81,7 @@ function SlideInner({ slide }){
     const isActive = !!slideState && !!slideState.isActive;
     return (
         <div className="relative w-full h-full bg-cover bg-center overflow-hidden" style={{ backgroundImage : `url(${slide.image})`}}>
-            <div className="absolute inset-0 bg-black/55" />
+            <div className="absolute inset-0 bg-black/60" />
                 <div className={`relative z-10 h-full flex flex-col justify-center items-center px-6 lg:px-24`}>
                     <motion.h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-white text-center mb-1 w-full md:w-[70%] mt-15 md:mt-10"
                         initial = {{opacity : 0, x:40}}
@@ -98,7 +98,7 @@ function SlideInner({ slide }){
                         {slide.title_2}
                     </motion.h2>
                     <motion.h3
-                        className="hidden md:flex md:text-xs lg:text-sm leading-tight text-white text-center mb-2 w-[60%]"
+                        className="text-[11px] md:text-xs lg:text-sm leading-tight text-white text-center mb-2 w-[80%] md:w-[60%]"
                         initial={{ opacity: 0, x: -40 }}
                         animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
                         transition={{ delay: 0.35, duration: 0.7 }}
@@ -109,7 +109,7 @@ function SlideInner({ slide }){
                         initial = {{opacity : 0, x : 40}}
                         whileInView={{opacity : 1, x : 0}}
                         transition={{duration : 1}}
-                        className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-5 w-[90%] md:w-[70%] lg:w-[55%] p-3">
+                        className="hidden md:flex grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-5 w-[90%] md:w-[70%] lg:w-[55%] p-3">
                         {slide.buttons.map((button) => (
                             <motion.button whileHover={{scale : 1.05}} whileTap={{scale :0.95}} className={`md:w-38 lg:w-45 h-11 flex items-center ${button.bg} ${button.color} text-[10px] md:text-[12px] lg:text-[13px] font-semibold justify-center cursor-pointer rounded-sm`}>
                                 <Link to={button.path} className="flex items-center">

@@ -9,14 +9,14 @@ export default function Team(){
                 <motion.h3 {...scrollLeft} className="text-2xl md:text-3xl font-bold mt-5 md:mt-0">
                     Leadership Team
                 </motion.h3>
-                <motion.p {...scrollUp} className="text-gray-500 w-90 md:w-150 text-sm mt-2 text-center">
+                <motion.p {...scrollUp} className="text-gray-500 w-90 md:w-150 text-xs md:text-sm mt-2 text-center">
                     Meet the experienced leaders who guide our mission to provide exceptional healthcare
                     to our community.
                 </motion.p>
                 <div className="w-full mt-5 p-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 overflow-hidden">
                     {Teams.map((team) =>(
                         <motion.div {...cardscrollRight} className="w-full flex flex-col mb-5 rounded-md">
-                            <img src={team.image} className="w-full h-55 object-cover object-top rounded-t-md" />
+                            <img src={team.image} className="w-full h-55 object-cover rounded-t-md" />
                             <div className="w-full flex flex-col p-3 rounded-b-md bg-white shadow-sm">
                                 <h3 className="text-sm font-semibold">
                                     {team.name}

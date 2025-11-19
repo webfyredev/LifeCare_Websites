@@ -1,4 +1,4 @@
-import {FaUserMd, FaCalendarCheck, FaAmbulance, FaUser, FaBaby, FaHospital, FaUserCheck, FaAward, FaStethoscope, FaClipboardCheck, FaRadiation, FaRobot, FaFileMedical, FaMobileAlt, FaNotesMedical, FaPrescriptionBottleAlt} from 'react-icons/fa';
+import {FaUserMd, FaCalendarCheck, FaAmbulance, FaUser, FaBaby, FaHospital, FaUserCheck, FaAward, FaStethoscope, FaClipboardCheck, FaRadiation, FaRobot, FaFileMedical, FaMobileAlt, FaNotesMedical, FaPrescriptionBottleAlt, FaSkullCrossbones, FaPhoneVolume} from 'react-icons/fa';
 import { MdMedicalServices, MdVerified, MdOutlineAccessTime, MdScanner, MdMonitorHeart, MdOutlineVideoCall, MdQuickreply, MdSchedule, MdPayment} from "react-icons/md";
 import { FaUserDoctor, FaHospitalUser, FaHeartPulse, FaPeopleGroup } from "react-icons/fa6";
 import { FiAward, FiShield, FiActivity, FiHeart} from "react-icons/fi"
@@ -22,12 +22,12 @@ import doctors1 from '../images/doctors/doctors1.jpg'
 import doctors2 from '../images/doctors/doctors2.jpg'
 import doctors3 from '../images/doctors/doctors3.jpg'
 import doctors4 from '../images/doctors/doctors4.jpg'
-import team1 from '../images/team/team (1).jpg'
-import team2 from '../images/team/team (2).jpg'
-import team3 from '../images/team/team (3).jpg'
-import team4 from '../images/team/team (4).jpg'
-import team5 from '../images/team/team (5).jpg'
-import team6 from '../images/team/team (6).jpg'
+import team1 from '../images/team/team1.webp'
+import team2 from '../images/team/team2.webp'
+import team3 from '../images/team/team3.webp'
+import team4 from '../images/team/team4.webp'
+import team5 from '../images/team/team5.webp'
+import team6 from '../images/team/team6.webp'
 import choose1 from '../images/choose/choose1.webp'
 import choose2 from '../images/choose/choose2.webp'
 import choose3 from '../images/choose/choose3.webp'
@@ -53,6 +53,53 @@ import f_doctors10 from '../images/find_doctor/doctor10.webp'
 import f_doctors9 from '../images/find_doctor/doctor9.webp'
 import f_doctors8 from '../images/find_doctor/doctor8.webp'
 
+
+export const emergencycontacts = [
+    {
+        id : 1,
+        icon : FaHeartPulse,
+        title : 'Life-Threatening Emergency',
+        phone : '911'
+    },
+    {
+        id : 2,
+        icon : FaHospital,
+        title : 'Emergency Departments',
+        phone : '(234) 8079 0098'
+    },
+    {
+        id : 3,
+        icon : FaSkullCrossbones,
+        title : 'Poison Control',
+        phone : '(234) 8098 99980'
+    },
+    {
+        id : 4,
+        icon : FaPhoneVolume,
+        title : 'Crisis Hotline',
+        phone : '988'
+    },
+
+]
+export const contactslocation = [
+    {
+        title : 'Main Hospital',
+        id : 1,
+        address : '17 life clinic street Lagos. Nigeria',
+        phone_1 : '(234) 8054 7860',
+        phone_2 : '(234) 8054 7860',
+        visitingHours : ['24/7  Emergency Services', 'Visiting Hours: 8 AM - 8 PM']
+    },
+    {
+        title : 'North Campus',
+        id : 1,
+        address : '17 life clinic street Lagos. Nigeria',
+        phone_1 : '(234) 8054 7860',
+        phone_2 : '(234) 8054 7860',
+        visitingHours : ['Mon-Fri: 7 AM - 7 PM', 'Sat-Sun: 8 AM - 5 PM']
+    },
+    
+]
 export const contactNumbers = [
     {
         id : 1,
@@ -792,6 +839,7 @@ export const heroNext = [
         title : 'Find a Doctor',
         text : 'Search our directory of Specialists',
         btn_text : 'Search Now',
+        link : '/doctors#doctorsForm',
         btn_style : 'border-1 border-blue-600 text-blue-600 rounded-md',
     },
     {
@@ -801,6 +849,7 @@ export const heroNext = [
         title : 'Book Appointment',
         text : 'Schedule a visit online',
         btn_text : 'Book Now',
+        link : '/appointments#appointments',
         btn_style : 'border-1 border-blue-600 text-blue-600 rounded-md',
     },
     {
@@ -810,6 +859,7 @@ export const heroNext = [
         title : 'Emergency',
         text : '24/7 emergency services',
         btn_text : 'Call Now',
+        link : '/emergency#emergencyprep',
         btn_style : 'bg-red-600 text-white rounded-md',
     },
     {
@@ -819,6 +869,7 @@ export const heroNext = [
         title : 'Patient Portal',
         text : 'Access your medical records',
         btn_text : 'Login',
+        link : '/patient-portal',
         btn_style : 'border-1 border-blue-600 text-blue-600 rounded-md',
     },
 ]
@@ -990,13 +1041,13 @@ export const Teams = [
     {
         id : 2,
         image : team2, 
-        name : 'Dr Micheal Coles',
+        name : 'Dr Angellina Coles',
         title : 'Chief Medical Officer',
         desc : 'Board-certified cardiologist with 20 years of  clinical experience. Dr Coles oversees all medical staff and ensures the highest standards of patient care and safety.'
     },
     {
         id : 3,
-        image : team6, 
+        image : team3, 
         name : 'Colmsill Kandey',
         title : 'Chief Nusring Officer',
         desc : 'Kandey is recognised as a nursing leader with 18 years of experience. Kandey champions nursing excellence and leads our 800+ nursing staff in delivering patient care.'
@@ -1017,7 +1068,7 @@ export const Teams = [
     },
     {
         id : 1,
-        image : team3, 
+        image : team6, 
         name : 'Stanlely Chelmson',
         title : 'Chief Operation Officer',
         desc : 'With over 25 years in healthcare administration. Dr Blems leads our strategic vision and operational excellence.He holds an MD Harvard Medical School and an MBA from Wharton'

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion"
 import { buttonEffects } from "../animations/effects"
 import { useState } from "react";
+import { Link } from "react-router-dom";
 export default function Footer_Cta(props){
     return(
         <>
@@ -13,10 +14,16 @@ export default function Footer_Cta(props){
                 </p>
                 <div className="flex mt-5 space-x-4">
                     <motion.button {...buttonEffects}  className="border-1 px-7 md:px-9 py-3 text-xs md:text-sm bg-white rounded-sm font-semibold text-blue-600 cursor-pointer">
+                        <Link to={props.link_1}>
                         {props.btn_text_1}
+
+                        </Link>
                     </motion.button>
                     <motion.button {...buttonEffects} className="border-1 border-white px-7 md:px-9 py-3 text-xs md:text-sm rounded-sm font-semibold text-white cursor-pointer">
+                        <Link to={props.link_2}>
                         {props.btn_text_2}
+
+                        </Link>
                     </motion.button>
                 </div>
             </div>

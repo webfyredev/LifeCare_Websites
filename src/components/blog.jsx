@@ -8,7 +8,7 @@ export default function Blog(){
                 <motion.h3 {...scrollLeft} className="text-2xl md:text-3xl font-bold">
                     Latest News & Health Tips
                 </motion.h3>
-                <motion.p {...scrollUp} className="text-gray-500 w-90 md:w-150 text-sm text-center mt-2">
+                <motion.p {...scrollUp} className="text-gray-500 w-90 md:w-150 text-xs md:text-sm text-center mt-2">
                     Stay informed with the latest medical news, health tips, and updates from our hospital
                 </motion.p>
                 <div className="w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5 p-5 overflow-hidden">

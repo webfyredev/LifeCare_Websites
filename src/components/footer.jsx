@@ -137,17 +137,17 @@ export default function Footer(){
                 </div>
                 <hr  className="mt-5 text-[#0D3B66] opacity-30"/>
                 <div className="w-full p-2 mt-5 flex justify-between items-center">
-                    <p className="text-[8px] md:text-[12px] text-gray-300">
+                    <p className="text-[9px] md:text-[12px] text-gray-300">
                         &copy; {dates} <span className="hover:text-blue-400 cursor-pointer transition-all duration-300 hover:font-semibold">LifeCare Hospital</span>. All right reserved
                     </p>
                     <div className="flex space-x-4">
-                        <a href="" className="text-[8px] md:text-xs hover:font-semibold text-gray-300">
+                        <a href="" className="text-[9px] md:text-xs hover:font-semibold text-gray-300">
                             Privacy Policy
                         </a>
-                        <a href="" className="text-[8px] md:text-xs hover:font-semibold text-gray-300">
+                        <a href="" className="text-[9px] md:text-xs hover:font-semibold text-gray-300">
                             Terms of Service
                         </a>
-                        <a href="" className="hidden md:flex text-xs hover:font-semibold text-gray-300">
+                        <a href="" className="hidden md:flex text-[9px] md:text-xs hover:font-semibold text-gray-300">
                             webfyre@gmail.com
                         </a>
                     </div>

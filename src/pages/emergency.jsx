@@ -1,4 +1,4 @@
-import { FaArrowRight, FaCheck, FaClock } from "react-icons/fa";
+import { FaArrowRight, FaCheck, FaClock, FaApple, FaGooglePlay } from "react-icons/fa";
 import Footer from "../components/footer";
 import NavBar from "../components/navbar";
 import PageHeads from "../components/pageHeads";
@@ -6,8 +6,9 @@ import Subscribe from "../components/subscribe";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import emergImg from '../images/emerg.webp'
-import { emergency911, emergencyData, emergencyDocs, emergencynotes, emergencysteps, medicalaid } from "../data/data";
-import { buttonEffects, cardscrollRight, scrollLeft, scrollRight, scrollUp } from "../animations/effects";
+import { emergency911, emergencycontacts, emergencyData, emergencyDocs, emergencynotes, emergencysteps, medicalaid } from "../data/data";
+import { buttonEffects, CardscrollLeft, cardscrollRight, scrollLeft, scrollRight, scrollUp } from "../animations/effects";
+import { useLocation } from "react-router-dom";
 
 function LiveClock() {
   const [time, setTime] = useState("");
@@ -29,6 +30,15 @@ function LiveClock() {
   return <span>{time}</span>;
 }
 export default function Emergency(){
+    const {hash} = useLocation();
+    useEffect(() =>{
+        if(hash){
+            const element = document.querySelector(hash)
+            if(element){
+                element.scrollIntoView({behavior : "smooth"})
+            }
+        }
+    })
     useEffect(() =>{
         document.title = 'LifeCare | Emergency'
     })
@@ -40,7 +50,7 @@ export default function Emergency(){
             image = {emergImg}
             title = 'Emergency Services'
             text = '24/7 emergency medical care with expert staff and advanced lif support capabilities.'/>
-            <div className="w-full p-5 flex items-center justify-center bg-[#FEECE9]">
+            <div className="w-full p-5 flex items-center justify-center bg-[#FEECE9]" id="emergencies">
                 <motion.div {...scrollLeft} className="md:w-[85%] lg:w-[65%] p-5 rounded-md bg-white flex flex-col items-center">
                     <h3 className="text-sm font-semibold">
                         Current Emergency Department Wait Time
@@ -115,7 +125,7 @@ export default function Emergency(){
 
                 </motion.div>
             </div>
-            <div className="w-full flex flex-col items-center lg:p-5 mt-5 bg-white">
+            <div className="w-full flex flex-col items-center lg:p-5 mt-5 bg-white" id="emergencyprep">
                 <motion.h3 {...scrollRight} className="font-bold text-2xl">
                     Emergency Preparedness
                 </motion.h3>
@@ -155,7 +165,7 @@ export default function Emergency(){
                         <div className="flex flex-col space-y-2 mt-3">
                             {emergencysteps.map((steps) =>(
                                 <motion.div {...scrollRight} className="flex p-2 space-x-2">
-                                    <div className="w-8 h-8 text-xs flex items-center justify-center rounded-full bg-red-500 font-semibold text-white">
+                                    <div className="w-6 h-6 md:w-8 md:h-8 text-[11px] mt-1 md:mt-0 md:text-xs flex items-center justify-center rounded-full bg-red-500 font-semibold text-white">
                                         {steps.id}
                                     </div>
                                     <div className="flex flex-col">
@@ -181,6 +191,41 @@ export default function Emergency(){
                         </motion.div>
                     </div>
                 </div>
+            </div>
+            <div className="w-full mt-5 p-5 bg-red-600 flex flex-col items-center">
+                <h3 className="text-xl md:text-2xl font-bold text-white text-center">
+                    Emergency Contacts Information
+                </h3>
+                <div className="mt-5 w-[95%] lg:w-[85%] grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                    {emergencycontacts.map((data)=>(
+                        <motion.div {...CardscrollLeft} className="flex flex-col items-center p-5 bg-red-700 rounded-sm space-y-2">
+                            <data.icon  className="w-10 h-10 p-2.5 text-white"/>
+                            <h3 className="text-sm fontsemibold text-white">
+                                {data.title}
+                            </h3>
+                            <a href={`tel:${data.phone}`} className="text-white font-bold cursor-pointer mb-3">
+                                {data.phone}
+                            </a>
+                        </motion.div>
+                    ))}
+                    
+                </div>
+                <motion.div {...scrollUp} className="w-[95%] lg:w-[85%] mt-7 p-5 flex flex-col items-center bg-red-700 rounded-sm">
+                    <h3 className="md:text-2xl font-bold text-white">
+                        Download Our Emergency App
+                    </h3>
+                    <p className="hidden md:flex text-[11px] mt-2 w-150 text-center text-gray-100">
+                        Get instant access to emergency information, hospital directions, and direct contacts wth our emergency departments.
+                    </p>
+                    <div className="md:flex md:flex-row flex flex-col items-center md:my-5 my-3 w-full md:w-110 md:space-x-5 space-y-3 md:space-y-0 overflow-hidden">
+                        <motion.button {...buttonEffects} className="flex items-center justify-center w-[85%] md:w-auto md:px-9 py-2.5 text-[12px] cursor-pointer font-semibold bg-white text-red-700 rounded-sm">
+                            <FaApple className="w-4 h-4 mr-0.5 mt-[-3px]" /> Download for iOS
+                        </motion.button>
+                        <motion.button {...buttonEffects} className="flex items-center justify-center w-[85%] md:w-auto md:px-9 py-2.5 text-[12px] cursor-pointer font-semibold bg-white text-red-700 rounded-sm">
+                            <FaGooglePlay className="w-4 h-4 mr-0.5" /> Download for Android
+                        </motion.button>
+                    </div>
+                </motion.div>
             </div>
             <Subscribe />
             <Footer />  

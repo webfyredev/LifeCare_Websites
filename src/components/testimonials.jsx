@@ -9,7 +9,7 @@ export default function Testimonial(){
                 <motion.h3 {...scrollLeft} className="text-2xl md:text-3xl font-bold">
                     What Our Patients Say
                 </motion.h3>
-                <motion.p {...scrollUp} className="text-gray-500 w-90 md:w-150 text-sm text-center mt-2">
+                <motion.p {...scrollUp} className="text-gray-500 w-90 md:w-150 text-xs md:text-sm text-center mt-2">
                     Read testimonials from patients who have experienced our exceptional care and service
                 </motion.p>
                 <div className="w-full mt-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 py-5 md:px-5 lg:px-10 overflow-hidden">

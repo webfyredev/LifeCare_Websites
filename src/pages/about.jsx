@@ -37,7 +37,7 @@ export default function About(){
             title = 'About LifeCare Hospital'
             image = {aboutImage}
             text = {`Dedicated to excellence in healthcare for over ${hospital_year} years, serving our community with compassion, innovation, and unwavering commitment to patient care.`} />
-            <div className="w-full flex flex-col mt-5 px-5 lg:px-10 py-5 overflow-hidden">
+            <div className="w-full flex flex-col mt-5 px-5 lg:px-10 py-5 overflow-hidden" id="aboutUs">
                 <motion.h3 {...scrollRight} className="text-2xl mt-5 font-bold px-5">
                     Our Mission & Vission
                 </motion.h3>
@@ -46,7 +46,7 @@ export default function About(){
                         <p className="text-blue-600 font-semibold mb-4">
                             Mission Statement
                         </p>
-                        <p className="text-[13px] text-gray-600 text-justify mb-5">
+                        <p className="text-[11px] md:text-[13px] text-gray-600 text-justify mb-5">
                             To provide exceptional, compassionate healthcare services that improve the  health and well-being
                             of your community. We are committed to delivering patient-centered care through clinical excellence, innovative
                             treatments, and a dedication to healing that extends beyond medical treatment to encompass the whole person.
@@ -54,7 +54,7 @@ export default function About(){
                         <p className="text-blue-600 font-semibold mb-4">
                             Our Vission
                         </p>
-                        <p className="text-[13px] text-gray-600 text-justify mb-5">
+                        <p className="text-[11px] md:text-[13px] text-gray-600 text-justify mb-5">
                             To be the leading healthcare provider in our region, recognized for our clinical excellence, 
                             innovative care delivery, and commitmentto improving community health outcomes. We envision a future where every patient
                             recieves personalized, world-class medical care in a compassionate and healthy environments.
@@ -79,7 +79,7 @@ export default function About(){
                 <motion.h3 {...scrollLeft} className="text-2xl md:text-3xl font-bold mt-5">
                     Awards &amp; Recognition
                 </motion.h3>
-                <motion.p {...scrollUp} className="text-gray-500 w-90 md:w-150 text-sm mt-2 text-center">
+                <motion.p {...scrollUp} className="text-gray-500 w-90 md:w-150 text-xs md:text-sm mt-2 text-center">
                     Our commitment to excellence has been recognized by leading healthcare organizations and accreditation bodies
                 </motion.p>
                 <div className="w-full lg:w-[90%] mt-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 py-5 px-5 lg:px-10 overflow-hidden">
@@ -100,7 +100,7 @@ export default function About(){
                 <motion.h3 {...scrollLeft} className="text-2xl md:text-3xl font-bold mt-5">
                     Community Impact
                 </motion.h3>
-                <motion.p {...scrollUp} className="text-gray-500 w-90 md:w-150 text-sm mt-2 text-center">
+                <motion.p {...scrollUp} className="text-gray-500 w-90 md:w-150 text-xs md:text-sm mt-2 text-center">
                     Beyond providing excellent medical care. We're committed to improving the health and well-being of our entire community
                 </motion.p>
                 <div className="lg:flex lg:flex-row flex flex-col justify-around shadow-xs p-5 mt-5 w-[95%] lg:w-[90%] h-auto lg:h-100 bg-white rounded-md overflow-hidden">
@@ -152,7 +152,7 @@ export default function About(){
                 <motion.h3 {...scrollLeft} className="text-2xl md:text-3xl font-bold mt-5">
                     By the Numbers
                 </motion.h3>
-                <motion.p {...scrollUp} className="text-gray-500 w-90 md:w-150 text-sm mt-2 text-center">
+                <motion.p {...scrollUp} className="text-gray-500 w-90 md:w-150 text-xs md:text-sm mt-2 text-center">
                     Our commitment to excellence is reflected in the scope and quality of care we provide to our community
                 </motion.p> 
                 <div className="w-[95%] lg:w-[90%] p-2 mt-5 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5 p-5 overflow-hidden">
@@ -188,7 +188,9 @@ export default function About(){
             title = 'Join our Mission of Healing'
             text = 'Whether you are seeking exceptional healthcare, looking to join our team, or want to support our community programs, we invite you to be part of our healing mission'
             btn_text_1 = 'Explore-Careers'
-            btn_text_2 = 'Contact Us'/>
+            link_1 = ''
+            btn_text_2 = 'Contact Us'
+            link_2 = '/contacts'/>
             <Subscribe />
             <Footer />
         </>

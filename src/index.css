@@ -1,6 +1,7 @@
 @import "tailwindcss";
 html {
   scroll-behavior: smooth;
+  overflow-x : hidden
 }
 
 .swiper-button-next, .swiper-button-prev{

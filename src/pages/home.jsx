@@ -11,12 +11,12 @@ import Footer_Cta from "../components/footer_CTA";
 import Subscribe from "../components/subscribe";
 import Footer from "../components/footer";
 import { buttonEffects, CardscrollLeft, cardscrollRight, scrollLeft, scrollRight, scrollUp } from "../animations/effects";
-import Appointment from "../components/appointment";
+// import Appointment from "../components/appointmentForm";
 import Doctors from "../components/doctors";
 import ChooseUs from "../components/choose";
 import Facilities from "../components/facilities";
 import FAQs from "../components/faqs";
-
+import { Link } from "react-router-dom";
 
 export default function Home(){
     useEffect(() =>{
@@ -37,7 +37,9 @@ export default function Home(){
                             {data.text}
                         </p>
                         <motion.button whileHover={{scale : 1.05}} whileTap={{scale : 0.95}} className={`${data.btn_style} cursor-pointer px-6 py-2 font-semibold text-xs mb-3 mt-2`}>
-                            {data.btn_text}
+                            <Link to={data.link}>
+                                {data.btn_text}
+                            </Link>
                         </motion.button>
                     </motion.div>
                 ))}
@@ -71,7 +73,9 @@ export default function Home(){
                         
                     </div>
                     <motion.button {...buttonEffects} className="flex cursor-pointer p-3 border-1 w-40 text-xs font-semibold py-3 bg-blue-600 text-white rounded-sm mt-2">
-                        Learn More About Us <FaArrowRight  className="w-2.5 h-2.5 mt-1 ml-1"/>
+                        <Link to="/about#aboutUs" className="flex">
+                            Learn More About Us <FaArrowRight  className="w-2.5 h-2.5 mt-1 ml-1"/>
+                        </Link>
                     </motion.button>
                 </motion.div>
                 <motion.img {...scrollRight} src={aboutImg} className="w-full lg:w-[45%] h-70 md:h-100 lg:h-full p-5 object-cover" />
@@ -95,8 +99,10 @@ export default function Home(){
                                 <p className="text-gray-500 text-xs my-2">
                                     {data.text}
                                 </p>
-                                <motion.button {...buttonEffects} className="flex items-center p-4 hover:bg-blue-600 hover:text-white  transition-all duration-300 cursor-pointer border-1 w-30 h-9 mt-2 text-xs rounded-md border-1 border-blue-600 font-semibold text-blue-600 mb-3">
-                                    Learn More  <FaArrowRight  className="w-2.5 h-2.5 ml-1 mt-[-0.5]"/>
+                                <motion.button {...buttonEffects} className="flex items-center justify-center p-4 hover:bg-blue-600 hover:text-white  transition-all duration-300 cursor-pointer border-1 w-30 h-9 mt-2 text-xs rounded-md border-1 border-blue-600 font-semibold text-blue-600 mb-3">
+                                    <Link to="/services">
+                                        Learn More
+                                    </Link>
                                 </motion.button>
                             </div>
                         </motion.div>
@@ -105,7 +111,9 @@ export default function Home(){
                 <motion.button 
                     {...buttonEffects}
                 className="flex items-center px-9 border-1 py-3 text-xs font-semibold rounded-sm cursor-pointer bg-blue-600 text-white">
-                    View All Services <FaArrowRight  className="w-2.5 h-2.5 mt-0.5 ml-1"/>
+                    <Link to="/services" className="flex">
+                        View All Services <FaArrowRight  className="w-2.5 h-2.5 mt-0.5 ml-1"/>
+                    </Link>
                 </motion.button>
             </div>
             {/* <Appointment /> */}
@@ -119,6 +127,8 @@ export default function Home(){
             title = 'Ready to Experience Exceptional Healthcare?'
             text = 'Take the first step towards your health. Book an appointment with our specialists or explore our comprehensive medical services'
             btn_text_1 = 'Book Appointment'
+            link_1 = '/appointments#appointments'
+            link_2 = '/services#services'
             btn_text_2 = 'Explore Services'/>
             {/* <AppointmentModal /> */}
             <Subscribe />
