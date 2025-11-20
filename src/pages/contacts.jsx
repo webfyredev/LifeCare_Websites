@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { buttonEffects, cardscrollRight, scrollRight } from "../animations/effects";
 import Footer from "../components/footer";
 import NavBar from "../components/navbar";
@@ -7,12 +7,46 @@ import { contactNumbers, contactslocation } from "../data/data";
 import contactImg from '../images/contacts.webp'
 import { motion } from "framer-motion";
 import { FaClock, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
+import axios from "axios";
 export default function Contacts(){
+    const [contactsData, setContactsData] = useState({
+        full_name : "", email : "", phone_number : "", departments : "",
+        subject : "", message : ""
+    });
+    const [status, setStatus] = useState({message : "", type : ""})
+    const handleContactsChange = (e) => {
+        setContactsData({...contactsData, [e.target.name] : e.target.value})
+    };
+    const contactsSubmission = async(e) => {
+        e.preventDefault();
+        try{
+            await axios.post("http://127.0.0.1:8000/contacts/", contactsData)
+            setStatus({message : "Contacts message submitted successfully", type : "success"});
+            setContactsData({
+                full_name : "", email : "", phone_number : "", departments : "",
+                subject : "", message : ""
+            });
+            setTimeout(() => setStatus(""), 7000);
+        } catch(error){
+                setStatus({message : "Failed to submit contacts message. Try again later", type : "error"})
+                setTimeout(() => setStatus(""), 7000);
+        }
+    }
     useEffect(() =>{
         document.title = 'LifeCare | Contacts'
     })
     return(
         <>
+            {status.message && (
+                <motion.div 
+                initial = {{opacity : 0, y : -40}}
+                animate = {{opacity : 1, y : 0}}
+                transition={{duration:1}}
+                exit={{opacity : 0, y : -40}}
+                className={`fixed top-5 transform -translate-x-1/2 left-1/2 z-50 px-3 py-4 md:py-3.5 rounded-md shadow-sm text-white text-xs md:text-sm text-center w-[95%] h-12 font-semibold ${status.type === "success" ? 'bg-green-500' : 'bg-red-500'}`}>
+                    {status.message}
+                </motion.div>
+            )}
             <NavBar />
             <PageHeads 
             image = {contactImg}
@@ -43,37 +77,48 @@ export default function Contacts(){
                     <h3 className="text-2xl font-bold">
                         Contact Our Team
                     </h3>
-                    <form action="" className="flex flex-col space-y-2 mt-3">
+                    <form onSubmit={contactsSubmission} className="flex flex-col space-y-2 mt-3">
                         <div className="w-full md:flex md:flex-row flex flex-col space-x-4 mb-3 space-y-3 md:space-y-0">
                             <div className="flex flex-col md:w-1/2 w-full">
                                 <label htmlFor="" className="text-[10px] font-semibold text-gray-600 my-2">Full Name *</label>
-                                <input type="text" placeholder="Enter your full name" className="border-1 h-10 rounded-sm bg-[#F9FAFB] text-[12px] px-3 border-gray-200 outline-blue-200" />
+                                <input type="text" name="full_name" value={contactsData.full_name} required onChange={handleContactsChange}  placeholder="Enter your full name" className="border-1 h-10 rounded-sm bg-[#F9FAFB] text-[12px] px-3 border-gray-200 outline-blue-200" />
                             </div>
                             <div className="flex flex-col md:w-1/2 w-full">
                                 <label htmlFor="" className="text-[10px] font-semibold text-gray-600 my-2">Email Address *</label>
-                                <input type="email" placeholder="Enter your email" className="border-1 h-10 rounded-sm bg-[#F9FAFB] text-[12px] px-3 border-gray-200 outline-blue-200" />
+                                <input type="email" name="email" value={contactsData.email} required onChange={handleContactsChange} placeholder="Enter your email" className="border-1 h-10 rounded-sm bg-[#F9FAFB] text-[12px] px-3 border-gray-200 outline-blue-200" />
                             </div>
                         </div>
                         <div className="w-full md:flex md:flex-row flex flex-col space-x-4 mb-3">
                             <div className="flex flex-col md:w-1/2 w-full">
                                 <label htmlFor="" className="text-[10px] font-semibold text-gray-600 my-2">Phone Number </label>
-                                <input type="text" placeholder="Enter your phone number" className="border-1 h-10 rounded-sm bg-[#F9FAFB] text-[12px] px-3 border-gray-200 outline-blue-200" />
+                                <input type="text" name="phone_number" value={contactsData.phone_number} required onChange={handleContactsChange} placeholder="Enter your phone number" className="border-1 h-10 rounded-sm bg-[#F9FAFB] text-[12px] px-3 border-gray-200 outline-blue-200" />
                             </div>
                             <div className="flex flex-col md:w-1/2 w-full">
                                 <label htmlFor="" className="text-[10px] font-semibold text-gray-600 my-2">Department *</label>
-                                <select name="" id="" placeholder="Select Department" className="border-1 h-10 rounded-sm bg-[#F9FAFB] text-[12px] px-3 border-gray-200 outline-blue-200">
+                                <select name="departments" value={contactsData.departments} required onChange={handleContactsChange} id="" placeholder="Select Department" className="border-1 h-10 rounded-sm bg-[#F9FAFB] text-[12px] px-3 border-gray-200 outline-blue-200">
                                     <option value="" disabled>Select Department</option>
+                                    <option value="24/7 Emergency Department">24/7 Emergency Department</option>
+                                    <option value="Advanced Surgical Services">Advanced Surgical Services</option>
+                                    <option value="Cardiovascular Care">Cardiovascular Care</option>
+                                    <option value="Pediatric Services">Pediatric Services</option>
+                                    <option value="Medical Imaging & Radiology">Medical Imaging & Radiology</option>
+                                    <option value="Oncology Services">Oncology Services</option>
+                                    <option value="Orthopedic Services">Orthopedic Services</option>
+                                    <option value="Women Health">Women Health</option>
+
+
+
                                 </select>
                                 {/* <input type="email" placeholder="Enter your email" className="border-1 h-10 rounded-sm bg-[#F9FAFB] text-[13px] px-3 border-gray-200 outline-blue-200" /> */}
                             </div>
                         </div>
                         <div className="flex flex-col w-full mb-3">
                             <label htmlFor="" className="text-[10px] font-semibold text-gray-600 my-2">Subject *</label>
-                            <input type="text" placeholder="Enter message subjects" className="border-1 h-10 rounded-sm bg-[#F9FAFB] text-[12px] px-3 border-gray-200 outline-blue-200" />
+                            <input type="text" name="subject" value={contactsData.subject} required onChange={handleContactsChange} placeholder="Enter message subjects" className="border-1 h-10 rounded-sm bg-[#F9FAFB] text-[12px] px-3 border-gray-200 outline-blue-200" />
                         </div>
                         <div className="flex flex-col w-full mb-3">
                             <label htmlFor="" className="text-[10px] font-semibold text-gray-600 my-2">Message *</label>
-                            <textarea name="" id="" placeholder="Enter your message (max 500 characters)" className="p-2 border-1 h-25 rounded-sm bg-[#F9FAFB] text-[12px] px-3 border-gray-200 outline-blue-200"></textarea>
+                            <textarea name="message" value={contactsData.message} required onChange={handleContactsChange} id="" placeholder="Enter your message (max 500 characters)" className="p-2 border-1 h-25 rounded-sm bg-[#F9FAFB] text-[12px] px-3 border-gray-200 outline-blue-200"></textarea>
                             {/* <input type="text" placeholder="" className="" /> */}
                         </div>
                         <motion.button {...buttonEffects} className="border-1 my-3 h-11 text-sm font-semibold rounded-sm bg-blue-600 text-white cursor-pointer">

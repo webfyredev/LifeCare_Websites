@@ -60,23 +60,6 @@ export default function Appointments(){
                         </select>
                     </div>
                     <div className="w-full flex flex-col mb-4">
-                        <label htmlFor="" className="text-[12px] mb-0.5">Select Doctors</label>
-                        <select type="text" required  placeholder="+234 800 000 0000" className=" h-11 border-1 border-gray-400 p-3 rounded-sm text-[13px] outline-blue-200 transition-all"> 
-                            <option value="" disabled>-- Select Doctors --</option>
-                            <option value="Dr. Amara Kenson">Dr.Amara Kenson</option>
-                            <option value="Dr. Malik Davenport">Dr. Malik Davenport</option>
-                            <option value="Dr. Liora Menendez">Dr. Liora Menendez</option>
-                            <option value="Dr. Jaden Oriri">Dr. Jaden Oriri</option>
-                            <option value="Dr. Zariah Koldren">Dr. Zariah Koldren</option>
-                            <option value="Dr. Rowan Ekwueme">Dr. Rowan Ekwueme</option>
-                            <option value="Dr. Elara Nworie">Dr. Elara Nworie</option>
-                            <option value="Dr. Calen Vester">Dr. Calen Vester</option>
-                            <option value="Dr. Mireya Solarin">Dr. Mireya Solarin</option>
-                            <option value="Dr. Kieran Adebayo">Dr. Kieran Adebayo</option>
-
-                        </select>
-                    </div>
-                    <div className="w-full flex flex-col mb-4">
                         <label htmlFor="" className="text-[12px] mb-0.5">Preffered Date</label>
                         <input type="date" required className=" h-10 border-1 border-gray-400 p-3 rounded-sm text-[13px] outline-blue-200 transition-all"/>
                     </div>
