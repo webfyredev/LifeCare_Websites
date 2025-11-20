@@ -8,6 +8,9 @@ import { buttonEffects } from "../animations/effects";
 import appointImg from '../images/appointment.webp'
 
 export default function Appointments(){
+    useEffect(() => {
+        document.title = 'LifeCare | Appointments'
+    })
     const {hash} = useLocation();
     useEffect(() =>{
         if(hash){
