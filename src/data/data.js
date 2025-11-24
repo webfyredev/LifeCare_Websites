@@ -1049,7 +1049,7 @@ export const Teams = [
         id : 3,
         image : team3, 
         name : 'Colmsill Kandey',
-        title : 'Chief Nusring Officer',
+        title : 'Chief Nursing Officer',
         desc : 'Kandey is recognised as a nursing leader with 18 years of experience. Kandey champions nursing excellence and leads our 800+ nursing staff in delivering patient care.'
     },
     {
@@ -1063,7 +1063,7 @@ export const Teams = [
         id : 5,
         image : team5, 
         name : 'James Brownly',
-        title : 'Chief Tecnology Officer',
+        title : 'Chief Technology Officer',
         desc : 'With over 25 years in healthcare administration. Dr Blems leads our strategic vision and operational excellence.He holds an MD Harvard Medical School and an MBA from Wharton'
     },
     {
