@@ -25,7 +25,7 @@ export default function Patient_Portal(){
             setStatus({message : `Login successful ${email}`, type: "success"})
             setTimeout(() => {
                 navigate("/patient-dashboard")
-            }, 1500)
+            }, 1000)
 
         }else{
             setStatus({ message: "Invalid login details, Try again later", type: "error" });
