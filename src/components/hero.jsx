@@ -9,16 +9,16 @@ import "swiper/css/pagination";
 import {FaCalendarCheck, FaAmbulance, FaUserMd, FaUsers, FaExclamationTriangle, FaClock} from 'react-icons/fa';
 import { MdBiotech } from "react-icons/md";
 import { LuMessageSquareHeart } from "react-icons/lu";
-import slider1 from '../images/slider/slides10.jpg';
-import slider3 from '../images/slider/slides7.jpg';
-import slider2 from '../images/slider/slides6.jpg';
-import slider4 from '../images/slider/slides9.jpg';
+import slider1 from '../images/slider/hero1.webp';
+import slider2 from '../images/slider/hero2.webp';
+import slider3 from '../images/slider/hero3.webp';
+import slider4 from '../images/slider/hero4.webp';
 
 
 const slides = [
     {
         id : 1, 
-        image : slider2,
+        image : slider1,
         title_1 : 'Exceptional Healthcare',
         title_2 : 'You can Trust',
         text : 'Providing compassionate, world-class medical services with cutting-edge technology and a team of  dedicated healthcare professionals committed to your well-being.',
@@ -26,7 +26,7 @@ const slides = [
     },
     {
         id : 2, 
-        image : slider3,
+        image : slider2,
         title_1 : 'Advanced Medical Technology',
         title_2 : 'Leading Innovation',
         text : 'Experience the future of healthcare with our state-of-the-art medical equipment, robotic surgery systems, and cutting-edge diagnostic tolls for precise treatment.',
@@ -34,7 +34,7 @@ const slides = [
     },
     {
         id : 3, 
-        image : slider1,
+        image : slider3,
         title_1 : 'Compassionate Care',
         title_2 : 'Every Step of the Way',
         text : 'Our dedicated team of healthcare professionals provides personalized care with empathy, ensuring comfort and support throughout your healing journey',
