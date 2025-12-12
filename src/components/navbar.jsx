@@ -11,7 +11,7 @@ export default function NavBar(){
 
         <>
             <nav className="w-full h-auto flex items-center justify-between px-10 py-3 relative">
-                <div className="flex items-center cursor-pointer">
+                <div className="flex items-center cursor-pointer ml-[-25px] md:ml-[-20px] lg:ml-0">
                     <img src={logo} className="h-8 w-8 mt-1"/>
                     <h3 className="font-bold text-blue-500 ml-[-4px]">
                         <Link to="/">

@@ -38,7 +38,7 @@ export default function About(){
             image = {aboutImage}
             text = {`Dedicated to excellence in healthcare for over ${hospital_year} years, serving our community with compassion, innovation, and unwavering commitment to patient care.`} />
             <div className="w-full flex flex-col mt-5 px-5 lg:px-10 py-5 overflow-hidden" id="aboutUs">
-                <motion.h3 {...scrollRight} className="text-2xl mt-5 font-bold px-5">
+                <motion.h3 {...scrollRight} className="text-2xl mt-5 font-bold lg:px-3">
                     Our Mission & Vission
                 </motion.h3>
                 <motion.div {...scrollLeft} className="w-full mt-5 lg:flex lg:flex-row flex flex-col">

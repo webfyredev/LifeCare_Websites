@@ -9,10 +9,10 @@ import "swiper/css/pagination";
 import {FaCalendarCheck, FaAmbulance, FaUserMd, FaUsers, FaExclamationTriangle, FaClock} from 'react-icons/fa';
 import { MdBiotech } from "react-icons/md";
 import { LuMessageSquareHeart } from "react-icons/lu";
-import slider1 from '../images/slider/slides1.webp';
-import slider2 from '../images/slider/slides2.webp';
-import slider3 from '../images/slider/slides3.webp';
-import slider4 from '../images/slider/slides4.webp';
+import slider1 from '../images/slider/slides10.jpg';
+import slider3 from '../images/slider/slides7.jpg';
+import slider2 from '../images/slider/slides6.jpg';
+import slider4 from '../images/slider/slides9.jpg';
 
 
 const slides = [
@@ -81,7 +81,7 @@ function SlideInner({ slide }){
     const isActive = !!slideState && !!slideState.isActive;
     return (
         <div className="relative w-full h-full bg-cover bg-center overflow-hidden" style={{ backgroundImage : `url(${slide.image})`}}>
-            <div className="absolute inset-0 bg-black/60" />
+            <div className="absolute inset-0 bg-black/55" />
                 <div className={`relative z-10 h-full flex flex-col justify-center items-center px-6 lg:px-24`}>
                     <motion.h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-white text-center mb-1 w-full md:w-[70%] mt-15 md:mt-10"
                         initial = {{opacity : 0, x:40}}
@@ -90,7 +90,7 @@ function SlideInner({ slide }){
                     >
                         {slide.title_1}
                     </motion.h1>
-                    <motion.h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-blue-200 text-center mb-3"
+                    <motion.h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-blue-100 text-center mb-3"
                         initial = {{opacity : 0, x:-40}}
                         animate = {isActive ? {opacity : 1, x :0} : {opacity : 0, x : 40}}
                         transition = {{delay : 0.15, duration : 0.7}}
@@ -98,7 +98,7 @@ function SlideInner({ slide }){
                         {slide.title_2}
                     </motion.h2>
                     <motion.h3
-                        className="text-[11px] md:text-xs lg:text-sm leading-tight text-white text-center mb-2 w-[80%] md:w-[60%]"
+                        className="hidden md:flex text-[11px] md:text-xs lg:text-sm leading-tight text-white text-center mb-2 w-[80%] md:w-[60%]"
                         initial={{ opacity: 0, x: -40 }}
                         animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
                         transition={{ delay: 0.35, duration: 0.7 }}
