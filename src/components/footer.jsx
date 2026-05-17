@@ -148,7 +148,7 @@ export default function Footer(){
                             Terms of Service
                         </a>
                         <a href="mailto:oyinwebworks@gmail.com" className="hidden md:flex text-[9px] md:text-xs hover:font-semibold text-gray-300">
-                            oyinwebworks@gmail.com
+                            oyinbook@gmail.com
                         </a>
                     </div>
                 </div>

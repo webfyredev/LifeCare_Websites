@@ -13,7 +13,7 @@ import ProtectRoute from './auth/protectedRoutes'
 import RegisterPatients from './pages/register_patients'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import { AuthProvider } from './auth/authContext'
-
+  
 
 function App() {
   return(
