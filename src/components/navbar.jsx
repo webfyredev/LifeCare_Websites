@@ -53,7 +53,7 @@ export default function NavBar(){
                     <div className="flex space-x-3 h-full">
                         <button className="border-1 text-xs px-4 py-2 h-full rounded-sm cursor-pointer border-blue-600 text-blue-600 font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300">
                             <Link to="/patient-portal">
-                                Patient Portal
+                                Hospital Portal
                             </Link>
                         </button>
                         <button className="border-1 text-xs px-4 py-2 h-full rounded-sm cursor-pointer bg-blue-600 text-white font-semibold hover:bg-transparent hover:border-1 hover:border-blue-600 hover:text-blue-600 transition-all duration-300">
@@ -102,7 +102,7 @@ export default function NavBar(){
                             <div className="flex flex-col space-y-3 mt-2">
                                 <button className="border-1 text-xs px-4 py-3 h-full rounded-sm cursor-pointer border-blue-600 text-blue-600 font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300">
                                     <Link to="/patient-portal">
-                                        Patient Portal
+                                        Hospital Portal
                                     </Link>
                                 </button>
                                 <button className="border-1 text-xs px-4 py-3 h-full rounded-sm cursor-pointer bg-blue-600 text-white font-semibold hover:bg-transparent hover:border-1 hover:border-blue-600 hover:text-blue-600 transition-all duration-300">

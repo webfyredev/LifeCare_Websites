@@ -1,19 +1,49 @@
-import axios  from 'axios'
+import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://127.0.0.1:8000",
-    headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-    },
+    baseURL : "http://localhost:8000/api",
+    headers : {
+        "Content-Type" : "application/json"
+    }
 });
 
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem("access");
     if(token){
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
-});
+})
+
+api.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        // console.error(
+        //     `API Error [${error.response?.status}] ${error.config?.method?.toUpperCase()} ${error.config?.url}`,
+        //     error.response?.data
+        // )
+        const original = error.config
+        const isAuthRoute = original.url.includes('login') || original.url.includes('register')
+
+        if (error.response?.status === 401 && !original._retry && !isAuthRoute) {
+            original._retry = true
+
+            try {
+                const refresh = localStorage.getItem('refresh')
+                const res = await axios.post('http://localhost:8000/api/accounts/token/refresh/', {
+                refresh,
+                })
+                localStorage.setItem('access', res.data.access)
+                original.headers.Authorization = `Bearer ${res.data.access}`
+                return api(original)
+            } catch (err) {
+                localStorage.clear()
+                window.location.href = '/login'
+                }
+        }
+
+        return Promise.reject(error)
+    }
+)
 
 export default api;
