@@ -20,6 +20,7 @@ import PatientRecords from './pages/patient/patientRecords'
 import PatientPrescriptions from './pages/patient/patientPrescription'
 import PatientMessages from './pages/patient/patientMessages'
 import PaitientSettings from './pages/patient/patientSettings'
+import Portal_sidebar from './pages/patient/components/sidebar'
 
   
 
@@ -41,15 +42,19 @@ function App() {
           <Route path='/doctor/dashboard' element={<ProtectedRoute allowedRole="doctor"><DoctorDashboard /></ProtectedRoute>}></Route>
 
           // patient url routes
-          <Route path='/patient/dashboard' element={<ProtectedRoute allowedRole="patient"><PatientDashboard /></ProtectedRoute>}></Route>
-
-          <Route path='/patient-appointments' element = {<PatientAppointments />}></Route>
-          <Route path='/patient-records' element = {<PatientRecords />}></Route>
-          <Route path='/patient-prescriptions' element = {<PatientPrescriptions />}></Route>
-          <Route path='/patient-messages' element = {<PatientMessages />}></Route>
-          <Route path='/patient-settings' element = {<PaitientSettings />}></Route>
-
-
+          <Route path='/patient' element={<ProtectedRoute allowedRole="patient">
+                <Portal_sidebar />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Navigate to="/dashboard" replace />} />
+            <Route path='dashboard' element={<PatientDashboard />}></Route>
+            <Route path='appointments' element = {<PatientAppointments />}></Route>
+            <Route path='records' element = {<PatientRecords />}></Route>
+            <Route path='prescriptions' element = {<PatientPrescriptions />}></Route>
+            <Route path='messages' element = {<PatientMessages />}></Route>
+            <Route path='settings' element = {<PaitientSettings />}></Route>
+          </Route>
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
     </Router>

@@ -75,23 +75,16 @@ export default function RegisterPage(){
             image = {registerImg}
             title = 'Register Accounts'
             text = 'Create your account to securely access your medical records, manage appointments, and stay connected with your healthcare team.' />
-            {error && (
-                <div style={{
-                    background: '#fee2e2',
-                    border: '1px solid #ef4444',
-                    borderRadius: '6px',
-                    padding: '12px',
-                    marginBottom: '16px',
-                    color: '#b91c1c',
-                    whiteSpace: 'pre-line'
-                }}>
-                    {error}
-                </div>
-                )}
-            <div className="w-full mt-5 md:p-5 flex justify-center items-center">
+            
+            <div className="w-full mt-5 md:p-5 flex flex-col justify-center items-center">
                 
-                <form onSubmit={handleSubmit} className="w-full w-[85%] lg:w-[45%] h-auto rounded-md shadow-md flex flex-col items-center p-5">
-                    
+                
+                <form onSubmit={handleSubmit} className="w-full w-[85%] lg:w-[45%] h-auto rounded-md shadow-md flex flex-col items-center p-5 mb-5">
+                    {error && (
+                        <div className="w-full py-2.5 flex items-center justify-center bg-[#fee2e2] border-1 border-[#ef4444] rounded-sm rounded-lg padding-[12px] mb-16px] text-[#b91c1c]">
+                            {error}
+                        </div>
+                        )}
                     <img src={logoImg} className="w-15 h-15" />
                     <h3 className="my-2 font-bold text-xl">
                         Register Account
@@ -111,7 +104,7 @@ export default function RegisterPage(){
                     
                     <div className="flex flex-col w-full mb-2.5">
                         <label htmlFor="" className="text-xs mb-1 font-semibold">Phone Number</label>
-                        <input type="text" name="phone" onChange={handleChange} placeholder="Enter your phone number" required className="px-2 text-xs border-1 w-full h-10 rounded-sm outline-blue-300 border-1 border-gray-400 bg-[#F9FAFB] hover:bg-white" />
+                        <input type="text" name="phone_number" onChange={handleChange} placeholder="Enter your phone number" required className="px-2 text-xs border-1 w-full h-10 rounded-sm outline-blue-300 border-1 border-gray-400 bg-[#F9FAFB] hover:bg-white" />
                     </div>
                     
                     <div className="flex flex-col w-full mb-2.5">
