@@ -83,7 +83,7 @@ export default function Footer(){
                         </h3>
                         <ul className="flex flex-col space-y-3.5">
                             <li className="text-gray-200 text-[13px] hover:text-blue-400 hover:font-semibold">
-                                <Link to="/patient-portal">
+                                <Link to="/login">
                                     Patient Information
                                 </Link>
                             </li>
@@ -93,7 +93,7 @@ export default function Footer(){
                                 </Link>
                             </li>
                             <li className="text-gray-200 text-[13px] hover:text-blue-400 hover:font-semibold">
-                                <Link>
+                                <Link to="/login">
                                     Medical Records
                                 </Link>
                             </li>

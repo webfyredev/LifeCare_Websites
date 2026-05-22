@@ -5,7 +5,6 @@ import Services from './pages/services'
 import Find_Doctors from './pages/find_doctors'
 import Emergency from './pages/emergency'
 import Contacts from './pages/contacts'
-import Appointments from './pages/appointment'
 import RollUpPage from './components/rollUp'
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
 import LoginPage from './pages/login'
@@ -21,6 +20,7 @@ import PatientPrescriptions from './pages/patient/patientPrescription'
 import PatientMessages from './pages/patient/patientMessages'
 import PaitientSettings from './pages/patient/patientSettings'
 import Portal_sidebar from './pages/patient/components/sidebar'
+import PatientNotifications from './pages/patient/patientNotifications'
 
   
 
@@ -37,11 +37,11 @@ function App() {
           <Route path='/emergency' element={<Emergency />}></Route>
           <Route path='/contacts' element={<Contacts />}></Route>
           <Route path='/login' element={<LoginPage />}></Route>
-          <Route path='/appointments' element={<Appointments />}></Route>
           <Route path='/register' element={<RegisterPage />}></Route>
           <Route path='/doctor/dashboard' element={<ProtectedRoute allowedRole="doctor"><DoctorDashboard /></ProtectedRoute>}></Route>
 
           // patient url routes
+
           <Route path='/patient' element={<ProtectedRoute allowedRole="patient">
                 <Portal_sidebar />
               </ProtectedRoute>
@@ -54,6 +54,7 @@ function App() {
             <Route path='prescriptions' element = {<PatientPrescriptions />}></Route>
             <Route path='messages' element = {<PatientMessages />}></Route>
             <Route path='settings' element = {<PaitientSettings />}></Route>
+            <Route path='notifications' element={<PatientNotifications />}></Route>
           </Route>
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

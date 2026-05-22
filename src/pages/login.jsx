@@ -79,7 +79,7 @@ export default function LoginPage(){
             <div className="lg:flex lg:flex-row flex flex-col md:px-5 lg:px-10 py-10 bg-[#F9FAFB] mt-10 space-x-10 overflow-hidden">
                 <div className="w-full lg:w-[45%] h-auto lg:h-135 shadow-xs p-5 bg-white rounded-md overflow-hidden flex flex-col" >
                     {message && (
-                        <div className="bg-[#dcfce7] border-1 border-[#16a34a] rounded-sm padding-[12px] text-[#15803d] p-3 mb-5 text-center text-sm font-semibold">
+                        <div className="bg-[#dcfce7] rounded-sm padding-[12px] text-[#15803d] p-3 mb-5 text-center text-sm font-semibold">
                             {message}
                         </div>
                         )}

@@ -65,30 +65,30 @@ export default function PatientDashboard() {
   ]
   return (
     <>
-        <div className='w-full px-5 py-8 bg-[#2563eb] rounded-xl flex flex-col'>
+        <div className='w-full px-3 md:px-5 py-6 md:py-8 bg-[#2563eb] rounded-xl flex flex-col'>
             <p className='text-[13px] font-semibold text-[#dbeafe]'>{getGreeting()}, welcome back</p>
-            <div className='w-full flex items-center justify-between'>
+            <div className='w-full md:flex md:flex-row md:items-center flex flex-col md:justify-between'>
                 <div className='w-auto flex flex-col'>
                     <h3 className='text-2xl font-bold text-white'>
                         {user?.first_name} {user?.last_name}
                     </h3>
-                    <p className='text-[12px] mt-2 text-[#dbeafe] font-medium'>
+                    <p className='text-[10px] md:text-[12px] mt-2 text-[#dbeafe] font-medium'>
                         Access your healthcare updates, appointments, and medical information in one place.
                     </p>
                 </div>
-                <div className='px-3 flex space-x-4'>
-                    <div className='flex px-5 py-2 rounded-lg flex flex-col bg-white/10 text-center space-y-0.5'>
+                <div className='md:px-3 flex space-x-4 mt-3 md:mt-0'>
+                    <div className='flex px-8 md:px-5 py-2 rounded-lg flex flex-col bg-white/10 hover:bg-white/20 text-center space-y-0.5 transition-all duration-300'>
                         <h3 className='text-white font-bold text-xl'>{getAge(user?.date_of_birth)}</h3>
                         <p className='text-[11px] text-[#dbeafe] font-medium'>Years</p>
                     </div>
-                    <div className='flex px-5 py-2 rounded-lg flex flex-col bg-white/10 text-center space-y-0.5'>
+                    <div className='flex px-8 md:px-5 py-2 rounded-lg flex flex-col bg-white/10 hover:bg-white/20 text-center space-y-0.5 transition-all duration-300'>
                         <h3 className='text-white font-bold text-xl'>{user?.patient_profile?.blood_type}</h3>
                         <p className='text-[11px] text-[#dbeafe] font-medium'>Blood Type</p>
                     </div>
                 </div>
             </div>
         </div>
-        <div className='w-full py-2 mt-5 grid grid-cols-2 lg:grid-cols-4 gap-5'>
+        <div className='w-full py-2 mt-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
            {patients_stats.map((data, index) => (
             <div key={index} className='w-full p-5 border-1 flex justify-between items-center border-[#f1f5f9] rounded-xl bg-white hover:shadow-sm transition-all duration-300'>
                 <div className='w-auto flex flex-col space-y-3'>
@@ -103,8 +103,8 @@ export default function PatientDashboard() {
             </div>
            ))} 
         </div>
-        <div className='w-full py-3 flex flex space-x-5'>
-           <div className='flex flex-col w-[60%] py-3'>
+        <div className='w-full py-3 md:flex md:flex-row flex flex-col md:space-x-5'>
+           <div className='flex flex-col w-full md:w-[60%] py-3'>
                 <div className='w-full h-auto p-4 rounded-xl shadow-xs flex flex-col bg-white border-1 border-[#f1f5f9]'>
                     <div className='w-full flex items-center justify-between'>
                         <h3 className='text-md font-semibold text-[#1e293b]'>Upcoming Appointments</h3>
@@ -116,25 +116,39 @@ export default function PatientDashboard() {
                         {dashboard?.upcoming_appointments?.length > 0 ? (
                             dashboard.upcoming_appointments.map((apt) => (
                                 <div key={apt.id} className='flex justify-between items-start p-3 bg-slate-50 rounded-lg'>
-                                    <div>
-                                        <p className='text-sm font-semibold text-slate-800'>{apt.doctor_name}</p>
-                                        <p className='text-xs text-slate-400'>{apt.specialization}</p>
-                                        <p className='text-xs text-slate-500 mt-1'>{apt.date} · {apt.time}</p>
+                                    <div className='flex space-x-3'>
+                                        <img src="" alt="" className='w-10 h-10 border-1 rounded-full border-slate-200' />
+                                        <div className='flex flex-col'>
+                                            <div className='flex space-x-3'>
+                                                <p className='text-sm font-semibold text-slate-800'>{apt.doctor_name}</p>
+                                                <span className='hidden md:flex items-center justify-center text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-medium capitalize'> <span className='w-1 h-1 bg-blue-600 rounded-full mr-1'></span>{apt.status}</span>
+                                            </div>
+                                            <p className='text-xs text-slate-400'>{apt.specialization}</p>
+                                            <p className='text-xs text-slate-500 mt-1'>{apt.appointment_date} · {apt.appointment_time}</p>
+                                        </div>
                                     </div>
                                     <div className='flex flex-col space-y-1'>
-                                        <span className='text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-medium capitalize'>{apt.status}</span>
-                                        <button className='text-[10px] border border-slate-200 px-2 py-0.5 rounded text-slate-500 hover:bg-slate-100'>Reschedule</button>
-                                        <button className='text-[10px] border border-red-100 px-2 py-0.5 rounded text-red-400 hover:bg-red-50'>Cancel</button>
+                                        <Link to="/patient/appointments" className='text-xs font-medium px-4 py-2 rounded-lg bg-[#F0F9FF] hover:bg-[#DBEAFE] text-slate-600 cursor-pointer transition-all duration-300 flex items-center justify-center'>
+                                            Reschedule
+                                        </Link>
+                                        <Link to="/patient/appointments"
+                                            // onClick={() => setCancelModal({ open: true, appointmentId: apt.id })}
+                                            className='text-xs font-medium bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg text-red-500 cursor-pointer transition-all duration-300 flex items-center justify-center'
+                                        >
+                                            Cancel
+                                        </Link>
+                                        {/* <button className='text-[10px] border border-slate-200 px-2 py-0.5 rounded text-slate-500 hover:bg-slate-100'>Reschedule</button> */}
+                                        {/* <button className='text-[10px] border border-red-100 px-2 py-0.5 rounded text-red-400 hover:bg-red-50'>Cancel</button> */}
                                     </div>
                                 </div>
                             ))
                             ) : (
                             <p className='text-sm text-slate-400'>No upcoming appointments</p>
-                            )}<p className='text-sm text-[#475569] font-medium'>No upcoming appointments. Schedule your next visit to stay on top of your health.</p>
+                            )}
                     </div>
                 </div>
            </div>
-           <div className='w-[40%] py-3'>
+           <div className='w-full md:w-[40%] py-3'>
                 <div className='w-full h-auto p-4 rounded-xl shadow-xs flex flex-col bg-white border-1 border-[#f1f5f9]'>
                     <div className='w-full flex items-center justify-between'>
                         <h3 className='text-md font-semibold text-[#1e293b]'>Active Prescriptions</h3>

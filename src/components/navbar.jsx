@@ -57,8 +57,8 @@ export default function NavBar(){
                             </Link>
                         </button>
                         <button className="border-1 text-xs px-4 py-2 h-full rounded-sm cursor-pointer bg-blue-600 text-white font-semibold hover:bg-transparent hover:border-1 hover:border-blue-600 hover:text-blue-600 transition-all duration-300">
-                            <Link to="/appointments">
-                                Book Appointment
+                            <Link to="#">
+                                Pharmaceuticals
                             </Link>
                         </button>
                     </div>
@@ -105,9 +105,9 @@ export default function NavBar(){
                                         Hospital Portal
                                     </Link>
                                 </button>
-                                <button className="border-1 text-xs px-4 py-3 h-full rounded-sm cursor-pointer bg-blue-600 text-white font-semibold hover:bg-transparent hover:border-1 hover:border-blue-600 hover:text-blue-600 transition-all duration-300">
-                                    <Link to="/appointments">
-                                        Book Appointment
+                                <button className="text-xs px-4 py-3 h-full rounded-sm cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-semibold  transition-all duration-300">
+                                    <Link to="#">
+                                        Pharmaceuticals
                                     </Link>
                                 </button>
                             </div>
