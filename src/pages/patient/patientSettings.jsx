@@ -169,7 +169,7 @@ export default function PaitientSettings(){
                     </div>
                     <div className='w-full px-3 md:px-5 py-5 bg-white border-slate-100 rounded-xl flex flex-col'>
                         <h3 className='text-md font-semibold text-[#1e293b]'>Personal Information</h3>
-                        <div className='w-full grid grid-cols-2 gap-4 py-2 mt-3'>
+                        <div className='w-full grid grid-cols-1  md:grid-cols-2 gap-4 py-2 mt-3'>
                             <div className='flex flex-col space-y-2'>
                                 <label className='text-xs font-semibold text-slate-600'>First Name</label>
                                 <input
@@ -244,7 +244,7 @@ export default function PaitientSettings(){
                     </div>
                     <div className='w-full px-3 md:px-5 py-5 bg-white border-slate-100 rounded-xl flex flex-col'>
                         <h3 className='text-md font-semibold text-[#1e293b]'>Medical Information</h3>
-                        <div className='w-full grid grid-cols-2 gap-4 py-2 mt-3'>
+                        <div className='w-full grid grid-cols-1 md:grid-cols-2 gap-4 py-2 mt-3'>
                             <div className='flex flex-col space-y-2'>
                                 <label className='text-xs font-semibold text-slate-500'>Blood Type</label>
                                 <select

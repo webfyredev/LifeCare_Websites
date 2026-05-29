@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react'
 import { LuCalendarDays, LuClock, LuMapPin, LuPlus, LuX } from 'react-icons/lu'
 import api from '../../api/axios'
+import { buttonEffects } from '../../animations/effects'
+import { motion } from 'framer-motion'
 export default function PatientAppointments() {
     const [appointments, setAppointments] = useState([])
     const [filter, setFilter] = useState('all')
@@ -71,11 +73,12 @@ export default function PatientAppointments() {
                 <h3 className='font-bold text-2xl text-[#1e293b]'>My Appointments</h3>
                 <p className='text-[13px] text-[#94a3b8]'>Manage your upcoming and past appointments</p>
             </div>
-            <button 
+            <motion.button
+                {...buttonEffects} 
                 onClick={() => setShowBooking(true)}
                 className='bg-blue-600 text-white hover:bg-blue-700 flex h-11 md:h-10 flex justify-center items-center px-4 text-sm font-semibold rounded-lg cursor-pointer transition-all duration-300'>
                 <LuPlus className='mr-1' /> Book Appointment
-            </button>
+            </motion.button>
         </div>
         <div className='flex space-x-2.5 mt-2 md:px-5'>
             {['all', 'upcoming', 'past'].map((f) => (
@@ -142,7 +145,8 @@ export default function PatientAppointments() {
                     {/* Actions */}
                         {apt.status !== 'completed' && apt.status !== 'cancelled' && (
                             <div className='flex space-x-2'>
-                                <button 
+                                <motion.button
+                                    {...buttonEffects} 
                                     onClick={() => setRescheduleModal({
                                         open: true,
                                         appointmentId: apt.id,
@@ -151,13 +155,14 @@ export default function PatientAppointments() {
                                     })}
                                     className='text-xs font-medium px-4 py-2 rounded-lg bg-[#F0F9FF] hover:bg-[#DBEAFE] text-slate-600 cursor-pointer transition-all duration-300'>
                                     Reschedule
-                                </button>
-                                <button
+                                </motion.button>
+                                <motion.button
+                                    {...buttonEffects}
                                     onClick={() => setCancelModal({ open: true, appointmentId: apt.id })}
                                     className='text-xs font-medium bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg text-red-500 cursor-pointer transition-all duration-300'
                                 >
                                     Cancel
-                                </button>
+                                </motion.button>
                             </div>
                         )}
                     </div>
@@ -192,18 +197,20 @@ export default function PatientAppointments() {
                         </p>
                     </div>
                     <div className='flex w-full space-x-3 mt-2'>
-                        <button
+                        <motion.button
+                            {...buttonEffects}
                             onClick={() => setCancelModal({ open: false, appointmentId: null })}
                             className='flex-1 py-2.5 text-sm font-medium border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 cursor-pointer transition-colors'
                         >
                             Keep Appointment
-                        </button>
-                        <button
+                        </motion.button>
+                        <motion.button
+                            {...buttonEffects}
                             onClick={handleCancel}
                             className='flex-1 py-2.5 text-sm font-medium bg-red-500 text-white rounded-lg hover:bg-red-600 cursor-pointer transition-colors'
                         >
                             Yes, Cancel
-                        </button>
+                        </motion.button>
                     </div>
                 </div>
             </div>
@@ -295,10 +302,12 @@ function BookingModal({ onClose, onBooked }){
                             className='border border-slate-200 rounded-lg px-3 py-2 text-sm outline-blue-300 resize-none' />
                         </div>
 
-                        <button type='submit' disabled={loading}
+                        <motion.button 
+                            {...buttonEffects}
+                            type='submit' disabled={loading}
                             className='bg-blue-600 text-white text-sm font-medium py-2.5 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer mt-1'>
                             {loading ? 'Booking...' : 'Confirm Booking'}
-                        </button>
+                        </motion.button>
                     </form>
                 </div>
             </div>

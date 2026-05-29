@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { LuSend } from 'react-icons/lu'
 import api from '../../api/axios'
-export default function PatientMessages(){
+export default function DoctorMessages(){
     const [conversations, setConversations] = useState([])
     const [activeConv, setActiveConv] = useState(null)
     const [messages, setMessages] = useState([])

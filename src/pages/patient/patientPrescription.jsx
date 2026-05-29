@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { LuPill, LuUser, LuCalendarDays } from 'react-icons/lu'
 import api from '../../api/axios'
+import { scrollRight, scrollUp } from '../../animations/effects'
+import { motion } from 'framer-motion'
 export default function PatientPrescriptions(){
     const [data, setData] = useState(null)
     const [filter, setFilter] = useState('all')
@@ -55,10 +57,12 @@ export default function PatientPrescriptions(){
                 </p>
                 <div className='w-full py-3 mt-3 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4'>
                     {prescription_stats.map((data, index) => (
-                        <div className='w-auto p-3 border-1 rounded-xl flex flex-col bg-white border-[#f1f5f9]'>
+                        <motion.div 
+                            {...scrollRight}
+                            className='w-auto p-3 border-1 rounded-xl flex flex-col bg-white border-[#f1f5f9]'>
                             <h3 className='font-semibold text-slate-400 text-[14px]'>{data.label}</h3>
                             <p className={`font-bold ${data.style} text-3xl mt-2`}>{data.value}</p>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>
@@ -88,7 +92,8 @@ export default function PatientPrescriptions(){
                     </div>
                 ) : (
                     data.prescriptions.map((p, index) => (
-                        <div
+                        <motion.div
+                            {...scrollUp}
                             key={p.id}
                             className={`md:flex md:flex-row md:items-center md:justify-between flex flex-col px-5 py-4
                                 ${index !== data.prescriptions.length - 1 ? 'border-b border-slate-100' : ''}`}
@@ -138,7 +143,7 @@ export default function PatientPrescriptions(){
                                     {p.notes}
                                 </span>
                             )}
-                        </div>
+                        </motion.div>
                     ))
                 )}
             </div>

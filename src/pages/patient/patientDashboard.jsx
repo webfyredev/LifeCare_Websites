@@ -7,6 +7,8 @@ import Portal_Navbar from './components/sidebar'
 import Portal_sidebar from './components/sidebar'
 import { LuCalendarClock, LuHospital, LuPill, LuMessageSquare, LuArrowRight } from 'react-icons/lu'
 import { Link } from 'react-router-dom'
+import { scrollRight, scrollUp } from '../../animations/effects'
+import { motion } from 'framer-motion'
 
 export default function PatientDashboard() {
   const { user, logout } = useAuth()
@@ -90,7 +92,10 @@ export default function PatientDashboard() {
         </div>
         <div className='w-full py-2 mt-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
            {patients_stats.map((data, index) => (
-            <div key={index} className='w-full p-5 border-1 flex justify-between items-center border-[#f1f5f9] rounded-xl bg-white hover:shadow-sm transition-all duration-300'>
+            <motion.div 
+                {...scrollRight} 
+                key={index} 
+                className='w-full p-5 border-1 flex justify-between items-center border-[#f1f5f9] rounded-xl bg-white hover:shadow-sm'>
                 <div className='w-auto flex flex-col space-y-3'>
                     <h1 className='text-[#94a3b8] font-semibold text-[12px]'>{data.label}</h1>
                     <h1 className='text-2xl font-bold text-[#1e293b]'>{data.value}</h1>
@@ -100,7 +105,7 @@ export default function PatientDashboard() {
                         <data.icon />
                     </span>
                 </div>
-            </div>
+            </motion.div>
            ))} 
         </div>
         <div className='w-full py-3 md:flex md:flex-row flex flex-col md:space-x-5'>
@@ -115,7 +120,9 @@ export default function PatientDashboard() {
                     <div className='w-full py-3 flex flex-col space-y-3 mt-1'>
                         {dashboard?.upcoming_appointments?.length > 0 ? (
                             dashboard.upcoming_appointments.map((apt) => (
-                                <div key={apt.id} className='flex justify-between items-start p-3 bg-slate-50 rounded-lg'>
+                                <motion.div
+                                    {...scrollRight}
+                                    key={apt.id} className='flex justify-between items-start p-3 bg-slate-50 rounded-lg'>
                                     <div className='flex space-x-3'>
                                         <img src="" alt="" className='w-10 h-10 border-1 rounded-full border-slate-200' />
                                         <div className='flex flex-col'>
@@ -140,7 +147,7 @@ export default function PatientDashboard() {
                                         {/* <button className='text-[10px] border border-slate-200 px-2 py-0.5 rounded text-slate-500 hover:bg-slate-100'>Reschedule</button> */}
                                         {/* <button className='text-[10px] border border-red-100 px-2 py-0.5 rounded text-red-400 hover:bg-red-50'>Cancel</button> */}
                                     </div>
-                                </div>
+                                </motion.div>
                             ))
                             ) : (
                             <p className='text-sm text-slate-400'>No upcoming appointments</p>
@@ -159,14 +166,16 @@ export default function PatientDashboard() {
                     <div className='flex flex-col space-y-3'>
                         {dashboard?.active_prescriptions?.length > 0 ? (
                             dashboard.active_prescriptions.map((p) => (
-                                <div key={p.id} className='p-3 bg-slate-50 rounded-lg mt-2'>
+                                <motion.div 
+                                    {...scrollUp}
+                                    key={p.id} className='p-3 bg-slate-50 rounded-lg mt-2'>
                                 <div className='flex justify-between items-center'>
                                     <p className='text-sm font-semibold text-slate-800'>{p.medication_name}</p>
                                     <span className='text-[10px] bg-green-50 text-green-600 px-2 py-0.5 rounded-full font-medium'>Active</span>
                                 </div>
-                                <p className='text-xs text-slate-500 mt-1 font-normal'>{p.dosage} · {p.frequency} · {p.duration}</p>
-                                <p className='text-xs text-slate-400 mt-0.5'>Prescribed by {p.doctor_name}</p>
-                                </div>
+                                <p className='text-xs text-slate-500 mt-1 font-normal'><span className='font-medium'>{p.dosage}</span> · {p.frequency} · {p.duration}</p>
+                                <p className='text-xs text-slate-400 mt-0.5'>Prescribed by <span className='font-medium underline hover:text-blue-500 transition-all duration-300'>{p.doctor_name}</span></p>
+                                </motion.div>
                             ))
                             ) : (
                             <p className='text-sm text-slate-400 mt-2'>No active prescriptions</p>

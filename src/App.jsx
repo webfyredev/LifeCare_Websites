@@ -21,6 +21,14 @@ import PatientMessages from './pages/patient/patientMessages'
 import PaitientSettings from './pages/patient/patientSettings'
 import Portal_sidebar from './pages/patient/components/sidebar'
 import PatientNotifications from './pages/patient/patientNotifications'
+import Doctor_Portal_sidebar from './pages/doctor/components/sidebar'
+import DoctorAppointments from './pages/doctor/doctorAppointments'
+import DoctorPatients from './pages/doctor/doctorPatients'
+import DoctorPrescriptions from './pages/doctor/doctorPrescriptions'
+import DoctorMedicalNotes from './pages/doctor/doctorMedNotes'
+import DoctorProfile from './pages/doctor/doctorProfile'
+import DoctorMessages from './pages/doctor/doctorMessages'
+import DoctorNotifications from './pages/doctor/doctorNotifications'
 
   
 
@@ -38,7 +46,6 @@ function App() {
           <Route path='/contacts' element={<Contacts />}></Route>
           <Route path='/login' element={<LoginPage />}></Route>
           <Route path='/register' element={<RegisterPage />}></Route>
-          <Route path='/doctor/dashboard' element={<ProtectedRoute allowedRole="doctor"><DoctorDashboard /></ProtectedRoute>}></Route>
 
           // patient url routes
 
@@ -56,6 +63,23 @@ function App() {
             <Route path='settings' element = {<PaitientSettings />}></Route>
             <Route path='notifications' element={<PatientNotifications />}></Route>
           </Route>
+
+          // doctor url routes
+          <Route path='/doctor' element={<ProtectedRoute allowedRole="doctor">
+                <Doctor_Portal_sidebar />
+              </ProtectedRoute>
+            }
+          >
+            <Route path='dashboard' element={<DoctorDashboard />}></Route>
+            <Route path='appointments' element={<DoctorAppointments />}></Route>
+            <Route path='mypatients' element={<DoctorPatients />}></Route>
+            <Route path='prescriptions' element={<DoctorPrescriptions />}></Route>
+            <Route path='messages' element={<DoctorMessages />}></Route>
+            <Route path='notes' element={<DoctorMedicalNotes />}></Route>
+            <Route path='profile' element = {<DoctorProfile />}></Route>
+            <Route path='notifications' element={<DoctorNotifications />}></Route>
+          </Route>
+          
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
     </Router>
