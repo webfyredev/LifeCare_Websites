@@ -18,10 +18,6 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
-        // console.error(
-        //     `API Error [${error.response?.status}] ${error.config?.method?.toUpperCase()} ${error.config?.url}`,
-        //     error.response?.data
-        // )
         const original = error.config
         const isAuthRoute = original.url.includes('login') || original.url.includes('register')
 

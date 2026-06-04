@@ -23,6 +23,13 @@ export default function DoctorMessages(){
     }, [])
 
     useEffect(() => {
+        if(activeConv){
+            api.get(`/messages/${activeConv.id}/messages/`)
+            .then((red) => setMessages(res.data))
+        }
+    }, [activeConv]);
+
+    useEffect(() => {
         if(activeConv) fetchMessages()
     }, [activeConv])
 

@@ -65,23 +65,18 @@ export default function DoctorAppointments(){
                     <h3 className='font-bold text-2xl text-[#1e293b]'>Appointments</h3>
                     <p className='text-[13px] text-[#94a3b8]'>Manage your patient appointments</p>
                 </div>
-                <motion.button
-                    {...buttonEffects} 
-                    
-                    className='bg-blue-600 text-white hover:bg-blue-700 flex h-11 md:h-10 flex justify-center items-center px-4 text-sm font-semibold rounded-lg cursor-pointer transition-all duration-300'>
-                    <LuPlus className='mr-1' /> Block time
-                </motion.button>
             </div>
             <div className='flex space-x-2.5 mt-2 md:px-5'>
                 {['all', 'today', 'upcoming', 'completed'].map((f) => (
-                <button
+                <motion.button
+                    {...buttonEffects}
                     key={f}
                     onClick={() => setFilter(f)}
                     className={`px-3.5 py-2 rounded-lg text-sm capitalize transition-colors cursor-pointer
                     ${filter === f ? 'bg-blue-600 text-white' : 'bg-white border-1 border-slate-200 text-slate-600 hover:bg-slate-50'}`}
                 >
                     {f}
-                </button>
+                </motion.button>
                 ))}
             </div>
             <div className='w-[97%] ml-5 bg-white border border-slate-100 mt-5 rounded-xl overflow-hidden'>
@@ -181,12 +176,13 @@ export default function DoctorAppointments(){
                             >
                                 Cancel
                             </button>
-                            <button
+                            <motion.button
+                                {...buttonEffects}
                                 onClick={handleComplete}
                                 className='flex-1 py-2.5 text-sm font-medium bg-green-600 text-white rounded-lg hover:bg-green-700 cursor-pointer transition-colors'
                             >
                                 Mark Complete
-                            </button>
+                            </motion.button>
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,8 @@ import { LuUsers, LuCalendarClock, LuClock, LuShieldAlert, LuArrowRight, LuSteth
 import { motion } from 'framer-motion'
 import { scrollRight } from '../../animations/effects'
 import { Link } from 'react-router-dom'
+import PageLoader from '../../components/pageLoader'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
 export default function DoctorDashboard() {
     const { user} = useAuth()
@@ -28,7 +30,7 @@ export default function DoctorDashboard() {
     const dashboard_stats = [
         {
             label : "TODAY APPOINTMENT", 
-            value : dashboard?.today_appointments_count ?? 0,
+            value : dashboard?.today_appointment_counts ?? 0,
             icon : LuCalendarClock,
             style: 'bg-blue-50 text-blue-600'
         },
@@ -59,6 +61,9 @@ export default function DoctorDashboard() {
         return 'bg-amber-50 text-amber-600'
     }
 
+      if (!dashboard) return <PageLoader />
+    
+
   return (
     <>
         <div className='w-full flex flex-col md:p-5'>
@@ -79,7 +84,7 @@ export default function DoctorDashboard() {
                             {/* <p className='text-red-600 px-2 py-3 border'>{dashboard?.is_available}</p> */}
                         </div>
                         <p className='text-[10px] md:text-[12px] mt-2 text-[#dbeafe] font-medium flex items-center'>
-                            {dashboard?.specialization} <span className='w-1 h-1 rounded-full bg-white mx-2 mt-0.5'></span> {dashboard?.today_appointments_count ?? 0} Appointments today.
+                            {dashboard?.specialization} <span className='w-1 h-1 rounded-full bg-white mx-2 mt-0.5'></span> <Link to="/doctor/appointments" className='hover:underline hover:font-semibold hover:text-white transition-all duration-300'>{dashboard?.today_appointment_counts ?? 0} Appointments today.</Link>
                         </p>
                     </div>
                 </div>
@@ -185,57 +190,61 @@ export default function DoctorDashboard() {
                         {/* <h3 className='text-md font-semibold text-[#1e293b]'>Weekly Overview</h3> */}
                         <div className='flex justify-between items-center mb-4'>
                             <h3 className='text-md font-semibold text-[#1e293b]'>Weekly Overview</h3>
-                            <span className='text-xs text-slate-400'>Last 7 days</span>
+                            <span className='text-[11px] text-slate-400 font-medium'>Appointments Last 7 days</span>
+                        </div>
+                        <div className='flex space-x-4 text-center mb-3'>
+                            <div>
+                                <p className='text-sm font-bold text-slate-800'>
+                                    {dashboard?.weekly_data?.reduce((s, d) => s + d.count, 0) ?? 0}
+                                </p>
+                                <p className='text-[10px] text-slate-400'>This week</p>
+                            </div>
+                            <div>
+                                <p className='text-sm font-bold text-slate-800'>
+                                    {dashboard?.weekly_data ? Math.max(...dashboard.weekly_data.map(d => d.count)) : 0}
+                                </p>
+                                <p className='text-[10px] text-slate-400'>Busiest day</p>
+                            </div>
                         </div>
                         {dashboard?.weekly_data ? (
-                            <>
-                                <div className='flex items-end justify-between space-x-2 h-32 px-1'>
-                                    {dashboard.weekly_data.map((d, i) => {
-                                        const max = Math.max(...dashboard.weekly_data.map(x => x.count), 1)
-                                        const heightPct = d.count === 0 ? 4 : Math.max((d.count / max) * 100, 10)
-                                        const isToday = i === dashboard.weekly_data.length - 1
-
-                                        return (
-                                            <div key={i} className='flex flex-col items-center flex-1 space-y-1 group relative'>
-                                                {/* Tooltip on hover */}
-                                                <span className='absolute -top-6 text-[9px] bg-slate-800 text-white px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap'>
-                                                    {d.count} apt{d.count !== 1 ? 's' : ''}
-                                                </span>
-                                                <span className='text-[9px] text-slate-400'>{d.count > 0 ? d.count : ''}</span>
-                                                <div
-                                                    className={`w-full rounded-t-md transition-all duration-500 ${isToday ? 'bg-blue-600' : 'bg-blue-200'}`}
-                                                    style={{ height: `${heightPct}%` }}
-                                                />
-                                                <span className={`text-[9px] font-medium ${isToday ? 'text-blue-600' : 'text-slate-400'}`}>
-                                                    {d.day}
-                                                </span>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                                <div className='flex justify-between mt-3 pt-3 border-t border-slate-100'>
-                                    <div className='text-center'>
-                                        <p className='text-xs font-bold text-slate-800'>
-                                            {dashboard.weekly_data.reduce((sum, d) => sum + d.count, 0)}
-                                        </p>
-                                        <p className='text-[10px] text-slate-400'>This week</p>
-                                    </div>
-                                    <div className='text-center'>
-                                        <p className='text-xs font-bold text-slate-800'>
-                                            {Math.max(...dashboard.weekly_data.map(d => d.count))}
-                                        </p>
-                                        <p className='text-[10px] text-slate-400'>Busiest day</p>
-                                    </div>
-                                    <div className='text-center'>
-                                        <p className='text-xs font-bold text-slate-800'>
-                                            {(dashboard.weekly_data.reduce((sum, d) => sum + d.count, 0) / 7).toFixed(1)}
-                                        </p>
-                                        <p className='text-[10px] text-slate-400'>Daily avg</p>
-                                    </div>
-                                </div>
-                            </>
+                            <ResponsiveContainer width='100%' height={160}>
+                                <BarChart data={dashboard.weekly_data} margin={{ top: 4, right: 4, left: -28, bottom: 0 }}>
+                                    <CartesianGrid strokeDasharray='3 3' stroke='#f1f5f9' vertical={false} />
+                                    <XAxis
+                                        dataKey='day'
+                                        tick={{ fontSize: 11, fill: '#94a3b8' }}
+                                        axisLine={false}
+                                        tickLine={false}
+                                    />
+                                    <YAxis
+                                        allowDecimals={false}
+                                        tick={{ fontSize: 11, fill: '#94a3b8' }}
+                                        axisLine={false}
+                                        tickLine={false}
+                                    />
+                                    <Tooltip
+                                        contentStyle={{
+                                            background: '#1e293b',
+                                            border: 'none',
+                                            borderRadius: '8px',
+                                            fontSize: '12px',
+                                            color: '#fff',
+                                            padding: '6px 12px'
+                                        }}
+                                        cursor={{ fill: '#eff6ff' }}
+                                        formatter={(value) => [`${value} appointment${value !== 1 ? 's' : ''}`, '']}
+                                        labelStyle={{ color: '#94a3b8', marginBottom: '2px' }}
+                                    />
+                                    <Bar
+                                        dataKey='count'
+                                        fill='#2563eb'
+                                        radius={[4, 4, 0, 0]}
+                                        maxBarSize={40}
+                                    />
+                                </BarChart>
+                            </ResponsiveContainer>
                         ) : (
-                            <p className='text-sm text-slate-400 text-center py-8'>No data available</p>
+                            <div className='h-40 flex items-center justify-center text-sm text-slate-400'>No data</div>
                         )}
                     </div>
                 </div>

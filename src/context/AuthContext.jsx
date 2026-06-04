@@ -1,11 +1,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import api from "../api/axios";
+import PageLoader from "../components/pageLoader";
 
 const AuthContext = createContext()
 
 export function AuthProvider({children}) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         const token = localStorage.getItem("access");
         if(token){
@@ -55,6 +57,9 @@ export function AuthProvider({children}) {
         localStorage.clear();
         setUser(null);
     }
+
+    if (loading) return <PageLoader />
+
 
     return(
         <AuthContext.Provider value = {{user, setUser, loading, login, logout, register}} >

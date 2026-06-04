@@ -9,6 +9,7 @@ import { LuCalendarClock, LuHospital, LuPill, LuMessageSquare, LuArrowRight } fr
 import { Link } from 'react-router-dom'
 import { scrollRight, scrollUp } from '../../animations/effects'
 import { motion } from 'framer-motion'
+import PageLoader from '../../components/pageLoader'
 
 export default function PatientDashboard() {
   const { user, logout } = useAuth()
@@ -65,6 +66,9 @@ export default function PatientDashboard() {
         icon : LuMessageSquare
     }
   ]
+
+  if (!dashboard) return <PageLoader />
+
   return (
     <>
         <div className='w-full px-3 md:px-5 py-6 md:py-8 bg-[#2563eb] rounded-xl flex flex-col'>

@@ -157,7 +157,9 @@ function EditPrescriptionModal({prescription, onClose, onSave}){
                     </div>
                     <div className='flex space-x-3 pt-1'>
                         <button onClick={onClose} className='flex-1 py-2.5 text-sm border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 cursor-pointer'>Cancel</button>
-                        <button onClick={() => onSave(prescription.id, form)} className='flex-1 py-2.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer'>Save Changes</button>
+                        <motion.button 
+                            {...buttonEffects}
+                            onClick={() => onSave(prescription.id, form)} className='flex-1 py-2.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer'>Save Changes</motion.button>
                     </div>
                 </div>
             </div>

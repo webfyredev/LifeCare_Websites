@@ -19,7 +19,23 @@ export default function Doctor_Portal_sidebar(){
     const [notifOpen, setNotifOpen] = useState(false)
     const notifRef = useRef(null)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [unreadMessages, setUnreadMessages] = useState(0)
 
+    useEffect(() => {
+        const fetchUnreadMessages = () => {
+            api.get('/messages/')
+            .then((res) => {
+                const total = res.data.reduce((sum, conv) => sum + (conv.unread_count || 0 ), 0)
+                setUnreadMessages(total)
+            })
+            .catch(console.error)
+        }
+        fetchUnreadMessages()
+        const interval = setInterval(fetchUnreadMessages, 15000)
+        return () => clearInterval(interval)
+    }, []);
+
+    
     useEffect(() => {
         const fetchNotifications = () => {
             api.get('/notifications/')
@@ -147,9 +163,16 @@ export default function Doctor_Portal_sidebar(){
                                 <LuPill  className='mt-0.5'/>
                                 <span>Prescriptions</span>
                             </NavLink>
-                            <NavLink to="/doctor/messages" className={({ isActive}) => `font-medium text-[13px] rounded-lg px-3 py-2.5 flex items-center space-x-3 ${isActive ? 'bg-blue-50 text-blue-600' : 'text-[#64748b] hover:text-[#334155] hover:bg-[#f8fafc]'}`}>
-                                <LuMessageSquare  className='mt-0.5'/>
-                                <span>Messages</span>
+                            <NavLink to="/doctor/messages" className={({ isActive}) => `font-medium text-[13px] rounded-lg px-3 py-2.5 flex items-center justify-between ${isActive ? 'bg-blue-50 text-blue-600' : 'text-[#64748b] hover:text-[#334155] hover:bg-[#f8fafc]'}`}>
+                                <div className='flex items-center space-x-3'>
+                                    <LuMessageSquare  className='mt-0.5'/>
+                                    <span>Messages</span>
+                                </div>
+                                {unreadMessages > 0 && (
+                                    <span className='w-4 h-4 rounded-full bg-red-500 flex items-center justify-center text-[9px] text-white font-semibold'>
+                                        {unreadMessages > 9 ? '9+' : unreadMessages}
+                                    </span>
+                                )}
                             </NavLink>
                             <NavLink to="/doctor/notes" className={({ isActive}) => `font-medium text-[13px] rounded-lg px-3 py-2.5 flex items-center space-x-3 ${isActive ? 'bg-blue-50 text-blue-600' : 'text-[#64748b] hover:text-[#334155] hover:bg-[#f8fafc]'}`}>
                                 <LuMessageSquare  className='mt-0.5'/>

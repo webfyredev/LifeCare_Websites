@@ -15,10 +15,7 @@ export default function DoctorPatients(){
     useEffect(() => {
         setLoading(true)
         api.get(`/doctors/patients/?search=${search}&filter=${filter}`)
-            .then((res) => {
-                console.log('Patients response:', res.data)
-                setPatients(res.data)
-            })
+            .then((res) => setPatients(res.data))
             .catch(console.error)
             .finally(() => setLoading(false))
     }, [search, filter])
