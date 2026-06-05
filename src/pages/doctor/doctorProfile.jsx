@@ -149,13 +149,13 @@ export default function DoctorPofile(){
                             alt="avatar img" className='w-12 h-12 md:w-18 md:h-18 rounded-full' 
                         />
                         <div className='w-auto flex flex-col'>
-                            <h3 className='text-xl font-semibold text-[#1e293b]'>Dr. {user?.first_name} {user?.last_name}</h3>
-                            <a href={`mailto: ${user?.email}`} className='text-[13px] text-slate-400 font-normal hover:text-slate-600 transition-all duration-300'>{user?.email}</a>
+                            <h3 className='text-2xl font-bold normal text-normal text-blue-500'>Dr. {user?.first_name} {user?.last_name}</h3>
+                            <a href={`mailto: ${user?.email}`} className='text-[13px] text-slate-400 font-normal hover:text-blue-600 transition-all duration-300'>{user?.email}</a>
                             <motion.button
                                 {...buttonEffects}
                                 type='button' 
                                 onClick={handleAvatarClick}
-                                className='text-[13px] text-slate-600 font-medium flex items-center justify-center w-30 overflow-hidden cursor-pointer bg-slate-100 flex items-center py-2 mt-3 rounded-lg'>
+                                className='text-[13px] text-slate-600 font-medium flex items-center justify-center w-30 overflow-hidden cursor-pointer bg-slate-100 hover:bg-blue-100 flex items-center py-2 mt-3 rounded-lg transition-all duration-300'>
                                 
                                 Change Photo
                             </motion.button>
