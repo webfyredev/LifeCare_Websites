@@ -42,16 +42,15 @@ export default function DoctorMedicalNotes(){
     }
     return(
         <div className='w-full flex flex-col space-y-5 py-3'>
-            <div className='w-full flex items-center justify-between'>
+            <div className='w-full md:flex md:flex-row md:items-center md:justify-between flex flex-col'>
                 <div className='w-auto flex flex-col space-y-1'>
                     <h3 className='font-bold text-2xl text-[#1e293b]'>Medical Notes</h3>
                     <p className='text-[13px] text-[#94a3b8]'>Clinical notes across all your patients</p>
                 </div>
-                {/* <button></button> */}
-                <motion.button 
+                <motion.button
                     {...buttonEffects}
                     onClick={() => setShowModal(true)}
-                    className='flex items-center space-x-1.5 text-sm font-medium px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition-all duration-300'>
+                    className='flex justify-center items-center space-x-1.5 text-sm mt-3 md:mt-0 font-medium px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition-all duration-300'>
                     <LuPlus className='w-4 h-4' /><span>New Note</span>
                 </motion.button>
             </div>
@@ -82,11 +81,7 @@ export default function DoctorMedicalNotes(){
                             <span className={`text-[10px] font-medium px-4 py-1.5 rounded-full capitalize ${severityBadge(n.severity)}`}>
                                 {n.severity}
                             </span>
-                            {/* {n.category && (
-                                <span className={`text-[10px] font-medium px-4 shadow-sm py-1.5 rounded-full ${severityBadge(n.severity)}`}>
-                                    {n.category}
-                                </span>
-                            )} */}
+                            
                         </div>
                         <p className='text-[13px] text-slate-600 mt-1'>{n.content}</p>
                         <p className='text-xs text-slate-500 mt-2 font-medium'>

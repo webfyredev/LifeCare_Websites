@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { LuCalendarDays, LuClock, LuMapPin, LuCheck, LuX, LuFileText, LuPlus } from 'react-icons/lu'
 import api from '../../api/axios'
 import { motion } from 'framer-motion' 
-import { buttonEffects } from '../../animations/effects'
+import { buttonEffects, scrollRight } from '../../animations/effects'
 
 export default function DoctorAppointments(){
     const [appointments, setAppointments] = useState([])
@@ -60,13 +60,13 @@ export default function DoctorAppointments(){
     
     return (
         <>
-            <div className='w-full md:px-4 py-3 md:flex md:flex-row flex flex-col md:justify-between space-y-4 md:space-y-0 mb-5 md:mb-0'>
+            <div className='w-full lg:px-4 py-3 md:flex md:flex-row flex flex-col md:justify-between space-y-4 md:space-y-0 mb-5 md:mb-0'>
                 <div className='w-auto flex flex-col space-y-1'>
                     <h3 className='font-bold text-2xl text-[#1e293b]'>Appointments</h3>
                     <p className='text-[13px] text-[#94a3b8]'>Manage your patient appointments</p>
                 </div>
             </div>
-            <div className='flex space-x-2.5 mt-2 md:px-5'>
+            <div className='flex space-x-2.5 mt-2 lg:px-5'>
                 {['all', 'today', 'upcoming', 'completed'].map((f) => (
                 <motion.button
                     {...buttonEffects}
@@ -79,18 +79,19 @@ export default function DoctorAppointments(){
                 </motion.button>
                 ))}
             </div>
-            <div className='w-[97%] ml-5 bg-white border border-slate-100 mt-5 rounded-xl overflow-hidden'>
+            <div className='border w-[97%] lg:ml-5 bg-white border border-slate-100 mt-8 md:mt-5 rounded-xl overflow-hidden'>
                 {loading ? (
                     <div className='p-8 text-center text-sm text-slate-400'>Loading...</div>
                         ) : appointments.length === 0 ? (
                             <div className='p-8 text-center text-sm text-slate-400'>No appointments found</div>
                         ) : appointments.map((apt, index) => (
-                            <div
+                            <motion.div
+                                {...scrollRight}
                                 key={apt.id}
-                                className={`flex items-center justify-between px-5 py-4 mb-3
+                                className={`md:flex md:flex-row md:items-center md:justify-between flex flex-col space-y-3 md:space-y-0 px-5 py-4 mb-3
                                     ${index !== appointments.length - 1 ? 'border-b border-slate-100' : ''}`}
                             >
-                                <div className='flex items-center space-x-4'>
+                                <div className='flex md:items-center space-x-4'>
                                     {apt.patient_picture ? (
                                         <img src={apt.patient_picture} className='w-11 h-11 rounded-full object-cover' alt='' />
                                     ) : (
@@ -98,15 +99,15 @@ export default function DoctorAppointments(){
                                             {apt.patient_initials}
                                         </div>
                                     )}
-                                    <div>
-                                        <div className='flex items-center space-x-2'>
+                                    <div className='w-70 md:w-auto'>
+                                        <div className='flex items-center space-x-5 md:space-x-2'>
                                             <p className='text-sm font-semibold text-slate-800'>{apt.patient_name}</p>
                                             <span className={`text-[10px] font-medium px-2.5 py-0.5 rounded-full capitalize ${statusStyle(apt.status)}`}>
                                                 {apt.status}
                                             </span>
                                         </div>
                                         <p className='text-xs text-slate-400 mt-1'>{apt.reason}</p>
-                                        <div className='flex items-center space-x-4 mt-1'>
+                                        <div className='flex flex-col space-y-1.5 md:space-y-0 md:flex md:flex-row md:items-center md:space-x-4 mt-1'>
                                             <span className='flex items-center space-x-1 text-xs text-slate-500'>
                                                 <LuCalendarDays className='w-3 h-3' />
                                                 <span>{formatDate(apt.date)}</span>
@@ -123,11 +124,11 @@ export default function DoctorAppointments(){
                                     </div>
                                 </div>
 
-                                <div className='flex items-center space-x-2'>
+                                <div className='flex items-center space-x-2 w-full md:w-auto'>
                                     {apt.status === 'pending' && (
                                         <button
                                             onClick={() => handleConfirm(apt.id)}
-                                            className='flex items-center space-x-1 text-xs font-medium px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg cursor-pointer transition-colors'
+                                            className='flex justify-center items-center w-full md:w-auto space-x-1 text-xs font-medium px-3 py-2 md:py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg cursor-pointer transition-colors'
                                         >
                                             <LuCheck className='w-3 h-3' />
                                             <span>Confirm</span>
@@ -136,20 +137,20 @@ export default function DoctorAppointments(){
                                     {apt.status === 'confirmed' && (
                                         <button
                                             onClick={() => setCompleteModal({ open: true, appointmentId: apt.id })}
-                                            className='flex items-center space-x-1 text-xs font-medium px-3 py-1.5 bg-green-50 hover:bg-green-100 text-green-600 rounded-lg cursor-pointer transition-colors'
+                                            className='flex justify-center items-center w-full md:w-auto space-x-1 text-xs font-medium px-3 py-2 md:py-1.5 bg-green-50 hover:bg-green-100 text-green-600 rounded-lg cursor-pointer transition-colors'
                                         >
                                             <LuFileText className='w-3 h-3' />
                                             <span>Complete + Notes</span>
                                         </button>
                                     )}
                                     {apt.status === 'completed' && apt.notes && (
-                                        <span className='text-xs text-slate-400 italic max-w-[160px] truncate'>
+                                        <span className='text-xs text-slate-400 italic md:max-w-[160px] truncate'>
                                             {apt.notes || 'Completed'}
                                         </span>
                                     )}
                                     
-                        </div>
-                    </div>
+                                </div>
+                            </motion.div>
                 ))}
             </div>
             {completeModal.open && (

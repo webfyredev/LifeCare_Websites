@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { LuArrowLeft, LuPill, LuFileText, LuMessageSquare, LuX, LuPlus } from 'react-icons/lu'
 import api from '../../api/axios'
 import { motion } from 'framer-motion'
-import { buttonEffects } from '../../animations/effects'
+import { buttonEffects, scrollLeft, scrollRight, scrollUp } from '../../animations/effects'
 
 export default function PatientDetail() {
     const { id } = useParams()
@@ -17,7 +17,7 @@ export default function PatientDetail() {
         api.get(`/doctors/patients/${id}/`)
             .then((res) => {
                 setPatient(res.data)
-                document.title = `${res.data.name} - LifeCare`
+                document.title = `${res.data.name} Details - LifeCare`
             })
             .catch(console.error)
             .finally(() => setLoading(false))
@@ -42,8 +42,7 @@ export default function PatientDetail() {
     return (
         <div className='w-full flex flex-col space-y-5'>
 
-            {/* Back + header */}
-            <div className='flex items-center space-x-4'>
+            <div className='flex flex-col md:flex md:flex-row md:items-center space-y-4 md:space-y-0 space-x-4'>
                 <button onClick={() => navigate('/doctor/mypatients')} className='w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer transition-all duration-300'>
                     <LuArrowLeft className='w-4 h-4 text-slate-600' />
                 </button>
@@ -62,11 +61,11 @@ export default function PatientDetail() {
                         </p>
                     </div>
                 </div>
-                <div className='flex space-x-5'>
+                <div className='flex flex-col md:flex md:flex-row md:space-x-3 lg:space-x-5 space-y-4 md:space-y-0'>
                     <motion.button
                         {...buttonEffects}
                         onClick={() => setNoteModal(true)}
-                        className='flex items-center space-x-1.5 text-sm font-medium px-4.5 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-100 cursor-pointer transition-all duration-100'
+                        className='flex items-center justify-center space-x-1.5 text-sm font-medium px-4.5 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-100 cursor-pointer transition-all duration-100'
                     >
                         <LuFileText className='w-4 h-4' />
                         <span>Add Note</span>
@@ -74,7 +73,7 @@ export default function PatientDetail() {
                     <motion.button
                         {...buttonEffects}
                         onClick={() => setPrescribeModal(true)}
-                        className='flex items-center space-x-1.5 text-sm font-medium px-4.5 py-2 bg-blue-600 rounded-lg text-white hover:bg-blue-700 cursor-pointer transition-all duration-300'
+                        className='flex justify-center items-center space-x-1.5 text-sm font-medium px-4.5 py-2.5 md:py-2 bg-blue-600 rounded-lg text-white hover:bg-blue-700 cursor-pointer transition-all duration-300'
                     >
                         <LuPill className='w-4 h-4' />
                         <span>Prescribe</span>
@@ -82,7 +81,7 @@ export default function PatientDetail() {
                     {patient.conversation_id && (
                         <Link
                             to='/doctor/messages'
-                            className='flex items-center space-x-1.5 text-sm font-medium px-4.5 py-2 bg-green-100 rounded-lg text-green-600 hover:bg-green-200 transition-all duration-300'
+                            className='flex justify-center items-center space-x-1.5 text-sm font-medium px-4.5 py-2.5 md:py-2 bg-green-100 rounded-lg text-green-600 hover:bg-green-200 transition-all duration-300'
                         >
                             <LuMessageSquare className='w-4 h-4' />
                             <span>Message</span>
@@ -94,29 +93,43 @@ export default function PatientDetail() {
             <div className='grid grid-cols-1 lg:grid-cols-3 gap-5'>
 
                 {/* Patient info */}
-                <div className='bg-white border border-slate-100 rounded-xl p-4 flex flex-col space-y-3'>
+                <motion.div 
+                    {...scrollLeft}
+                    className='bg-white border border-slate-100 rounded-xl p-4 flex flex-col space-y-4.5'>
                     <h2 className='font-semibold text-slate-800'>Patient Info</h2>
                     {[
-                        { label: 'Email', value: patient.email },
-                        { label: 'Phone', value: patient.phone || 'N/A' },
+                        { label: 'Email', value: patient.email, type : "email" },
+                        { label: 'Phone', value: patient.phone || 'N/A', type : "phone" },
                         { label: 'Date of Birth', value: patient.date_of_birth || 'N/A' },
                         { label: 'Address', value: patient.address || 'N/A' },
                         { label: 'Insurance', value: patient.insurance_number || 'N/A' },
-                        { label: 'Emergency Contact', value: patient.emergency_contact_name ? `${patient.emergency_contact_name} · ${patient.emergency_contact_phone}` : 'N/A' },
+                        { label: 'Emergency Contact', value: patient.emergency_contact_name ? `${patient.emergency_contact_name} - ${patient.emergency_contact_phone}` : 'N/A'},
                         { label: 'Medical History', value: patient.medical_history || 'None recorded' },
-                    ].map(({ label, value }) => (
+                    ].map(({ label, value, type}) => (
                         <div key={label} className='flex flex-col space-y-0.5'>
                             <span className='text-[10px] font-semibold text-slate-400 uppercase tracking-wide'>{label}</span>
-                            <span className='text-sm text-slate-700'>{value}</span>
+                            {type === "email" && value !== 'N/A' ? (
+                                <a href={`mailto:${value}`} className='text-sm text-slate-700 hover:text-blue-600 hover:underline transition-all'>
+                                    {value}
+                                </a>
+                            ) : type === 'phone' && value !== 'N/A' ? (
+                                <a href={`tel:${value}`} className='text-sm text-slate-700 hover:text-blue-600 hover:underline transition-all'>
+                                    {value}
+                                </a>
+                            ) : (
+                                <span className='text-sm text-slate-700'>{value}</span>                            
+                            )}
                         </div>
                     ))}
-                </div>
+                </motion.div>
 
                 {/* Appointments + prescriptions */}
                 <div className='lg:col-span-2 flex flex-col space-y-5'>
 
                     {/* Recent appointments */}
-                    <div className='bg-white border border-slate-100 rounded-xl p-4'>
+                    <motion.div 
+                        {...scrollRight}
+                        className='bg-white border border-slate-100 rounded-xl p-4'>
                         <h2 className='font-semibold text-slate-800 mb-3'>Recent Appointments</h2>
                         {patient.recent_appointments?.length === 0 ? (
                             <p className='text-sm text-slate-400'>No appointments yet</p>
@@ -132,10 +145,12 @@ export default function PatientDetail() {
                                 </span>
                             </div>
                         ))}
-                    </div>
+                    </motion.div>
 
                     {/* Active prescriptions */}
-                    <div className='bg-white border border-slate-100 rounded-xl p-4'>
+                    <motion.div 
+                        {...scrollUp}
+                        className='bg-white border border-slate-100 rounded-xl p-4'>
                         <h2 className='font-semibold text-slate-800 mb-3'>Active Prescriptions</h2>
                         {patient.active_prescriptions?.length === 0 ? (
                             <p className='text-sm text-slate-400'>No active prescriptions</p>
@@ -149,7 +164,7 @@ export default function PatientDetail() {
                                 <span className='text-[10px] bg-green-50 text-green-600 px-2 py-0.5 rounded-full font-medium'>Active</span>
                             </div>
                         ))}
-                    </div>
+                    </motion.div>
                 </div>
             </div>
 

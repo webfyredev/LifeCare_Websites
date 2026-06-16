@@ -66,8 +66,8 @@ export default function DoctorPrescriptions(){
                         No prescriptions found
                     </span>
                 ) : prescriptions.map((p, index) => (
-                    <div key={p.id} className={`flex border-b border-slate-100 item-center justify-between px-5 mb-3 py-4 ${index !== prescriptions.length - 1 ? 'border-b border-slate-100' : ''}`}>
-                        <div className='flex items-center space-x-4'>
+                    <div key={p.id} className={`lg:flex lg:flex-row border-b border-slate-200 md:item-center md:justify-between lg:px-5 mb-3 py-2 lg:py-4 ${index !== prescriptions.length - 1 ? 'border-b border-slate-100' : ''}`}>
+                        <div className='md:flex md:flex-row flex flex-col md:items-center space-x-6 lg:space-x-4 space-y-1.5 md:space-y-0'>
                             <span className='w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center'>
                                 <LuPill className='w-5 h-5 text-blue-500' />
                             </span>
@@ -81,21 +81,28 @@ export default function DoctorPrescriptions(){
                             </div>
                             <p className='text-xs text-slate-400 mt-0.5 flex items-center font-semibold'><span className=''>{p.dosage}</span> <span className='w-1 h-1 rounded-full bg-slate-600 mx-2 mt-0.5'></span> {p.frequency} <span className='w-1 h-1 rounded-full bg-slate-600 mx-2 mt-0.5'></span> {p.duration}</p>
                             <div className='flex items-center space-x-4 mt-1'>
-                                <div className='flex items-center space-x-1 text-xs text-slate-500'>
-                                    <LuUsers  className='w-3 h-3'/> <span className='font-semibold'>{p.patient_name}</span>
+                                <div className='flex items-center space-x-1 text-[14px] md:text-xs text-slate-500'>
+                                    <LuUsers  className='w-4 h-4 md:w-3 md:h-3'/> <span className='font-semibold'>{p.patient_name}</span>
                                 </div>
-                                <div className='flex items-center space-x-1 text-xs text-slate-500'>
-                                    <LuCalendarDays  className='w-3 h-3'/> <span>{formatDate(p.prescribed_date)}</span>
+                                <div className='flex items-center space-x-1 text-[14px] md:text-xs text-slate-500'>
+                                    <LuCalendarDays  className='w-4 h-4 md:w-3 md:h-3'/> <span>{formatDate(p.prescribed_date)}</span>
                                 </div>
                             </div>
                         </div>
-                        <motion.button
-                        {...buttonEffects}
-                        onClick={() => setEditModal({open : true, prescription : p})}
-                            className='text-xs font-medium px-5 py-1.5 bg-blue-500 rounded-lg text-white hover:bg-blue-600 transition-all duratin-300 cursor-pointer'
-                        >
-                            Edit Prescriptions
-                        </motion.button>
+                        <div className='mt-2 md:mt-0 w-auto md:flex md:flex-row justify-between flex flex-col space-x-5 md:items-center'>
+                            <p className="flex md:hidden text-slate-600 font-medium text-[12px]">Instruction:</p>
+                            <p className="flex lg:hidden text-slate-500 text-[13px] italic">{p.notes}</p>
+
+                            <motion.button
+                                {...buttonEffects}
+                                onClick={() => setEditModal({open : true, prescription : p})}
+                                    className='mt-3 lg:mt-0 text-xs font-medium px-5 py-2.5 lg:py-1.5 bg-blue-500 rounded-lg text-white hover:bg-blue-600 transition-all duratin-300 cursor-pointer'
+                                >
+                                    Edit Prescriptions
+                            </motion.button>
+                        </div>
+                        
+
                     </div>
                     
                 ))}
