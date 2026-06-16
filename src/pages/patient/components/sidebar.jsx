@@ -19,6 +19,7 @@ export default function Portal_sidebar(){
     const [notifOpen, setNotifOpen] = useState(false)
     const notifRef = useRef(null)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [unreadMessages, setUnreadMessages] = useState(0)
 
     useEffect(() => {
         const fetchNotifications = () => {
@@ -145,10 +146,21 @@ export default function Portal_sidebar(){
                                 <LuPill  className='mt-0.5'/>
                                 <span>Prescription</span>
                             </NavLink>
-                            <NavLink to="/patient/messages" className={({ isActive}) => `font-medium text-[13px] rounded-lg px-3 py-2.5 flex items-center space-x-3 ${isActive ? 'bg-blue-50 text-blue-600' : 'text-[#64748b] hover:text-[#334155] hover:bg-[#f8fafc]'}`}>
+                            <NavLink to="/patient/messages" className={({ isActive}) => `font-medium text-[13px] rounded-lg px-3 py-2.5 flex items-center justify-between ${isActive ? 'bg-blue-50 text-blue-600' : 'text-[#64748b] hover:text-[#334155] hover:bg-[#f8fafc]'}`}>
+                                <div className='flex items-center space-x-3'>
+                                    <LuMessageSquare  className='mt-0.5'/>
+                                    <span>Messages</span>
+                                </div>
+                                {unreadMessages > 0 && (
+                                    <span className='w-4 h-4 rounded-full bg-red-500 flex items-center justify-center text-[9px] text-white font-semibold'>
+                                        {unreadMessages > 9 ? '9+' : unreadMessages}
+                                    </span>
+                                )}
+                            </NavLink>
+                            {/* <NavLink to="" className={({ isActive}) => `font-medium text-[13px] rounded-lg px-3 py-2.5 flex items-center space-x-3 ${isActive ? 'bg-blue-50 text-blue-600' : 'text-[#64748b] hover:text-[#334155] hover:bg-[#f8fafc]'}`}>
                                 <LuMessageSquare  className='mt-0.5'/>
                                 <span>Messages</span>
-                            </NavLink>
+                            </NavLink> */}
                             <NavLink to="/patient/settings" className={({ isActive}) => `font-medium text-[13px] rounded-lg px-3 py-2.5 flex items-center space-x-3 ${isActive ? 'bg-blue-50 text-blue-600' : 'text-[#64748b] hover:text-[#334155] hover:bg-[#f8fafc]'}`}>
                                 <LuUserCog  className='mt-0.5'/>
                                 <span>Profile Settings</span>

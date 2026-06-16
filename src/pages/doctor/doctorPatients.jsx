@@ -69,7 +69,7 @@ export default function DoctorPatients(){
                     ) : patients.map((p, index) => (
                         <div
                             key={p.id}
-                            onClick={() => navigate(`/doctor/patients/${p.id}`)}
+                            onClick={() => navigate(`/doctor/mypatients/${p.id}`)}
                             className={`flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-slate-50 transition-colors
                                 ${index !== patients.length - 1 ? 'border-b border-slate-100' : ''}`}
                         >

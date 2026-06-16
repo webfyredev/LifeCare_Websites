@@ -101,11 +101,11 @@ export default function DoctorAppointments(){
                                     <div>
                                         <div className='flex items-center space-x-2'>
                                             <p className='text-sm font-semibold text-slate-800'>{apt.patient_name}</p>
-                                            <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full capitalize ${statusStyle(apt.status)}`}>
-                                                • {apt.status}
+                                            <span className={`text-[10px] font-medium px-2.5 py-0.5 rounded-full capitalize ${statusStyle(apt.status)}`}>
+                                                {apt.status}
                                             </span>
                                         </div>
-                                        <p className='text-xs text-slate-400 mt-0.5'>{apt.reason}</p>
+                                        <p className='text-xs text-slate-400 mt-1'>{apt.reason}</p>
                                         <div className='flex items-center space-x-4 mt-1'>
                                             <span className='flex items-center space-x-1 text-xs text-slate-500'>
                                                 <LuCalendarDays className='w-3 h-3' />
@@ -123,7 +123,6 @@ export default function DoctorAppointments(){
                                     </div>
                                 </div>
 
-                                {/* Actions */}
                                 <div className='flex items-center space-x-2'>
                                     {apt.status === 'pending' && (
                                         <button
@@ -134,7 +133,7 @@ export default function DoctorAppointments(){
                                             <span>Confirm</span>
                                         </button>
                                     )}
-                                    {(apt.status === 'confirmed' || apt.status === 'pending') && (
+                                    {apt.status === 'confirmed' && (
                                         <button
                                             onClick={() => setCompleteModal({ open: true, appointmentId: apt.id })}
                                             className='flex items-center space-x-1 text-xs font-medium px-3 py-1.5 bg-green-50 hover:bg-green-100 text-green-600 rounded-lg cursor-pointer transition-colors'
@@ -145,9 +144,10 @@ export default function DoctorAppointments(){
                                     )}
                                     {apt.status === 'completed' && apt.notes && (
                                         <span className='text-xs text-slate-400 italic max-w-[160px] truncate'>
-                                            {apt.notes}
+                                            {apt.notes || 'Completed'}
                                         </span>
-                            )}
+                                    )}
+                                    
                         </div>
                     </div>
                 ))}

@@ -73,8 +73,8 @@ export default function PatientRecords (){
     ]
     return(
         <>
-            <div className="w-full p-5 space-y-5">
-                <h3 className='font-bold text-2xl text-[#1e293b]'>Medical Records</h3>
+            <div className="w-full lg:p-5 space-y-5">
+                <h3 className='font-bold text-2xl text-[#1e293b] mt-3 lg:mt-0'>Medical Records</h3>
                 {/* <p className='text-[13px] text-[#94a3b8]'>Access and download your health records</p> */}
                 <div className='w-full py-3 mt-5 grid  grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4'>
                     {data_records.map((record) => (
@@ -88,7 +88,7 @@ export default function PatientRecords (){
                         </div>
                     ))}
                 </div>
-                <div className='w-full p-5 border border-slate-100 rounded-xl overflow-hidden'>
+                <div className='w-full p-5 border border-slate-200 rounded-xl overflow-hidden'>
                     {loading ? (
                         <div className='p-10 text-center text-sm text-slate'>
                             Loading records....
@@ -110,17 +110,17 @@ export default function PatientRecords (){
                             return (
                                 <div
                                     key={record.id}
-                                    className={`${index !== data.records.length - 1 ? 'border-b border-slate-100' : ''}`}>
+                                    className={`${index !== data.records.length - 1 ? 'border-b border-slate-200 mb-3 lg:mb-0' : ''}`}>
                                         <div
                                             onClick={() => setExpandedId(isExpanded ? null : record.id)}
-                                            className='w-full flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-slate-50 transition-all duration-300'
+                                            className='w-full md:flex md:flex-row md:items-center md:justify-between space-y-5 md:space-y-0 flex flex-col md:px-5 py-2 md:py-4 cursor-pointer hover:bg-slate-50 transition-all duration-300'
                                         >
-                                            <div className='flex items-ceter space-x-4'>
+                                            <div className='flex items-center space-x-4'>
                                                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${config.color}`}>
                                                     <Icon className='w-5 h-5' />
                                                 </div>
                                                 <div>
-                                                    <div className='flex items-center space-x-2'>
+                                                    <div className='flex items-center space-x-4 md:space-x-2'>
                                                         <p className='text-sm font-semibold text-slate-800'>{record.title}</p>
                                                         <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${config.color}`}>
                                                             {config.label}
@@ -163,6 +163,7 @@ export default function PatientRecords (){
                                         <motion.div 
                                             {...scrollRight}
                                             className='border-1 px-5 mb-4 bg-slate-100 border-t border-slate-100 rounded-xl flex items-center'>
+                                            <p className='text-[14px] text-blue-500 font-semibold'>Description:</p>
                                             <p className='text-[14px] text-slate-600 leading-relaxed p-3'>
                                                 {record.description}
                                             </p>

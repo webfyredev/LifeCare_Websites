@@ -29,6 +29,7 @@ import DoctorMedicalNotes from './pages/doctor/doctorMedNotes'
 import DoctorProfile from './pages/doctor/doctorProfile'
 import DoctorMessages from './pages/doctor/doctorMessages'
 import DoctorNotifications from './pages/doctor/doctorNotifications'
+import MyPatientDetails from './pages/doctor/doctorPatientDetails'
 
   
 
@@ -73,6 +74,7 @@ function App() {
             <Route path='dashboard' element={<DoctorDashboard />}></Route>
             <Route path='appointments' element={<DoctorAppointments />}></Route>
             <Route path='mypatients' element={<DoctorPatients />}></Route>
+            <Route path='mypatients/:id' element={<MyPatientDetails />}></Route>
             <Route path='prescriptions' element={<DoctorPrescriptions />}></Route>
             <Route path='messages' element={<DoctorMessages />}></Route>
             <Route path='notes' element={<DoctorMedicalNotes />}></Route>
