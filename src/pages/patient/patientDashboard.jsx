@@ -5,7 +5,7 @@ import NavBar from '../../components/navbar'
 import Footer from '../../components/footer'
 import Portal_Navbar from './components/sidebar'
 import Portal_sidebar from './components/sidebar'
-import { LuCalendarClock, LuHospital, LuPill, LuMessageSquare, LuArrowRight } from 'react-icons/lu'
+import { LuCalendarClock, LuHospital, LuPill, LuMessageSquare, LuArrowRight, LuFileText } from 'react-icons/lu'
 import { Link } from 'react-router-dom'
 import { scrollRight, scrollUp } from '../../animations/effects'
 import { motion } from 'framer-motion'
@@ -73,7 +73,7 @@ export default function PatientDashboard() {
     <>
         <div className='w-full px-3 md:px-5 py-6 md:py-8 bg-[#2563eb] rounded-xl flex flex-col'>
             <p className='text-[13px] font-semibold text-[#dbeafe]'>{getGreeting()}, welcome back</p>
-            <div className='w-full md:flex md:flex-row md:items-center flex flex-col md:justify-between'>
+            <div className='w-full lg:flex lg:flex-row lg:items-center flex flex-col lg:justify-between'>
                 <div className='w-auto flex flex-col'>
                     <h3 className='text-2xl font-bold text-white'>
                         {user?.first_name} {user?.last_name}
@@ -82,7 +82,8 @@ export default function PatientDashboard() {
                         Access your healthcare updates, appointments, and medical information in one place.
                     </p>
                 </div>
-                <div className='md:px-3 flex space-x-4 mt-3 md:mt-0'>
+                
+                <div className='lg:px-3 flex space-x-4 mt-3 lg:mt-0'>
                     <div className='flex px-8 md:px-5 py-2 rounded-lg flex flex-col bg-white/10 hover:bg-white/20 text-center space-y-0.5 transition-all duration-300'>
                         <h3 className='text-white font-bold text-xl'>{getAge(user?.date_of_birth)}</h3>
                         <p className='text-[11px] text-[#dbeafe] font-medium'>Years</p>
@@ -91,7 +92,13 @@ export default function PatientDashboard() {
                         <h3 className='text-white font-bold text-xl'>{user?.patient_profile?.blood_type}</h3>
                         <p className='text-[11px] text-[#dbeafe] font-medium'>Blood Type</p>
                     </div>
+                    <div className='flex px-8 md:px-5 py-2 rounded-lg flex flex-col bg-white/10 hover:bg-white/20 text-center space-y-0.5 transition-all duration-300'>
+                        <h3 className='text-white font-bold text-sm'>{user?.patient_profile?.hospital_number || 'N/A'}</h3>
+                        <p className='text-[11px] text-[#dbeafe] font-medium'>Patient ID</p>
+                    </div>
+                    
                 </div>
+                
             </div>
         </div>
         <div className='w-full py-2 mt-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
@@ -188,6 +195,119 @@ export default function PatientDashboard() {
                 </div>
            </div>
         </div>
+        {dashboard?.next_appointment && (
+            <div className='w-full bg-white border border-slate-100 rounded-xl p-4 flex items-center justify-between'>
+                <div className='flex items-center space-x-4'>
+                    <div className='w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0'>
+                        <LuCalendarClock className='w-6 h-6 text-white' />
+                    </div>
+                    <div>
+                        <p className='text-xs font-semibold text-slate-400 uppercase tracking-wide'>Next appointment</p>
+                        <p className='text-sm font-semibold text-slate-800 mt-0.5'>
+                            {dashboard.next_appointment.doctor_name} · {dashboard.next_appointment.specialization}
+                        </p>
+                        <p className='text-xs text-slate-500 mt-0.5'>
+                            {new Date(dashboard.next_appointment.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} at {dashboard.next_appointment.time}
+                        </p>
+                    </div>
+                </div>
+                <div className='text-right flex-shrink-0'>
+                    {dashboard.next_appointment.days_until === 0 ? (
+                        <span className='text-sm font-bold text-green-600 bg-green-50 px-3 py-1.5 rounded-lg'>Today</span>
+                    ) : dashboard.next_appointment.days_until === 1 ? (
+                        <span className='text-sm font-bold text-amber-600 bg-amber-50 px-3 py-1.5 rounded-lg'>Tomorrow</span>
+                    ) : (
+                        <div className='text-center bg-blue-50 px-4 py-2 rounded-lg'>
+                            <p className='text-2xl font-bold text-blue-600'>{dashboard.next_appointment.days_until}</p>
+                            <p className='text-[10px] text-blue-400'>days away</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+        )}
+
+        {dashboard?.todays_medications?.length > 0 && (
+            <div className='bg-white border border-slate-100 rounded-xl p-4'>
+                <div className='flex justify-between items-center mb-3'>
+                    <div>
+                        <h3 className='font-semibold text-slate-800'>Today's medications</h3>
+                        <p className='text-[11px] text-slate-400 mt-0.5'>Your active prescriptions for today</p>
+                    </div>
+                    <Link to='/patient/prescriptions' className='text-xs text-blue-600 font-medium flex items-center'>
+                        View all <LuArrowRight className='ml-1 w-3 h-3' />
+                    </Link>
+                </div>
+                <div className='flex flex-col space-y-2'>
+                    {dashboard.todays_medications.map((med) => (
+                        <div key={med.id} className='flex items-center space-x-3 p-3 bg-slate-50 rounded-lg'>
+                            <div className='w-9 h-9 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0'>
+                                <LuPill className='w-4 h-4 text-purple-600' />
+                            </div>
+                            <div className='flex-1'>
+                                <p className='text-sm font-semibold text-slate-800'>{med.medication_name}</p>
+                                <p className='text-xs text-slate-400'>{med.dosage} · {med.frequency}</p>
+                            </div>
+                            <span className='text-xs text-slate-400'>{med.doctor_name}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        )}
+        {dashboard?.recent_records?.length > 0 && (
+            <div className='bg-white border border-slate-100 rounded-xl p-4'>
+                <div className='flex justify-between items-center mb-3'>
+                    <div>
+                        <h3 className='font-semibold text-slate-800'>Recent records</h3>
+                        <p className='text-[11px] text-slate-400 mt-0.5'>Your latest medical documents</p>
+                    </div>
+                    <Link to='/patient/records' className='text-xs text-blue-600 font-medium flex items-center'>
+                        View all <LuArrowRight className='ml-1 w-3 h-3' />
+                    </Link>
+                </div>
+                <div className='flex flex-col space-y-2'>
+                    {dashboard.recent_records.map((r) => {
+                        const typeColors = {
+                            lab_result: 'bg-blue-50 text-blue-600',
+                            imaging: 'bg-purple-50 text-purple-600',
+                            diagnosis: 'bg-teal-50 text-teal-600',
+                            vaccination: 'bg-green-50 text-green-600',
+                            surgery: 'bg-red-50 text-red-500',
+                            allergy: 'bg-amber-50 text-amber-600',
+                            general: 'bg-slate-100 text-slate-500',
+                        }
+                        return (
+                            <div key={r.id} className='flex items-center space-x-3 p-3 bg-slate-50 rounded-lg overflow-hidden'>
+                                <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${typeColors[r.record_type] || typeColors.general}`}>
+                                    <LuFileText className='w-4 h-4' />
+                                </div>
+                                <div>
+                                    <p className='text-sm font-semibold text-slate-800 truncate'>{r.title}</p>
+                                    <p className='text-xs text-slate-400'>
+                                        {r.record_type.replace('_', ' ')} · {new Date(r.date_recorded).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                    </p>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>
+        )}
+        {/* {dashboard?.unread_messages > 0 && (
+            <Link to='/patient/messages' className='block'>
+                <div className='bg-blue-600 rounded-xl p-4 flex items-center space-x-4'>
+                    <div className='w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0'>
+                        <LuMessageSquare className='w-5 h-5 text-white' />
+                    </div>
+                    <div className='flex-1'>
+                        <p className='text-sm font-semibold text-white'>
+                            {dashboard.unread_messages} unread message{dashboard.unread_messages > 1 ? 's' : ''}
+                        </p>
+                        <p className='text-xs text-blue-100 mt-0.5'>Tap to view and respond</p>
+                    </div>
+                    <LuArrowRight className='w-4 h-4 text-white flex-shrink-0' />
+                </div>
+            </Link>
+        )} */}
         
     </>
   )

@@ -99,7 +99,7 @@ export default function DoctorNotifications(){
                         >
                             {f}
                             {f === 'unread' && unreadCount > 0 && (
-                                <span className='ml-1 bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full'>
+                                <span className='ml-1.5 bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full'>
                                     {unreadCount}
                                 </span>
                             )}

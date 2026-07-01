@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../api/axios'
-import { LuCamera } from 'react-icons/lu'
+import { LuCamera, LuShield } from 'react-icons/lu'
 import defaultAvatar from '../../images/avatar.png'
 import { FaCheck } from 'react-icons/fa'
 
@@ -142,6 +142,20 @@ export default function PaitientSettings(){
                 )}
 
                 <form onSubmit={handleSubmit} className='flex flex-col space-y-5 mt-5 '>
+                    <div className='bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-center justify-between'>
+                        <div>
+                            <p className='text-xs font-semibold text-blue-400 uppercase tracking-wide'>Hospital Number</p>
+                            <p className='text-lg font-bold text-blue-700 mt-0.5'>
+                                {user?.patient_profile?.hospital_number || 'Generating...'}
+                            </p>
+                            <p className='text-[11px] text-blue-400 mt-0.5'>
+                                This is your unique LifeCare patient ID. Keep it safe.
+                            </p>
+                        </div>
+                        <div className='w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center'>
+                            <LuShield className='w-6 h-6 text-blue-600' />
+                        </div>
+                    </div>
                     <div className='w-full p-6 rounded-xl bg-white border-slate-100 transition-all duration-300 border flex space-x-5'>
                         <img
                             src={getAvatar()} 

@@ -1,16 +1,41 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../api/axios'
-import { LuUsers, LuCalendarClock, LuClock, LuShieldAlert, LuArrowRight, LuStethoscope } from 'react-icons/lu'
+import { LuUsers, LuCalendarClock, LuClock, LuShieldAlert, LuArrowRight, LuStethoscope, LuOctagonAlert } from 'react-icons/lu'
 import { motion } from 'framer-motion'
 import { scrollRight } from '../../animations/effects'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import PageLoader from '../../components/pageLoader'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts'
 
 export default function DoctorDashboard() {
     const { user} = useAuth()
     const [dashboard, setDashboard] = useState(null)
+
+    const navigate = useNavigate()
+
+    const breakdownData = dashboard?.appointment_breakdown ? [
+        {
+            name : 'Completed',
+            value : dashboard.appointment_breakdown.completed,
+            color : '#22c55e',
+        },
+        {
+            name : 'Confirmed',
+            value : dashboard.appointment_breakdown.confirmed,
+            color : '#3b82f6'
+        },
+        {
+            name : 'Pending',
+            value : dashboard.appointment_breakdown.pending,
+            color : '#f59e0b'
+        },
+        {
+            name : 'Cancelled',
+            value : dashboard.appointment_breakdown.cancelled,
+            color: '#ef4444'
+        }
+    ].filter(d => d.value > 0) : []
 
     useEffect(() => {
         document.title = 'Doctor Dashboard - Lifecare'
@@ -248,6 +273,138 @@ export default function DoctorDashboard() {
                         )}
                     </div>
                 </div>
+                
+            </div>
+            {/* Row 3 — Appointment breakdown + Follow-up patients */}
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-5'>
+
+                {/* Appointment breakdown donut */}
+                <div className='bg-white border border-slate-100 rounded-xl p-4'>
+                    <div className='flex justify-between items-center mb-2'>
+                        <div>
+                            <h3 className='font-semibold text-slate-800'>This month</h3>
+                            <p className='text-[11px] text-slate-400 mt-0.5'>Appointment breakdown</p>
+                        </div>
+                    </div>
+                    {breakdownData.length > 0 ? (
+                        <ResponsiveContainer width='100%' height={180}>
+                            <PieChart>
+                                <Pie
+                                    data={breakdownData}
+                                    cx='50%'
+                                    cy='50%'
+                                    innerRadius={50}
+                                    outerRadius={75}
+                                    paddingAngle={3}
+                                    dataKey='value'
+                                >
+                                    {breakdownData.map((entry, index) => (
+                                        <Cell key={index} fill={entry.color} />
+                                    ))}
+                                </Pie>
+                                <Tooltip
+                                    contentStyle={{ background: '#1e293b', border: 'none', borderRadius: '8px', fontSize: '12px', color: '#fff' }}
+                                    formatter={(value, name) => [`${value} appointments`, name]}
+                                />
+                                <Legend
+                                    iconType='circle'
+                                    iconSize={8}
+                                    formatter={(value) => <span style={{ fontSize: '11px', color: '#64748b' }}>{value}</span>}
+                                />
+                            </PieChart>
+                        </ResponsiveContainer>
+                    ) : (
+                        <div className='h-40 flex items-center justify-center text-sm text-slate-400'>
+                            No appointment data this month
+                        </div>
+                    )}
+                </div>
+
+                {/* Patients due for follow-up */}
+                <div className='bg-white border border-slate-100 rounded-xl p-4'>
+                    <div className='flex justify-between items-center mb-4'>
+                        <div>
+                            <h3 className='font-semibold text-slate-800'>Follow-up needed</h3>
+                            <p className='text-[11px] text-slate-400 mt-0.5'>No appointment in 30+ days</p>
+                        </div>
+                        <Link to='/doctor/mypatients' className='text-xs text-blue-600 font-medium flex items-center'>
+                            All patients <LuArrowRight className='ml-1 w-3 h-3' />
+                        </Link>
+                    </div>
+                    {!dashboard?.followup_patients?.length ? (
+                        <div className='flex flex-col items-center py-6 space-y-2'>
+                            <div className='w-10 h-10 rounded-full bg-green-50 flex items-center justify-center'>
+                                <LuUsers className='w-5 h-5 text-green-500' />
+                            </div>
+                            <p className='text-sm text-slate-400'>All patients are up to date</p>
+                        </div>
+                    ) : (
+                        <div className='flex flex-col space-y-2'>
+                            {dashboard.followup_patients.map((p) => (
+                                <div
+                                    key={p.id}
+                                    onClick={() => navigate(`/doctor/mypatients/${p.id}`)}
+                                    className='flex items-center space-x-3 p-2.5 rounded-lg hover:bg-amber-50 cursor-pointer transition-colors border border-transparent hover:border-amber-100'
+                                >
+                                    {p.profile_picture ? (
+                                        <img src={p.profile_picture} className='w-9 h-9 rounded-full object-cover flex-shrink-0' alt='' />
+                                    ) : (
+                                        <div className='w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold flex-shrink-0'>
+                                            {p.initials}
+                                        </div>
+                                    )}
+                                    <div className='flex-1 min-w-0'>
+                                        <p className='text-sm font-medium text-slate-800 truncate'>{p.name}</p>
+                                        <p className='text-xs text-slate-400'>No recent visit</p>
+                                    </div>
+                                    <span className='flex items-center space-x-1 text-xs text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full flex-shrink-0'>
+                                        <LuOctagonAlert className='w-3 h-3' />
+                                        <span>Follow up</span>
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Row 4 — Recent medical notes */}
+            <div className='bg-white border border-slate-100 rounded-xl p-4 mt-5'>
+                <div className='flex justify-between items-center mb-4'>
+                    <div>
+                        <h3 className='font-semibold text-slate-800'>Recent medical notes</h3>
+                        <p className='text-[11px] text-slate-400 mt-0.5'>Latest clinical observations</p>
+                    </div>
+                    <Link to='/doctor/notes' className='text-xs text-blue-600 font-medium flex items-center'>
+                        View all <LuArrowRight className='ml-1 w-3 h-3' />
+                    </Link>
+                </div>
+                {!dashboard?.recent_notes?.length ? (
+                    <p className='text-sm text-slate-400 py-4 text-center'>No notes yet</p>
+                ) : (
+                    <div className='flex flex-col space-y-2'>
+                        {dashboard.recent_notes.map((n) => {
+                            const severityColor = n.severity === 'critical' ? 'border-red-400' : n.severity === 'monitor' ? 'border-amber-400' : 'border-blue-300'
+                            const badgeColor = n.severity === 'critical' ? 'bg-red-50 text-red-500' : n.severity === 'monitor' ? 'bg-amber-50 text-amber-600' : 'bg-blue-50 text-blue-600'
+                            return (
+                                <div key={n.id} className={`border-l-4 ${severityColor} pl-3 py-2 bg-slate-50 rounded-r-lg`}>
+                                    <div className='flex justify-between items-start'>
+                                        <div>
+                                            <p className='text-sm font-medium text-slate-800'>{n.title}</p>
+                                            <p className='text-xs text-slate-400 mt-0.5'>Patient: {n.patient_name}</p>
+                                        </div>
+                                        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full capitalize flex-shrink-0 ${badgeColor}`}>
+                                            {n.severity}
+                                        </span>
+                                    </div>
+                                    <p className='text-[10px] text-slate-400 mt-1'>
+                                        {new Date(n.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                    </p>
+                                </div>
+                            )
+                        })}
+                    </div>
+                )}
             </div>
         </div>
     </>

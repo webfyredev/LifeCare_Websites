@@ -96,7 +96,7 @@ export default function DoctorPrescriptions(){
                             <motion.button
                                 {...buttonEffects}
                                 onClick={() => setEditModal({open : true, prescription : p})}
-                                    className='mt-3 lg:mt-0 text-xs font-medium px-5 py-2.5 lg:py-1.5 bg-blue-500 rounded-lg text-white hover:bg-blue-600 transition-all duratin-300 cursor-pointer'
+                                    className='mt-3 lg:mt-0 text-xs font-medium px-5 py-2.5 bg-blue-500 rounded-lg text-white hover:bg-blue-600 transition-all duratin-300 cursor-pointer'
                                 >
                                     Edit Prescriptions
                             </motion.button>
