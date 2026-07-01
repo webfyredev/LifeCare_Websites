@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
-import { LuSend, LuArrowLeft, LuPlus, LuImage, LuFileText, LuFile, LuX, LuDownload } from 'react-icons/lu'
+import { LuSend, LuArrowLeft, LuPlus, LuImage, LuFileText, LuFile, LuX, LuDownload, LuPencil, LuTrash2, LuCheck } from 'react-icons/lu'
 import api from '../../api/axios'
+import { scrollLeft, scrollRight, scrollUp, messageActions } from '../../animations/effects'
+import { motion, AnimatePresence } from 'framer-motion'
 export default function DoctorMessages(){
     const [conversations, setConversations] = useState([])
     const [activeConv, setActiveConv] = useState(null)
@@ -14,6 +16,9 @@ export default function DoctorMessages(){
     const [showAttachMenu, setShowAttachMenu] = useState(false)
     const fileInputRef = useRef(null)
     const attachMenuRef = useRef(null)
+    const [hoveredMsgId, setHoveredMsgId] = useState(null)
+    const [editingMsg, setEditingMsg] = useState(null)
+    const [editBody, setEditBody] = useState('')
 
 
 
@@ -37,13 +42,6 @@ export default function DoctorMessages(){
         })
         .catch(console.error)
     }, [])
-
-    useEffect(() => {
-        if(activeConv){
-            api.get(`/messages/${activeConv.id}/messages/`)
-            .then((red) => setMessages(res.data))
-        }
-    }, [activeConv]);
 
     useEffect(() => {
         if(activeConv) fetchMessages()
@@ -96,9 +94,42 @@ export default function DoctorMessages(){
         setMobileView('list')
     }
 
+    const handleDeleteMessage = async (messageId) => {
+        try{
+            await api.delete(`/messages/${activeConv.id}/messages/${messageId}/`)
+            setMessages(prev => prev.filter(m => m.id !== messageId))
+        } catch (err) {
+            console.error(err)
+        }
+
+    }
+
+    const handleEditStart = (msg) => {
+        setEditingMsg(msg)
+        setEditBody(msg.body)
+    }
+
+    const handleEditSave = async (e) => {
+        e.preventDefault()
+        if (!editBody.trim()) return
+        try {
+            const res = await api.patch(`/messages/${activeConv.id}/messages/${editingMsg.id}/`, { body : editBody.trim()})
+            setMessages(prev => prev.map(m => m.id === editingMsg.id ? res.data : m))
+            setEditingMsg(null)
+            setEditBody('')
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    const handleEditCancel = () => {
+        setEditingMsg(null)
+        setEditBody('')
+    }
+
     const handleSend = async (e) => {
         e.preventDefault()
-        if(!newMessage.trim() || !selectedFile) return
+        if(!newMessage.trim() && !selectedFile) return
         if(!activeConv) return
         setSending(true)
 
@@ -110,7 +141,7 @@ export default function DoctorMessages(){
                 formData.append('file', selectedFile)
                 res = await api.post(`/messages/${activeConv.id}/messages/`, formData, {headers : {'Content-Type' : 'multipart/form-data'}})
             } else {
-                res = await api.post(`/messages/${activeConv.id}/messages/`, formData, {headers : {'Content-Type' : 'multipart/form-data'}})
+                res = await api.post(`/messages/${activeConv.id}/messages/`, {body : newMessage.trim()})
             }
 
             setMessages(prev => [...prev, res.data])
@@ -213,20 +244,23 @@ export default function DoctorMessages(){
                                 </div>
                             </div>
 
-                            {/* Messages */}
                             <div className='flex-1 overflow-y-auto px-5 py-4 flex flex-col space-y-3'>
                                 {messages.map((msg) => (
-                                    <div key={msg.id} className={`flex ${msg.is_mine ? 'justify-end' : 'justify-start'}`}>
+                                    <div 
+                                        key={msg.id} 
+                                        className={`flex ${msg.is_mine ? 'justify-end' : 'justify-start'}`}
+                                        onMouseEnter={() => setHoveredMsgId(msg.id)}
+                                        onMouseLeave={() => setHoveredMsgId(null)}
+                                    >
                                         <div className={`max-w-[75%] md:max-w-[65%] flex flex-col space-y-1 ${msg.is_mine ? 'items-end' : 'items-start'}`}>
 
-                                            {/* File attachment display */}
+                                            
                                             {msg.file_url && (
                                                 <div className={`rounded-2xl overflow-hidden ${msg.is_mine ? 'rounded-br-sm' : 'rounded-bl-sm'}`}>
                                                     {msg.file_type === 'image' ? (
-                                                        // Image — show inline thumbnail
                                                         <img
                                                             src={msg.file_url}
-                                                            className='max-w-full max-h-60 object-cover cursor-pointer rounded-xl'
+                                                            className='max-w-full max-h-45 object-cover cursor-pointer rounded-xl'
                                                             alt='attachment'
                                                             onClick={() => window.open(msg.file_url, '_blank')}
                                                         />
@@ -264,15 +298,61 @@ export default function DoctorMessages(){
                                             )}
 
                                             {msg.body && (
-                                                <div className={`px-4 py-2.5 rounded-2xl text-sm
-                                                    ${msg.is_mine
-                                                        ? 'bg-blue-600 text-white rounded-br-sm'
-                                                        : 'bg-white text-slate-800 border border-slate-100 rounded-bl-sm'
-                                                    }`}
-                                                >
-                                                    {msg.body}
-                                                </div>
+                                                editingMsg?.id === msg.id ? (
+                                                    <form onSubmit={handleEditSave} className='flex items-center space-x-2 w-full mt-2'>
+                                                        <input
+                                                            autoFocus
+                                                            value={editBody}
+                                                            onChange={(e) => setEditBody(e.target.value)}
+                                                            className='flex-1 bg-white border-2 border-blue-300 rounded-xl px-3 py-2 text-sm outline-none'
+                                                        />
+                                                        <button type='submit'
+                                                            className='w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center cursor-pointer hover:bg-blue-700'>
+                                                            <LuCheck className='w-3.5 h-3.5 text-white' />
+                                                        </button>
+                                                        <button type='button' onClick={handleEditCancel}
+                                                            className='w-7 h-7 bg-slate-100 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-200'>
+                                                            <LuX className='w-3.5 h-3.5 text-slate-600' />
+                                                        </button>
+                                                    </form>
+
+                                                ) : (
+                                                    <div className='flex items-center space-x-4'>
+                                                        <div className={`px-4 py-2.5 rounded-2xl text-sm
+                                                            ${msg.is_mine
+                                                                ? 'bg-blue-600 text-white rounded-br-sm'
+                                                                : 'bg-white text-slate-800 border border-slate-100 rounded-bl-sm'
+                                                            }`}
+                                                        >
+                                                            {msg.body}
+                                                            
+                                                        </div>
+                                                        <AnimatePresence>
+                                                            {msg.is_mine && hoveredMsgId === msg.id && !editingMsg && (
+                                                                <motion.div
+                                                                    {...messageActions} 
+                                                                    className='flex items-center space-x-2 mb-1 overflow-hidden'>
+                                                                    <button
+                                                                        onClick={() => handleEditStart(msg)}
+                                                                        className='flex items-center space-x-1 text-[10px] justify-center text-slate-400 hover:text-blue-600 bg-white border border-slate-100 p-1 h-7 w-7 rounded-lg shadow-xs cursor-pointer transition-colors'
+                                                                    >
+                                                                        <LuPencil  className='w-3 h-3'/>
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={() => handleDeleteMessage(msg.id)}
+                                                                        className='flex items-center space-x-1 text-[10px] justify-center text-slate-400 hover:text-red-500 bg-white border border-slate-100 p-1 h-7 w-7 rounded-lg shadow-xs cursor-pointer transition-colors'
+                                                                    >
+                                                                        <LuTrash2  className='w-3 h-3'/>
+                                                                    </button>
+                                                                </motion.div>
+                                                            )}
+                                                        </AnimatePresence>
+                                                    </div>
+                                                    
+                                                )
+                                                
                                             )}
+                                            
 
                                             <span className='text-[10px] text-slate-400'>
                                                 {msg.is_mine ? 'You' : msg.sender_name} · {formatTime(msg.created_at)}
@@ -313,7 +393,6 @@ export default function DoctorMessages(){
                                     </div>
                                 )}
 
-                                {/* Input row */}
                                 <div className='flex items-center space-x-2'>
 
                                     <div className='relative' ref={attachMenuRef}>
@@ -327,7 +406,7 @@ export default function DoctorMessages(){
                                         </button>
 
                                         {showAttachMenu && (
-                                            <div className='absolute bottom-12 left-0 bg-white border border-slate-100 rounded-xl shadow-lg overflow-hidden w-44 z-10'>
+                                            <div className='absolute bottom-12 left-0 bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden w-50 z-10'>
                                                 <button
                                                     type='button'
                                                     onClick={() => {
@@ -337,9 +416,9 @@ export default function DoctorMessages(){
                                                     className='w-full flex items-center space-x-3 px-4 py-3 hover:bg-slate-50 transition-colors cursor-pointer text-left'
                                                 >
                                                     <div className='w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0'>
-                                                        <LuImage className='w-4 h-4 text-green-600' />
+                                                        <LuImage className='w-3.5 h-3.5 text-green-600' />
                                                     </div>
-                                                    <span className='text-sm text-slate-700'>Photo / Video</span>
+                                                    <span className='text-[13px] text-slate-700'>Photo / Video</span>
                                                 </button>
                                                 <button
                                                     type='button'
@@ -350,9 +429,9 @@ export default function DoctorMessages(){
                                                     className='w-full flex items-center space-x-3 px-4 py-3 hover:bg-slate-50 transition-colors cursor-pointer text-left border-t border-slate-50'
                                                 >
                                                     <div className='w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0'>
-                                                        <LuFileText className='w-4 h-4 text-red-500' />
+                                                        <LuFileText className='w-3.5 h-3.5 text-red-500' />
                                                     </div>
-                                                    <span className='text-sm text-slate-700'>PDF</span>
+                                                    <span className='text-[13px] text-slate-700'>PDF</span>
                                                 </button>
                                                 <button
                                                     type='button'
@@ -360,12 +439,12 @@ export default function DoctorMessages(){
                                                         fileInputRef.current.accept = '.doc,.docx,.xlsx,.xls,.ppt,.pptx,.txt'
                                                         fileInputRef.current.click()
                                                     }}
-                                                    className='w-full flex items-center space-x-3 px-4 py-3 hover:bg-slate-50 transition-colors cursor-pointer text-left border-t border-slate-50'
+                                                    className='w-full flex items-center border space-x-3 px-4 py-3 hover:bg-slate-50 transition-colors cursor-pointer text-left border-t border-slate-50'
                                                 >
                                                     <div className='w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0'>
-                                                        <LuFile className='w-4 h-4 text-blue-500' />
+                                                        <LuFile className='w-3.5 h-3.5 text-blue-500' />
                                                     </div>
-                                                    <span className='text-sm text-slate-700'>Document</span>
+                                                    <span className='text-[13px] text-slate-700'>Document</span>
                                                 </button>
                                             </div>
                                         )}
@@ -378,7 +457,6 @@ export default function DoctorMessages(){
                                         className='hidden'
                                     />
 
-                                    {/* Text input */}
                                     <input
                                         type='text'
                                         value={newMessage}
@@ -387,7 +465,6 @@ export default function DoctorMessages(){
                                         className='flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-blue-300'
                                     />
 
-                                    {/* Send button */}
                                     <button
                                         type='submit'
                                         disabled={sending || (!newMessage.trim() && !selectedFile)}
