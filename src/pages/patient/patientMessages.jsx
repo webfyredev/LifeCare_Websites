@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { LuSend, LuArrowLeft, LuPlus, LuImage, LuFileText, LuFile, LuX, LuDownload, LuPencil, LuTrash2, LuCheck } from 'react-icons/lu'
+import { LuSend, LuArrowLeft, LuPlus, LuImage, LuFileText, LuFile, LuX, LuDownload, LuPencil, LuTrash2, LuCheck, LuInfo, LuMail, LuPhone } from 'react-icons/lu'
 import api from '../../api/axios'
 import { scrollLeft, scrollRight, scrollUp, messageActions } from '../../animations/effects'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -19,7 +19,7 @@ export default function DoctorMessages(){
     const [hoveredMsgId, setHoveredMsgId] = useState(null)
     const [editingMsg, setEditingMsg] = useState(null)
     const [editBody, setEditBody] = useState('')
-
+    const [showDoctorInfo, setShowDoctorInfo] = useState(false)
 
 
     useEffect(() => {
@@ -186,7 +186,7 @@ export default function DoctorMessages(){
                         ) : conversations.map((conv) => (
                             <div
                                 key={conv.id}
-                                onClick={() => handleSelectConv(conv)}  // ← use handleSelectConv
+                                onClick={() => handleSelectConv(conv)}
                                 className={`flex items-start space-x-3 px-4 py-3.5 cursor-pointer border-b border-slate-100 transition-colors
                                     ${activeConv?.id === conv.id ? 'bg-slate-50' : 'hover:bg-slate-50'}`}
                             >
@@ -218,7 +218,7 @@ export default function DoctorMessages(){
 
                 
                 <div className={`
-                    flex-col bg-[#f8fafc]
+                    flex-col bg-[#f8fafc] relative
                     ${mobileView === 'chat' ? 'flex' : 'hidden'}
                     w-full md:flex md:flex-1
                 `}>
@@ -231,17 +231,29 @@ export default function DoctorMessages(){
                                 >
                                     <LuArrowLeft className='w-4 h-4 text-slate-600' />
                                 </button>
-                                {activeConv.other_person_picture ? (
-                                    <img src={activeConv.other_person_picture} className='w-9 h-9 rounded-full object-cover' alt='' />
-                                ) : (
-                                    <div className='w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold'>
-                                        {getInitials(activeConv.other_person_name)}
+                                <button 
+                                    onClick={() => setShowDoctorInfo(true)}
+                                    className='flex item-center space-x-3 flex-1 hover:bg-slate-50 rounded-xl px-2 py-2 -mx-2 transition-colors cursor-pointer text-left'>
+                                    {activeConv.other_person_picture ? (
+                                        <img src={activeConv.other_person_picture} className='w-9 h-9 rounded-full object-cover' alt='' />
+                                    ) : (
+                                        <div className='w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold'>
+                                            {getInitials(activeConv.other_person_name)}
+                                        </div>
+                                    )}
+                                    <div>
+                                        <p className='text-sm font-semibold text-slate-800'>{activeConv.other_person_name}</p>
+                                        <p className='text-xs text-slate-400'>{activeConv.other_person_subtitle}</p>
                                     </div>
-                                )}
-                                <div>
-                                    <p className='text-sm font-semibold text-slate-800'>{activeConv.other_person_name}</p>
-                                    <p className='text-xs text-slate-400'>{activeConv.other_person_subtitle}</p>
-                                </div>
+                                </button>
+                                <button
+                                    onClick={() => setShowDoctorInfo(true)}
+                                    className='w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 cursor-pointer text-slate-400 hover:text-slate-600 transition-colors flex-shrink-0'
+                                >
+                                    <LuInfo  className='w-4 h-4'/>
+
+                                </button>
+                                
                             </div>
 
                             <div className='flex-1 overflow-y-auto px-5 py-4 flex flex-col space-y-3'>
@@ -481,6 +493,103 @@ export default function DoctorMessages(){
                         </div>
                     )}
                 </div>
+                <AnimatePresence>
+                    {showDoctorInfo && (
+                        <>
+                            <motion.div
+                                initial = {{ opacity : 0}}
+                                animate = {{ opacity : 1}}
+                                exit = {{ opacity : 0}}
+                                transition={ { duration : 0.2}}
+                                onClick={() => setShowDoctorInfo(false)}
+                                className='absolute inset-0 bg-black/20 z-20'
+                            >
+                                <motion.div
+                                    initial = {{ x : '100%', opacity : 0}}
+                                    animate = {{ x : 0, opacity : 1}}
+                                    exit = {{ x : '100%', opacity : 0}}
+                                    transition={{ duration : 0.25, ease: 'easeOut'}}
+                                    className='absolute top-15 right-5 md:right-15 -full w-[90%] md:w-90 lg:w-80 m bg-white shadow-xl z-30 flex flex-col rounded-xl'
+                                >
+                                    <div className='flex items-center justify-between p-4 border-b border-slate-100'>
+                                        <h3 className='font-semibold text-slate-800'> Doctor Info</h3>
+                                        <button
+                                            onClick={() => setShowDoctorInfo(false)}
+                                            className='w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 cursor-pointer text-slate-400'
+                                        >
+                                            <LuX  className='w-4 h-4'/>
+                                        </button>
+
+                                    </div>
+                                    <div className='flex flex-col items-center px-5 py-6 border-b border-slate-100'>
+                                        {activeConv.other_person_picture ? (
+                                            <img 
+                                                src={activeConv.other_person_picture}
+                                                className='w-20 h-20 rounded-full object-cover border-4 border-slate-100'
+                                                alt=''
+                                            />
+                                        ) : (
+                                            <div className='w-20 h-20 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-2xl font-bold'>
+                                                {getInitials(activeConv.other_person_name)}
+
+                                            </div>
+                                        )}
+                                        <h2 className='font-bold text-slate-800 text-lg mt-3'>
+                                            {activeConv.other_person_name}
+                                        </h2>
+                                        <span className='text-sm text-blue-600 bg-blue-50 px-5 py-1.5 rounded-full mt-1 font-medium'>
+                                            {activeConv.other_person_subtitle} || {activeConv.other_person_license}
+                                        </span>
+                                    </div>
+
+                                    <div className='flex flex-col px-5 py-4 space-y-4 flex-1 overflow-y-auto'>
+                                        <p className='text-[10px] font-semibold text-slate-400 uppercase tracking-wider'>Contact Information</p>
+                                        {activeConv.other_person_email && (
+                                            <a
+                                                href={`mailto: ${activeConv.other_person_email}`}
+                                                className='flex items-center space-x-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors'
+                                            >
+                                                <div className='w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0'>
+                                                    <LuMail  className='w-4 h-4 text-blue-600'/>
+                                                </div>
+                                                <div>
+                                                    <p className='text-[10px] text-slate-400'>Email</p>
+                                                    <p className='text-sm text-slate-700 font-medium'>{activeConv.other_person_email}</p>
+                                                </div>
+                                                
+                                            </a>
+                                        )}
+                                        {activeConv.other_person_phone && (
+                                            <a 
+                                                href={`tel:${activeConv.other_person_phone}`}
+                                                className='flex items-center space-x-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors'
+                                            
+                                            >
+                                                <div className='w-9 h-9 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0'>
+                                                    <LuPhone  className='w-4 h-4 text-green-600'/>
+                                                </div>
+                                                <div>
+                                                    <p className='text-[10px] text-slate-400'>Phone</p>
+                                                    <p className='text-sm text-slate-700 font-medium'>{activeConv.other_person_phone}</p>
+                                                </div>
+                                                
+                                            </a>
+                                        )}
+                                        <div className='mt-2 p-3 bg-blue-50 rounded-xl border border-blue-100'>
+                                            <p className='text-xs text-blue-400 leading-relaxed'>
+                                                If your doctior is not responding in the portal, you can reach them directly using the contact details above
+                                            </p>
+
+                                        </div>
+                                    </div>
+
+
+                                </motion.div>
+
+                            </motion.div>
+                        </>
+                    )}
+                </AnimatePresence>
             </div>
         </>
     )

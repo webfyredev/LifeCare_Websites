@@ -244,7 +244,7 @@ export default function DoctorMessages(){
                                 </div>
                             </div>
 
-                            <div className='flex-1 overflow-y-auto px-5 py-4 flex flex-col space-y-3'>
+                            <div className='w-full flex-1 overflow-y-auto px-5 py-4 flex flex-col space-y-3'>
                                 {messages.map((msg) => (
                                     <div 
                                         key={msg.id} 
@@ -252,7 +252,7 @@ export default function DoctorMessages(){
                                         onMouseEnter={() => setHoveredMsgId(msg.id)}
                                         onMouseLeave={() => setHoveredMsgId(null)}
                                     >
-                                        <div className={`max-w-[75%] md:max-w-[65%] flex flex-col space-y-1 ${msg.is_mine ? 'items-end' : 'items-start'}`}>
+                                        <div className={`max-w-[75%] md:max-w-[80%] flex flex-col space-y-1 ${msg.is_mine ? 'items-end' : 'items-start'}`}>
 
                                             
                                             {msg.file_url && (
@@ -317,7 +317,7 @@ export default function DoctorMessages(){
                                                     </form>
 
                                                 ) : (
-                                                    <div className='flex items-center space-x-4'>
+                                                    <div className='flex items-center space-x-4 w-full'>
                                                         <div className={`px-4 py-2.5 rounded-2xl text-sm
                                                             ${msg.is_mine
                                                                 ? 'bg-blue-600 text-white rounded-br-sm'

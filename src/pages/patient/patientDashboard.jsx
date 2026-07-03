@@ -83,7 +83,7 @@ export default function PatientDashboard() {
                     </p>
                 </div>
                 
-                <div className='lg:px-3 flex space-x-4 mt-3 lg:mt-0'>
+                <div className='lg:px-3 md:flex md:flex-row flex flex-col space-y-3 md:space-x-4 mt-3 lg:mt-0'>
                     <div className='flex px-8 md:px-5 py-2 rounded-lg flex flex-col bg-white/10 hover:bg-white/20 text-center space-y-0.5 transition-all duration-300'>
                         <h3 className='text-white font-bold text-xl'>{getAge(user?.date_of_birth)}</h3>
                         <p className='text-[11px] text-[#dbeafe] font-medium'>Years</p>

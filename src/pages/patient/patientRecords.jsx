@@ -162,9 +162,9 @@ export default function PatientRecords (){
                                     {isExpanded && record.description && (
                                         <motion.div 
                                             {...scrollRight}
-                                            className='border-1 px-5 mb-4 bg-slate-100 border-t border-slate-100 rounded-xl flex items-center'>
+                                            className='border-1 px-5 py-2 md:py-0 mb-4 bg-slate-100 border-t border-slate-100 rounded-xl md:flex md:flex-row flex flex-col md:items-center md:justify-center'>
                                             <p className='text-[14px] text-blue-500 font-semibold'>Description:</p>
-                                            <p className='text-[14px] text-slate-600 leading-relaxed p-3'>
+                                            <p className='text-[14px] text-slate-600 leading-relaxed md:p-3'>
                                                 {record.description}
                                             </p>
                                         </motion.div>
