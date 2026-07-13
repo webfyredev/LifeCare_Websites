@@ -93,10 +93,9 @@ export default function PatientDashboard() {
                         <p className='text-[11px] text-[#dbeafe] font-medium'>Blood Type</p>
                     </div>
                     <div className='flex px-8 md:px-5 py-2 rounded-lg flex flex-col bg-white/10 hover:bg-white/20 text-center space-y-0.5 transition-all duration-300'>
-                        <h3 className='text-white font-bold text-sm'>{user?.patient_profile?.hospital_number || 'N/A'}</h3>
+                        <h3 className='text-white font-bold text-md'>{user?.patient_profile?.hospital_number || 'N/A'}</h3>
                         <p className='text-[11px] text-[#dbeafe] font-medium'>Patient ID</p>
-                    </div>
-                    
+                    </div>                    
                 </div>
                 
             </div>

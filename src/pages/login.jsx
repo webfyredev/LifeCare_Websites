@@ -102,8 +102,8 @@ export default function LoginPage(){
                             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full h-10 text-[11px] px-3 outline-blue-200 rounded-sm bg-gray-50 border-1 border-gray-200" placeholder="Enter your password" />
                         </div>
                         <div className="flex flex-row justify-between w-full h-auto mb-3">
-                            <p className="flex items-center text-xs"><input type="checkbox" required className="mr-1 mt-0.5 bg-white text-blue-600 cursor-pointer"/> Remember me</p>
-                            <a href="" className="text-xs font-semibold text-blue-600">Forgot Password?</a>
+                            <p className="flex items-center text-xs"><input type="checkbox" className="mr-1 mt-0.5 bg-white text-blue-600 cursor-pointer"/> Remember me</p>
+                            <Link to="/forgot-password" className="text-xs font-semibold text-blue-600">Forgot Password?</Link>
                         </div>
                         <motion.button {...buttonEffects} type="submit" disabled={loading} className="mt-3 h-11 text-xs font-semibold bg-blue-600 text-white rounded-sm cursor-pointer">
                             {loading ? 'Signing in...' : 'Sign in'}

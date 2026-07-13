@@ -30,6 +30,8 @@ import DoctorProfile from './pages/doctor/doctorProfile'
 import DoctorMessages from './pages/doctor/doctorMessages'
 import DoctorNotifications from './pages/doctor/doctorNotifications'
 import MyPatientDetails from './pages/doctor/doctorPatientDetails'
+import ForgotPassword from './pages/forgotPassword'
+import ResetPassword from './pages/resetPassword'
 
   
 
@@ -47,6 +49,8 @@ function App() {
           <Route path='/contacts' element={<Contacts />}></Route>
           <Route path='/login' element={<LoginPage />}></Route>
           <Route path='/register' element={<RegisterPage />}></Route>
+          <Route path='/forgot-password' element={<ForgotPassword />}></Route>
+          <Route path='/reset-password/:uid/:token' element={<ResetPassword />}></Route>
 
           // patient url routes
 

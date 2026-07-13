@@ -57,7 +57,7 @@ export default function PatientDetail() {
                     <div>
                         <h1 className='text-xl font-bold text-slate-800'>{patient.name}</h1>
                         <p className='text-sm text-slate-400'>
-                            {patient.gender} · {getAge(patient.date_of_birth)} yrs · {patient.blood_type || 'N/A'} · {patient.allergies || 'No known allergies'}
+                            {patient.gender} · {getAge(patient.date_of_birth)} yrs · {patient.blood_type || 'N/A'} · (Allergies : {patient.allergies || 'No known allergies'})
                         </p>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../api/axios'
-import { LuUsers, LuCalendarClock, LuClock, LuShieldAlert, LuArrowRight, LuStethoscope, LuOctagonAlert } from 'react-icons/lu'
+import { LuUsers, LuCalendarClock, LuClock, LuShieldAlert, LuArrowRight, LuStethoscope, LuOctagonAlert, LuFileText } from 'react-icons/lu'
 import { motion } from 'framer-motion'
 import { scrollRight } from '../../animations/effects'
 import { Link, useNavigate } from 'react-router-dom'
@@ -11,6 +11,20 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 export default function DoctorDashboard() {
     const { user} = useAuth()
     const [dashboard, setDashboard] = useState(null)
+    const [news, setNews] = useState([])
+    const [newsLoading, setNewsLoading] = useState(true)
+
+    useEffect(() => {
+        api.get('/doctors/news/')
+        .then((res) => setNews(res.data.articles || []))
+        .catch(console.error)
+        .finally(() => setNewsLoading(false))
+    }, [])
+
+    const formatNewsDate = (dateStr) => {
+        if (!dateStr) return ''
+        return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year:'numeric'})
+    }
 
     const navigate = useNavigate()
 
@@ -405,6 +419,83 @@ export default function DoctorDashboard() {
                         })}
                     </div>
                 )}
+            </div>
+            <div className='bg-white border border-slate-200 rounded-xl p-4 mt-4'>
+                <div className='flex justify-between items-center mb-4'>
+                    <div>
+                        <h1 className='font-semibold text-slate-800'>Latest in {dashboard?.specialization || 'Medicine'}</h1>
+                        <p className='text-[11px] text-slate-400 mt-0.5'>Current news in your field</p>
+                    </div>
+                    <span className='text-[10px] text-slate-300 bg-slate-50 px-2 py-1 rounded-lg'>
+                        Powered by NewsAPI
+                    </span>
+
+                </div>
+                {newsLoading ? (
+                    <div className='flex flex-col space-y-3'>
+                        {[1, 2, 3].map(i => (
+                            <div key={i} className='animate-pulse flex space-x-3'>
+                                <div className='w-16 h-16 bg-slate-100 rounded-lg flex-shrink-0'></div>
+                                <div className='flex-1 space-y-2 py-1'>
+                                    <div className='h-3 bg-slate-100 rounded w-3/4'></div>
+                                    <div className='h-3 bg-slate-100 rounded w-1/2'></div>
+
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : news.length === 0 ? (
+                    <p className='text-sm text-slate-400 text-center py-6'>
+                        No news available right now
+                    </p>
+                ): (
+                    <div className='flex flex-col space-y-3'>
+                        {news.map((article, index) => (
+                            <a 
+                            key={index}
+                            href={article.url}
+                            target='_blank'
+                            rel='noreferrer'
+                            className='flex space-x-3 p-3 rounded-xl hover:bg-slate-50 transition-colors group'
+                            
+                            >
+                                {article.image ? (
+                                    <img
+                                        src={article.image}
+                                        alt=''
+                                        className='w-16 h-16 rounded-lg object-cover flex-shrink-0 bg-slate-100'
+                                        onError={(e) => {e.target.style.display = 'none'}}
+                                    />
+                                ) : (
+                                    <div className='w-16 h-16 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0'>
+                                        <LuFileText  className='w-6 h-6 text-blue-300'/>
+                                    </div>
+                                )}
+                                <div className='flex-1 min-w-0'>
+                                    <p className='text-sm font-medium text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors'>
+                                        {article.title}
+                                    </p>
+                                    <div className='flex items-center space-x-2 mt-1.5'>
+                                        <span className='text-[10px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full font-medium'>
+                                            {article.source}
+                                        </span>
+                                        <span className='text-[10px] text-slate-400'>
+                                            {formatNewsDate(article.published_at)}
+                                        </span>
+                                    </div>
+                                    {article.description && (
+                                        <p className='text-xs text-slate-400 mt-1 line-claamp-1'>
+                                            {article.description}
+                                        </p>
+                                    )} 
+                                </div>
+                                <LuArrowRight  className='w-4 h-4 text-slate-300 group-hover:text-blue-500 flex-shrink-0 mt-1 transition-colors'/>
+
+                            </a>
+                        ))}
+                    </div>
+                )}
+
             </div>
         </div>
     </>
