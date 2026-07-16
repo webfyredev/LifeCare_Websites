@@ -5,15 +5,50 @@ import NavBar from '../../components/navbar'
 import Footer from '../../components/footer'
 import Portal_Navbar from './components/sidebar'
 import Portal_sidebar from './components/sidebar'
-import { LuCalendarClock, LuHospital, LuPill, LuMessageSquare, LuArrowRight, LuFileText } from 'react-icons/lu'
+import { LuCalendarClock, LuHospital, LuPill, LuMessageSquare, LuArrowRight, LuFileText, LuTriangle, LuCircleAlert, LuInfo, LuPlus, LuActivity, LuTriangleAlert } from 'react-icons/lu'
 import { Link } from 'react-router-dom'
 import { scrollRight, scrollUp } from '../../animations/effects'
 import { motion } from 'framer-motion'
 import PageLoader from '../../components/pageLoader'
+import { bloodTypeInfo, getAllergyInfo, getMedicationGuide, medicationGuides } from '../../data/heathContent'
 
 export default function PatientDashboard() {
   const { user, logout } = useAuth()
   const [dashboard, setDashboard] = useState(null)
+  const [vitalModal, setVitalModal] = useState(false)
+  const [vitalsForm, setVitalForms] = useState({
+    blood_pressure_systolic : '',
+    blood_pressure_diastolic : '',
+    weight_kg : '',
+    heart_rate_bpm : '',
+    temperature_celsius : '',
+    blood_sugar_mgdl : '',
+    notes : '',
+  })
+  const [vitalsLoading, setVitalsLoading] = useState(false)
+  const [vitalsSuccess, setVitalSuccess] = useState(false)
+
+  const handleVitalsSubmit = async (e) => {
+    e.preventDefault()
+    setVitalsLoading(true)
+    try{
+        await api.post('/patients/vitals/', vitalsForm)
+        setVitalSuccess(true)
+        setVitalModal(false)
+        api.get('/patients/dashboard/').then(res => setDashboard(res.data))
+        setTimeout(() => setVitalSuccess(false), 3000)
+    } catch(err) {
+        console.error(err)
+    } finally{
+        setVitalsLoading(false)
+    }
+  }
+
+  const bloodType = user?.patient_profile?.blood_type
+  const bloodTypeData = bloodType ? bloodTypeInfo[bloodType] : null
+  const allergyCards = getAllergyInfo(user?.patient_profile?.allergies || '')
+  const medicalGuides = (dashboard?.active_prescriptions || []).map(p => ({...getMedicationGuide(p.medication_name), prescriptionName: p.medication_name})).filter(g => g.name)
+
 
   useEffect(() => {
     api.get('/patients/dashboard/')
@@ -76,7 +111,7 @@ export default function PatientDashboard() {
             <div className='w-full lg:flex lg:flex-row lg:items-center flex flex-col lg:justify-between'>
                 <div className='w-auto flex flex-col'>
                     <h3 className='text-2xl font-bold text-white'>
-                        {user?.first_name} {user?.last_name}
+                        {user?.first_name} {user?.last_name} 
                     </h3>
                     <p className='text-[10px] md:text-[12px] mt-2 text-[#dbeafe] font-medium'>
                         Access your healthcare updates, appointments, and medical information in one place.
@@ -291,22 +326,261 @@ export default function PatientDashboard() {
                 </div>
             </div>
         )}
-        {/* {dashboard?.unread_messages > 0 && (
-            <Link to='/patient/messages' className='block'>
-                <div className='bg-blue-600 rounded-xl p-4 flex items-center space-x-4'>
-                    <div className='w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0'>
-                        <LuMessageSquare className='w-5 h-5 text-white' />
-                    </div>
-                    <div className='flex-1'>
-                        <p className='text-sm font-semibold text-white'>
-                            {dashboard.unread_messages} unread message{dashboard.unread_messages > 1 ? 's' : ''}
-                        </p>
-                        <p className='text-xs text-blue-100 mt-0.5'>Tap to view and respond</p>
-                    </div>
-                    <LuArrowRight className='w-4 h-4 text-white flex-shrink-0' />
+        {dashboard?.alerts?.length > 0 && (
+            <div className='flex flex-col space-y-2 border-1 border-red-500'>
+                {dashboard.alerts.map((alert, i) => {
+                    const styles = {
+                        warning : 'bg-amber-50 border-amber-200 text-amber-800',
+                        danger : 'bg-red-50 border-red-200 text-red-700',
+                        info : 'bg-blue-50 border-blue-200 text-blue-700'
+                    }
+                    const icons = {
+                        warning : <LuTriangle  className='w-4 h-4 flex-shrink-0 mt-0.5'/>,
+                        danger : <LuCircleAlert  className='w-4 h-4 flex-shrink-0 mt-0.5'/>,
+                        info : <LuInfo  className='w-4 h-4 flex-shrink-0 mt-0.5'/>,
+
+                    }
+                    return (
+                        <div key={i} className={`flex items-center space-x-3 p-3 rounded-xl border ${styles[alert.severity]}`}>
+                            {icons[alert.severity]}
+                            <div className='flex-1'>
+                                <p className='text-sm font-semibold'>
+                                    {alert.title}
+                                </p>
+                                <p className='text-xs mt-0.5 opacity-80'>
+                                    {alert.message}
+                                </p>
+                            </div>
+                            <Link
+                                to={alert.action_path}
+                                className='text-xs font-medium underline flex-shrink-0 mt-0.5'
+                            >
+                                {alert.action_label}
+                            </Link>
+
+                        </div>
+                    )
+                })}
+            </div>
+        )}
+        <div className='bg-white border border-slate-100 mt-5 rounded-xl p-4'>
+            <div className='flex justify-between items-center mb-4'>
+                <div>
+                    <h3 className='font-semibold text-slate-800'>My Vitals</h3>
+                    <p className='text-[11px] text-slate-400 mt-0.5'>
+                        {dashboard?.lastest_vitals ? `Last Logged ${new Date(dashboard.latest_vitals.logged_at).toLocaleDateString('en-US', {month : 'short', day : 'numeric'})}` : 'No vitals logged yet'}
+                    </p>
                 </div>
-            </Link>
-        )} */}
+                <button onClick={() => setVitalModal(true)}
+                    className='flex items-center space-x-1.5 text-xs font-medium px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition-colors'
+                >
+                    <LuPlus  className='w-3.5 h-3.5'/>
+                    <span>Log Vitals</span>
+                </button>
+
+            </div>
+            {dashboard?.latest_vitals ? (
+                <div className='border-1 border-red-500 grid grid-cols-2 md:grid-cols-4 gap-3'>
+                    {[
+                        {
+                            label: 'Blood Pressure',
+                            value: dashboard.latest_vitals.blood_pressure || 'N/A',
+                            unit: 'mmHg',
+                            icon: LuActivity,
+                            color: 'bg-red-50 text-red-500'
+                        },
+                        {
+                            label: 'Heart Rate',
+                            value: dashboard.latest_vitals.heart_rate_bpm || 'N/A',
+                            unit: 'bpm',
+                            icon: LuHeart,
+                            color: 'bg-pink-50 text-pink-500'
+                        },
+                        {
+                            label: 'Weight',
+                            value: dashboard.latest_vitals.weight_kg || 'N/A',
+                            unit: 'kg',
+                            icon: LuActivity,
+                            color: 'bg-blue-50 text-blue-500'
+                        },
+                        {
+                            label: 'Blood Sugar',
+                            value: dashboard.latest_vitals.blood_sugar_mgdl || 'N/A',
+                            unit: 'mg/dL',
+                            icon: LuDroplets,
+                            color: 'bg-amber-50 text-amber-500'
+                        },
+                    ].map(({label, value, unit, icon: Icon, color }) => (
+                        <div key={label} className='bg-slate-50 rounded-xl p-3'>
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-2 ${color}`}>
+                                <Icon  className='w-4 h-4'/>
+                            </div>
+                            <p className='text-lg font-bold text-slate-800'>
+                                {value !== 'N/A' ? value : <span className='text-slate-300 text-sm'>-</span>}
+                            </p>
+                            {value !== 'N/A' && <p className='text-[10px] text-slate-400'> {unit} </p>}
+                            <p className='text-[10px] text-slate-400 mt-0.5'>
+                                {label}
+                            </p>
+
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div className='flex flex-col items-center py-6 space-y-2'>
+                    <div className='w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center'>
+                        <LuActivity className='w-5 h-5 text-slate-400' />
+                    </div>
+                    <p className='text-sm text-slate-400'>No vitals logged yet</p>
+                    <p className='text-xs text-slate-300'>Log your vitals to track your health over time</p>
+                </div>
+            )}
+        </div>
+
+        {bloodTypeData && (
+            <div className='bg-white border border-slate-100 rounded-xl p-4 mt-5'>
+                <h3 className='font-semibold text-slate-800 mb-3'>Your Blood Type: <span className='text-blue-600'>{bloodType}</span></h3>
+                <p className='text-sm text-slate-600 mb-3'> { bloodTypeData.summary}</p>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+                    <div className='bg-green-50 rounded-xl p-3'>
+                        <p className='text-xs font-semibold text-green-700 mb-2'>
+                            You can donate to 
+                        </p>
+                        <div className='flex flex-wrap gap-1.5'>
+                            {bloodTypeData.canDonateTo.map((t, i) => (
+                                <span key={i} className='font-medium text-xs bg-green-100 text-green-700 p-2.5 rounded-full'>
+                                    {t}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                    <div className='bg-blue-50 rounded-xl p-3'>
+                        <p className='text-xs font-semibold text-blue-700 mb-2'> You can recieve from</p>
+                        <div className='flex flex-wrap gap-1.5'>
+                            {bloodTypeData.canReceiveFrom.map((t, i) => (
+                                <span key={i} className='font-medium text-xs bg-blue-100 text-blue-700 p-2.5 rounded-full'>
+                                    {t}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                    <div className='mt-3 p-3 bg-amber-50 rounded-xl border border-amber-100'>
+                        <p className='text-xs text-amber-700'>
+                            <span className='font-semibold'>In emergencies: </span> {bloodTypeData.emergency}
+                        </p>
+                    </div>
+                    <p className='text-xs text-slate-400 lg:mt-5'>
+                        {bloodTypeData.fact}
+                    </p>
+                </div>
+
+            </div>
+        )}
+
+        {allergyCards.length > 0 && (
+            <div className='flex flex-col space-y-3 mt-5'>
+                <h3 className='font-semibold text-slate-800'>Your Allergy Information</h3>
+                {allergyCards.map((allergy, i) => (
+                    <div key={i} className='bg-white border border-amber-100 rounded-xl p-4'>
+                        <div className='flex items-center space-x-2 mb-3'>
+                            <div className='w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0'>
+                                <LuTriangleAlert  className='w-4 h-4 text-amber-600'/>
+                            </div>
+                            <h3 className='font-semibold text-slate-800'>
+                                {allergy.title}
+                            </h3>
+                        </div>
+                        <p className='text-sm text-slate-600 mb-3'>{allergy.summary}</p>
+                        <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+                            <div>
+                                <p className='text-xs font-semibold text-red-600 mb-1.5'>Avoid these</p>
+                                <ul className='flex flex-col space-y-2'>
+                                    {allergy.avoid.map((item, j) => (
+                                        <li key={j} className='text-xs text-slate-600 flex items-center space-x-1.5'>
+                                            <span className='w-1 h-1 rounded-full bg-red-400 flex-shrink-0'></span>
+                                            <span>{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <div>
+                                <p className='text-xs font-semibold text-amber-600 mb-2'>Watch for these symptoms</p>
+                                <ul className='flex flex-col space-y-2'>
+                                    {allergy.symptoms.map((item, j) => (
+                                        <li key={j} className='text-xs text-slate-600 flex items-center space-x-1.5'>
+                                            <span className='w-1 h-1 rounded-full bg-amber-400 flex-shrink-0'></span>
+                                            <span>{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                        <div className='mt-3 p-2.5 bg-blue-50 rounded-lg'>
+                            <p className='text-xs text-blue-700'>
+                                <span className='font-semibold'>Tip: </span> {allergy.tip}
+                            </p>
+                        </div>
+
+                    </div>
+                ))}
+            </div>
+        )}
+        {medicalGuides.length > 0 && (
+            <div className='flex flex-col space-y-3 mt-5'>
+                <h3 className='font-semibold text-slate-800'>Your Medication Guides</h3>
+                {medicalGuides.map((guide, i) => (
+                    <div key={i} className='bg-white border border-slate-100 rounded-xl p-4'>
+                        <div className='lg:flex lg:flex-row flex flex-col lg:items-center space-y-2 lg:space-y-0 lg:space-x-2 mb-3'>
+                            <div className='w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0'>
+                                <LuPlus  className='w-4 h-4 text-purple-600'/>
+                            </div>
+                            <div>
+                                <h3 className='font-semibold text-slate-800'>{guide.name}</h3>
+                                <p className='text-xs text-slate-400'>{guide.purpose}</p>
+                            </div>
+                            <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-3'>
+                                <div className='bg-slate-50 rounded-lg p-3'>
+                                    <p className='text-xs font-semibold text-slate-600 mb-1.5'>Common side effects</p>
+                                    <ul className='flex flex-col space-y-1'>
+                                        {guide.sideEffects.map((s, j)=> (
+                                            <li key={j} className='text-xs text-slate-500'>
+                                                {s}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className='bg-green-50 rounded-lg p-3'>
+                                    <p className='text-xs font-semibold text-green-700 mb-1.5'>
+                                        Tips
+                                    </p>
+                                    <ul className='flex flex-col space-y-1'>
+                                        {guide.tips.map((t, j) => (
+                                            <li key={j} className='text-xs text-green-700'>
+                                                {t}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className='bg-red-50 rounded-lg p-3'>
+                                    <p className='font-semibold text-red-500 mb-1.5'>Call your doctor if</p> 
+                                    <ul className='flex flex-col space-y-1'>
+                                        {guide.callDoctor.map((c, j) => (
+                                        <li key={j} className='text-xs text-red-600'>
+                                            - {c}
+                                        </li>
+                                        ))} 
+                                    </ul> 
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                ))}
+            </div>
+        )}
+        
         
     </>
   )

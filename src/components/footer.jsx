@@ -147,8 +147,8 @@ export default function Footer(){
                         <a href="" className="text-[9px] md:text-xs hover:font-semibold text-gray-300">
                             Terms of Service
                         </a>
-                        <a href="mailto:oyinwebworks@gmail.com" className="hidden md:flex text-[9px] md:text-xs hover:font-semibold text-gray-300">
-                            oyinbook@gmail.com
+                        <a href="mailto:oyinbook@gmail.com" className="hidden md:flex text-[9px] md:text-xs hover:font-semibold text-gray-300">
+                            Developed by Oyinlade
                         </a>
                     </div>
                 </div>
