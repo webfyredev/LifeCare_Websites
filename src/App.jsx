@@ -32,6 +32,7 @@ import DoctorNotifications from './pages/doctor/doctorNotifications'
 import MyPatientDetails from './pages/doctor/doctorPatientDetails'
 import ForgotPassword from './pages/forgotPassword'
 import ResetPassword from './pages/resetPassword'
+import PatientMedications from './pages/patient/patientMedications'
 
   
 
@@ -67,6 +68,7 @@ function App() {
             <Route path='messages' element = {<PatientMessages />}></Route>
             <Route path='settings' element = {<PaitientSettings />}></Route>
             <Route path='notifications' element={<PatientNotifications />}></Route>
+            <Route path='medications' element={<PatientMedications />}></Route>
           </Route>
 
           // doctor url routes

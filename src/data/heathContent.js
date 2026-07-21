@@ -1,33 +1,24 @@
-export const allergyInfo = {
-    'penicillin': {
-        title: 'Penicillin Allergy',
-        summary: 'You are allergic to Penicillin, a common antibiotic.',
-        avoid: ['Amoxicillin', 'Ampicillin', 'Augmentin', 'Piperacillin'],
-        symptoms: ['Rash or hives', 'Swelling of face or lips', 'Difficulty breathing', 'Anaphylaxis in severe cases'],
-        tip: 'Always inform any doctor, dentist, or pharmacist about this allergy before receiving treatment.',
-    },
-    'sulfa': {
-        title: 'Sulfa Drug Allergy',
-        summary: 'You are allergic to sulfonamide antibiotics (sulfa drugs).',
-        avoid: ['Bactrim', 'Septra', 'Trimethoprim-sulfamethoxazole'],
-        symptoms: ['Skin rash', 'Stevens-Johnson syndrome in severe cases', 'Kidney problems'],
-        tip: 'Inform healthcare providers before any procedure or new prescription.',
-    },
-    'aspirin': {
-        title: 'Aspirin / NSAID Allergy',
-        summary: 'You are sensitive to aspirin and related pain relievers.',
-        avoid: ['Aspirin', 'Ibuprofen', 'Naproxen', 'Diclofenac'],
-        symptoms: ['Nasal congestion', 'Hives', 'Asthma symptoms', 'Stomach pain'],
-        tip: 'Paracetamol (Acetaminophen) is usually safe as an alternative. Always confirm with your doctor.',
-    },
-    'peanut': {
-        title: 'Peanut Allergy',
-        summary: 'You have a peanut allergy which can cause severe reactions.',
-        avoid: ['Peanut oil', 'Groundnuts', 'Mixed nuts', 'Foods cooked in peanut oil'],
-        symptoms: ['Hives', 'Swelling', 'Vomiting', 'Anaphylaxis'],
-        tip: 'Carry an epinephrine auto-injector (EpiPen) if prescribed. Read all food labels carefully.',
-    },
+import { useEffect, useState } from "react";
+import api from "../api/axios";
+
+export function useDrugInfo(medicationName){
+    const [data, setData] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+
+    useEffect(() => {
+        if(!medicationName) return
+        setLoading(true)
+        api.get(`/patients/drug-info/?name=${encodeURIComponent(medicationName)}`)
+        .then(res => setData(res.data))
+        .catch(err => setError(err))
+        .finally(() => setLoading(false))
+    }, [medicationName])
+
+    return { data, loading, error }
 }
+
+
 
 export const bloodTypeInfo = {
     'A+': {
@@ -86,52 +77,4 @@ export const bloodTypeInfo = {
         emergency: 'In emergencies, you need AB- or O- blood.',
         fact: 'AB- is the rarest blood type — under 1% of people have it.',
     },
-}
-
-export const medicationGuides = {
-    'metformin': {
-        name: 'Metformin',
-        purpose: 'Controls blood sugar levels in Type 2 diabetes.',
-        sideEffects: ['Nausea and stomach upset', 'Diarrhoea (usually improves over time)', 'Loss of appetite'],
-        tips: ['Take with food to reduce stomach upset', 'Avoid excessive alcohol', 'Stay hydrated'],
-        callDoctor: ['Unusual muscle pain or weakness', 'Difficulty breathing', 'Stomach pain that does not go away'],
-    },
-    'lisinopril': {
-        name: 'Lisinopril',
-        purpose: 'Lowers blood pressure and protects the heart and kidneys.',
-        sideEffects: ['Dry persistent cough', 'Dizziness when standing up', 'Elevated potassium levels'],
-        tips: ['Take at the same time each day', 'Avoid potassium supplements unless prescribed', 'Rise slowly from sitting or lying down'],
-        callDoctor: ['Swelling of face, lips, or throat', 'Severe dizziness or fainting', 'Signs of high potassium (muscle weakness)'],
-    },
-    'atorvastatin': {
-        name: 'Atorvastatin',
-        purpose: 'Lowers cholesterol and reduces risk of heart disease.',
-        sideEffects: ['Muscle aches', 'Headache', 'Digestive issues'],
-        tips: ['Can be taken at any time of day', 'Avoid large amounts of grapefruit juice', 'Report any unexplained muscle pain immediately'],
-        callDoctor: ['Unexplained muscle pain, tenderness, or weakness', 'Dark coloured urine', 'Yellowing of skin or eyes'],
-    },
-    'amoxicillin': {
-        name: 'Amoxicillin',
-        purpose: 'Antibiotic that fights bacterial infections.',
-        sideEffects: ['Diarrhoea', 'Nausea', 'Skin rash'],
-        tips: ['Complete the full course even if you feel better', 'Take with or without food', 'Space doses evenly throughout the day'],
-        callDoctor: ['Severe skin rash or hives', 'Difficulty breathing', 'Severe diarrhoea'],
-    },
-}
-
-export const getMedicationGuide = (medicationName) => {
-    const key = medicationName.toLowerCase().split(' ')[0]
-    return medicationGuides[key] || null
-}
-
-export const getAllergyInfo = (allergyText) => {
-    if (!allergyText) return []
-    const results = []
-    const text = allergyText.toLowerCase()
-    Object.keys(allergyInfo).forEach(key => {
-        if (text.includes(key)) {
-            results.push(allergyInfo[key])
-        }
-    })
-    return results
 }

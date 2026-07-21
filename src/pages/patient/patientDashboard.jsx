@@ -5,13 +5,13 @@ import NavBar from '../../components/navbar'
 import Footer from '../../components/footer'
 import Portal_Navbar from './components/sidebar'
 import Portal_sidebar from './components/sidebar'
-import { LuCalendarClock, LuHospital, LuPill, LuMessageSquare, LuArrowRight, LuFileText, LuTriangle, LuCircleAlert, LuInfo, LuPlus, LuActivity, LuTriangleAlert } from 'react-icons/lu'
+import { LuCalendarClock, LuHospital, LuPill, LuMessageSquare, LuArrowRight, LuFileText, LuTriangle, LuCircleAlert, LuInfo, LuPlus, LuActivity, LuTriangleAlert, LuX, LuHeart, LuDroplets } from 'react-icons/lu'
 import { Link } from 'react-router-dom'
 import { scrollRight, scrollUp } from '../../animations/effects'
 import { motion } from 'framer-motion'
 import PageLoader from '../../components/pageLoader'
-import { bloodTypeInfo, getAllergyInfo, getMedicationGuide, medicationGuides } from '../../data/heathContent'
-
+import { useDrugInfo, bloodTypeInfo } from '../../data/heathContent'
+import { useAllergyInfo } from '../../hooks/useHealthInfo'
 export default function PatientDashboard() {
   const { user, logout } = useAuth()
   const [dashboard, setDashboard] = useState(null)
@@ -27,6 +27,7 @@ export default function PatientDashboard() {
   })
   const [vitalsLoading, setVitalsLoading] = useState(false)
   const [vitalsSuccess, setVitalSuccess] = useState(false)
+  const { data: allergyCards, loading: allergyLoading} = useAllergyInfo(user?.patient_profile?.allergies)
 
   const handleVitalsSubmit = async (e) => {
     e.preventDefault()
@@ -46,9 +47,7 @@ export default function PatientDashboard() {
 
   const bloodType = user?.patient_profile?.blood_type
   const bloodTypeData = bloodType ? bloodTypeInfo[bloodType] : null
-  const allergyCards = getAllergyInfo(user?.patient_profile?.allergies || '')
-  const medicalGuides = (dashboard?.active_prescriptions || []).map(p => ({...getMedicationGuide(p.medication_name), prescriptionName: p.medication_name})).filter(g => g.name)
-
+  const blood = user?.patient_profile?.blood_type
 
   useEffect(() => {
     api.get('/patients/dashboard/')
@@ -135,7 +134,7 @@ export default function PatientDashboard() {
                 
             </div>
         </div>
-        <div className='w-full py-2 mt-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
+        <div className='w-full py-2 mt-5 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-5'>
            {patients_stats.map((data, index) => (
             <motion.div 
                 {...scrollRight} 
@@ -327,7 +326,7 @@ export default function PatientDashboard() {
             </div>
         )}
         {dashboard?.alerts?.length > 0 && (
-            <div className='flex flex-col space-y-2 border-1 border-red-500'>
+            <div className='flex flex-col space-y-2 mt-5'>
                 {dashboard.alerts.map((alert, i) => {
                     const styles = {
                         warning : 'bg-amber-50 border-amber-200 text-amber-800',
@@ -338,7 +337,6 @@ export default function PatientDashboard() {
                         warning : <LuTriangle  className='w-4 h-4 flex-shrink-0 mt-0.5'/>,
                         danger : <LuCircleAlert  className='w-4 h-4 flex-shrink-0 mt-0.5'/>,
                         info : <LuInfo  className='w-4 h-4 flex-shrink-0 mt-0.5'/>,
-
                     }
                     return (
                         <div key={i} className={`flex items-center space-x-3 p-3 rounded-xl border ${styles[alert.severity]}`}>
@@ -380,7 +378,7 @@ export default function PatientDashboard() {
 
             </div>
             {dashboard?.latest_vitals ? (
-                <div className='border-1 border-red-500 grid grid-cols-2 md:grid-cols-4 gap-3'>
+                <div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
                     {[
                         {
                             label: 'Blood Pressure',
@@ -477,7 +475,11 @@ export default function PatientDashboard() {
             </div>
         )}
 
-        {allergyCards.length > 0 && (
+        {allergyLoading ? (
+            <div className='bg-white border border-slate-100 rounded-xl p-4'>
+                <p className='text-sm text-slate-400'>Loading allergy information...</p>
+            </div>
+        ): allergyCards.length > 0 && (
             <div className='flex flex-col space-y-3 mt-5'>
                 <h3 className='font-semibold text-slate-800'>Your Allergy Information</h3>
                 {allergyCards.map((allergy, i) => (
@@ -487,97 +489,92 @@ export default function PatientDashboard() {
                                 <LuTriangleAlert  className='w-4 h-4 text-amber-600'/>
                             </div>
                             <h3 className='font-semibold text-slate-800'>
-                                {allergy.title}
+                                {allergy.allergen} Allergy
                             </h3>
                         </div>
-                        <p className='text-sm text-slate-600 mb-3'>{allergy.summary}</p>
-                        <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
-                            <div>
-                                <p className='text-xs font-semibold text-red-600 mb-1.5'>Avoid these</p>
-                                <ul className='flex flex-col space-y-2'>
-                                    {allergy.avoid.map((item, j) => (
-                                        <li key={j} className='text-xs text-slate-600 flex items-center space-x-1.5'>
-                                            <span className='w-1 h-1 rounded-full bg-red-400 flex-shrink-0'></span>
-                                            <span>{item}</span>
-                                        </li>
-                                    ))}
-                                </ul>
+                        <p className='text-sm text-slate-600 mb-3'>{allergy.general_warning}</p>
+                        {allergy.related_drugs?.length > 0 && (
+                            <div className='flex flex-col space-y-2'>
+                                <p className='text-xs font-semibold text-red-600'>Related drugs to be cautious about</p>
+                                {allergy.related_drugs.map((drug, j) => (
+                                    <div key={j} className='bg-red-50 rounded-lg p-3'>
+                                        <p className='text-xs font-semibold text-red-700'>
+                                            {drug.brand || drug.generic} {drug.brand && drug.generic && `${drug.generic}`}
+                                        </p>
+                                        {drug.warning && (
+                                            <p className='text-xs text-red-600 mt-1'>
+                                                {drug.warning}
+                                            </p>
+                                        )}
+                                    </div>
+                                ))}
                             </div>
-                            <div>
-                                <p className='text-xs font-semibold text-amber-600 mb-2'>Watch for these symptoms</p>
-                                <ul className='flex flex-col space-y-2'>
-                                    {allergy.symptoms.map((item, j) => (
-                                        <li key={j} className='text-xs text-slate-600 flex items-center space-x-1.5'>
-                                            <span className='w-1 h-1 rounded-full bg-amber-400 flex-shrink-0'></span>
-                                            <span>{item}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                        <div className='mt-3 p-2.5 bg-blue-50 rounded-lg'>
-                            <p className='text-xs text-blue-700'>
-                                <span className='font-semibold'>Tip: </span> {allergy.tip}
-                            </p>
-                        </div>
-
+                        )}
                     </div>
                 ))}
             </div>
         )}
-        {medicalGuides.length > 0 && (
-            <div className='flex flex-col space-y-3 mt-5'>
-                <h3 className='font-semibold text-slate-800'>Your Medication Guides</h3>
-                {medicalGuides.map((guide, i) => (
-                    <div key={i} className='bg-white border border-slate-100 rounded-xl p-4'>
-                        <div className='lg:flex lg:flex-row flex flex-col lg:items-center space-y-2 lg:space-y-0 lg:space-x-2 mb-3'>
-                            <div className='w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0'>
-                                <LuPlus  className='w-4 h-4 text-purple-600'/>
-                            </div>
-                            <div>
-                                <h3 className='font-semibold text-slate-800'>{guide.name}</h3>
-                                <p className='text-xs text-slate-400'>{guide.purpose}</p>
-                            </div>
-                            <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-3'>
-                                <div className='bg-slate-50 rounded-lg p-3'>
-                                    <p className='text-xs font-semibold text-slate-600 mb-1.5'>Common side effects</p>
-                                    <ul className='flex flex-col space-y-1'>
-                                        {guide.sideEffects.map((s, j)=> (
-                                            <li key={j} className='text-xs text-slate-500'>
-                                                {s}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                                <div className='bg-green-50 rounded-lg p-3'>
-                                    <p className='text-xs font-semibold text-green-700 mb-1.5'>
-                                        Tips
-                                    </p>
-                                    <ul className='flex flex-col space-y-1'>
-                                        {guide.tips.map((t, j) => (
-                                            <li key={j} className='text-xs text-green-700'>
-                                                {t}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                                <div className='bg-red-50 rounded-lg p-3'>
-                                    <p className='font-semibold text-red-500 mb-1.5'>Call your doctor if</p> 
-                                    <ul className='flex flex-col space-y-1'>
-                                        {guide.callDoctor.map((c, j) => (
-                                        <li key={j} className='text-xs text-red-600'>
-                                            - {c}
-                                        </li>
-                                        ))} 
-                                    </ul> 
-                                </div>
-
-                            </div>
-
+        {vitalModal && (
+            <div className='fixed inset-0 bg-black/40 flex items-center justify-center z-50'>
+                <div className='bg-white rounded-xl p-6 w-full max-w-md shadow-lg'>
+                    <div className='flex justify-between items-center mb-4'>
+                        <div>
+                            <h2 className='font-semibold text-slate-800'>
+                                Log Your Vitals
+                            </h2>
+                            <p className='text-xs text-slate-400 mt-0.5'>Fill in what you know - all fields are optional</p>
                         </div>
-
+                        <button onClick={()=> setVitalModal(false)} className='text-slate-400 hover:text-slate-600 cursor-pointer'>
+                            <LuX  className='w-5 h-5'/>
+                        </button>
                     </div>
-                ))}
+                    <form onSubmit={handleVitalsSubmit} className='flex flex-col space-y-3'>
+                        <div className='grid grid-cols-2 gap-3'>
+                            <div className='flex flex-col space-y-1'>
+                                <label className='text-xs font-semibold text-slate-600'>Systolic BP (top)</label>
+                                <input className='border border-slate-200 rounded-lg px-3 py-2 text-xm outline-blue-300' type="number" placeholder='e.g. 120' value={vitalsForm.blood_pressure_systolic} onChange={e => setVitalForms({...vitalsForm, blood_pressure_systolic : e.target.value})} />
+                            </div>
+                            <div className='flex flex-col space-y-1'>
+                                <label className='text-xs font-semibold text-slate-600'>Diastolic BP (bottom)</label>
+                                <input className='border border-slate-200 rounded-lg px-3 py-2 text-xm outline-blue-300' type="number" placeholder='e.g. 80' value={vitalsForm.blood_pressure_diastolic} onChange={e => setVitalForms({...vitalsForm, blood_pressure_diastolic : e.target.value})} />
+                            </div>
+                            <div className='flex flex-col space-y-1'>
+                                <label className='text-xs font-semibold text-slate-600'>Heart Rate (bpm)</label>
+                                <input className='border border-slate-200 rounded-lg px-3 py-2 text-xm outline-blue-300' type="number" placeholder='e.g. 72' value={vitalsForm.heart_rate_bpm} onChange={e => setVitalForms({...vitalsForm, heart_rate_bpm : e.target.value})} />
+                            </div>
+                            <div className='flex flex-col space-y-1'>
+                                <label className='text-xs font-semibold text-slate-600'>Weight (kg)</label>
+                                <input className='border border-slate-200 rounded-lg px-3 py-2 text-xm outline-blue-300' type="number" step='0.1' placeholder='e.g. 70.5' value={vitalsForm.weight_kg} onChange={e => setVitalForms({...vitalsForm, weight_kg : e.target.value})} />
+                            </div>
+                            <div className='flex flex-col space-y-1'>
+                                <label className='text-xs font-semibold text-slate-600'>Temperature (°C)</label>
+                                <input className='border border-slate-200 rounded-lg px-3 py-2 text-xm outline-blue-300' type="number" step='0.1' placeholder='e.g. 36.6' value={vitalsForm.temperature_celsius} onChange={e => setVitalForms({...vitalsForm, temperature_celsius : e.target.value})} />
+                            </div>
+                            <div className='flex flex-col space-y-1'>
+                                <label className='text-xs font-semibold text-slate-600'>Blood Sugar (mg/DL)</label>
+                                <input className='border border-slate-200 rounded-lg px-3 py-2 text-xm outline-blue-300' type="number" placeholder='e.g. 95' value={vitalsForm.blood_sugar_mgdl} onChange={e => setVitalForms({...vitalsForm, blood_sugar_mgdl : e.target.value})} />
+                            </div>
+                        </div>
+                        <div className='flex flex-col space-y-1'>
+                            <label className='text-xs font-semibold text-slate-600'>Notes (Optional)</label>
+                            <textarea rows={2} placeholder='Any symptoms or notes to add...' value={vitalsForm.notes} onChange={e => setVitalForms({...vitalsForm, notes : e.target.value})} className='border border-slate-200 rounded-lg px-3 py-2 text-sm outline-blue-300 resize-none'></textarea>
+                        </div>
+                        <div className='flex space-x-3 pt-1'>
+                                <button type='button' onClick={() => setVitalModal(false)}
+                                    className='flex-1 py-2.5 text-sm border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 cursor-pointer'
+                                >
+                                    Cancel
+                                </button>
+                                <button type='submit' disabled={vitalsLoading} onClick={() => setVitalModal(true)}
+                                    className='flex-1 py-2.5 text-sm bg-blue-500 text-white rounded-lg  hover:bg-blue-600 cursor-pointer disabled:opacity-60'
+                                >
+                                    {vitalsLoading ? 'Saving' : 'Save Vitals'}
+                                </button>
+                            </div>
+                    </form>
+
+                </div>
+
             </div>
         )}
         

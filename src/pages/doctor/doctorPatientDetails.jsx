@@ -124,9 +124,49 @@ export default function PatientDetail() {
                 </motion.div>
 
                 {/* Appointments + prescriptions */}
+                
                 <div className='lg:col-span-2 flex flex-col space-y-5'>
 
                     {/* Recent appointments */}
+                    <div className='bg-white border border-slate-100 rounded-xl p-4 flex flex-col space-y-4.5'>
+                        <div className='flex justify-between items-center'>
+                            <h3 className='font-semibold text-slate-800 mb-3'>Patient Vitals</h3>
+                            {patient.vitals_logged_at && (
+                                <span className='text-[10px] text-slate-400 font-medium'>
+                                    Last logged {new Date(patient.vitals_logged_at).toLocaleDateString('en-US', {month : 'short', day : 'numeric', year : 'numeric'})}
+                                </span>
+                            )}
+                        </div>
+                        {!patient.blood_pressure_systolic && !patient.heart_rate_bpm && !patient.blood_sugar_mgdl && !patient.temperature_celcius ? (
+                            <div className='flex flex-col items-center py-4 space-y-1'>
+                                <p className='text-sm text-slate-400'>No vitals logged yet</p>
+                                <p className='text-xs text-slate-300'>Patient has not recorded any vitals</p>
+
+                            </div>
+                        ) : (
+                                <div className='grid grid-cols-2 gap-4 borde-1 border-red-500'>
+                                    {[
+                                        {label : 'Blood Pressure', value : patient.blood_pressure_systolic && patient.blood_pressure_diastolic ? `${patient.blood_pressure_systolic}/${patient.blood_pressure_diastolic} mmHg` : 'N/A'},
+                                        {label : 'Heart Rate', value : patient.heart_rate_bpm ? `${patient.heart_rate_bpm} bpm` : 'N/A'},
+                                        {label : 'Blood Sugar', value : patient.blood_sugar_mgdl ? `${patient.blood_sugar_mgdl} mg/dL` : 'N/A'},
+                                        {label : 'Temperature', value : patient.temperature_celcius ? `${patient.temperature_celcius}°C` : 'N/A'},
+                                    ].map(({label, value, value2}) => (
+                                    <div key={label} className='w-auto border-1 border-slate-100 p-3 rounded-xl bg-slate-50'>
+                                        <h3 className='font-bold text-xl mb-1 text-slate-700'>
+                                            {value}
+                                        </h3>
+                                        <h3 className='text-sm font-medium text-slate-800'>
+                                            {label}
+                                        </h3>
+
+                                    </div>
+                                    ))}
+                                </div>
+                                
+                            // </div>
+                        )}
+                    
+                    </div>
                     <motion.div 
                         {...scrollRight}
                         className='bg-white border border-slate-100 rounded-xl p-4'>

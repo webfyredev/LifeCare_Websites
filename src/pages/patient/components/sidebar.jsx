@@ -1,6 +1,6 @@
 import  logoImg  from '../../../images/logo.png';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LuLayoutDashboard, LuCalendarClock, LuFileHeart, LuPill, LuMessageSquare, LuUserCog, LuHeadphones, LuPhone, LuBell, LuChevronDown, LuChevronUp, LuUser, LuLogOut, LuFlaskConical, LuMenu, LuX } from 'react-icons/lu'
+import { LuLayoutDashboard, LuCalendarClock, LuFileHeart, LuPill, LuMessageSquare, LuUserCog, LuHeadphones, LuPhone, LuBell, LuChevronDown, LuChevronUp, LuUser, LuLogOut, LuFlaskConical, LuMenu, LuX, LuPillBottle } from 'react-icons/lu'
 import { useAuth } from '../../../context/AuthContext';
 import { useEffect, useRef, useState } from 'react';
 import { Outlet } from "react-router-dom";
@@ -161,6 +161,10 @@ export default function Portal_sidebar(){
                                 <LuMessageSquare  className='mt-0.5'/>
                                 <span>Messages</span>
                             </NavLink> */}
+                            <NavLink to="/patient/medications" className={({ isActive}) => `font-medium text-[13px] rounded-lg px-3 py-2.5 flex items-center space-x-3 ${isActive ? 'bg-blue-50 text-blue-600' : 'text-[#64748b] hover:text-[#334155] hover:bg-[#f8fafc]'}`}>
+                                <LuPillBottle  className='mt-0.5'/>
+                                <span>Medication Guides</span>
+                            </NavLink>
                             <NavLink to="/patient/settings" className={({ isActive}) => `font-medium text-[13px] rounded-lg px-3 py-2.5 flex items-center space-x-3 ${isActive ? 'bg-blue-50 text-blue-600' : 'text-[#64748b] hover:text-[#334155] hover:bg-[#f8fafc]'}`}>
                                 <LuUserCog  className='mt-0.5'/>
                                 <span>Profile Settings</span>
