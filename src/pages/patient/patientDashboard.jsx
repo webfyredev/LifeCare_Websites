@@ -105,6 +105,7 @@ export default function PatientDashboard() {
 
   return (
     <>
+    <div className='w-full flex flex-col space-y-5 overflow-x-hidden'>
         <div className='w-full px-3 md:px-5 py-6 md:py-8 bg-[#2563eb] rounded-xl flex flex-col'>
             <p className='text-[13px] font-semibold text-[#dbeafe]'>{getGreeting()}, welcome back</p>
             <div className='w-full lg:flex lg:flex-row lg:items-center flex flex-col lg:justify-between'>
@@ -134,7 +135,7 @@ export default function PatientDashboard() {
                 
             </div>
         </div>
-        <div className='w-full py-2 mt-5 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-5'>
+        <div className='w-full py-2 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-5'>
            {patients_stats.map((data, index) => (
             <motion.div 
                 {...scrollRight} 
@@ -258,7 +259,6 @@ export default function PatientDashboard() {
                 </div>
             </div>
         )}
-
         {dashboard?.todays_medications?.length > 0 && (
             <div className='bg-white border border-slate-100 rounded-xl p-4'>
                 <div className='flex justify-between items-center mb-3'>
@@ -309,7 +309,7 @@ export default function PatientDashboard() {
                             general: 'bg-slate-100 text-slate-500',
                         }
                         return (
-                            <div key={r.id} className='flex items-center space-x-3 p-3 bg-slate-50 rounded-lg overflow-hidden'>
+                            <div key={r.id} className='flex items-center space-x-3 p-3 bg-slate-50 rounded-lg'>
                                 <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${typeColors[r.record_type] || typeColors.general}`}>
                                     <LuFileText className='w-4 h-4' />
                                 </div>
@@ -325,8 +325,9 @@ export default function PatientDashboard() {
                 </div>
             </div>
         )}
+
         {dashboard?.alerts?.length > 0 && (
-            <div className='flex flex-col space-y-2 mt-5'>
+            <div className='flex flex-col space-y-2'>
                 {dashboard.alerts.map((alert, i) => {
                     const styles = {
                         warning : 'bg-amber-50 border-amber-200 text-amber-800',
@@ -361,7 +362,7 @@ export default function PatientDashboard() {
                 })}
             </div>
         )}
-        <div className='bg-white border border-slate-100 mt-5 rounded-xl p-4'>
+        <div className='bg-white border border-slate-100 rounded-xl p-4'>
             <div className='flex justify-between items-center mb-4'>
                 <div>
                     <h3 className='font-semibold text-slate-800'>My Vitals</h3>
@@ -434,9 +435,8 @@ export default function PatientDashboard() {
                 </div>
             )}
         </div>
-
         {bloodTypeData && (
-            <div className='bg-white border border-slate-100 rounded-xl p-4 mt-5'>
+            <div className='bg-white border border-slate-100 rounded-xl p-4'>
                 <h3 className='font-semibold text-slate-800 mb-3'>Your Blood Type: <span className='text-blue-600'>{bloodType}</span></h3>
                 <p className='text-sm text-slate-600 mb-3'> { bloodTypeData.summary}</p>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
@@ -474,13 +474,12 @@ export default function PatientDashboard() {
 
             </div>
         )}
-
         {allergyLoading ? (
             <div className='bg-white border border-slate-100 rounded-xl p-4'>
                 <p className='text-sm text-slate-400'>Loading allergy information...</p>
             </div>
         ): allergyCards.length > 0 && (
-            <div className='flex flex-col space-y-3 mt-5'>
+            <div className='flex flex-col space-y-3'>
                 <h3 className='font-semibold text-slate-800'>Your Allergy Information</h3>
                 {allergyCards.map((allergy, i) => (
                     <div key={i} className='bg-white border border-amber-100 rounded-xl p-4'>
@@ -577,8 +576,7 @@ export default function PatientDashboard() {
 
             </div>
         )}
-        
-        
+    </div> 
     </>
   )
 }

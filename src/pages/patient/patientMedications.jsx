@@ -122,7 +122,7 @@ export default function PatientMedications(){
                                                 {guide.dosage} <span className="w-1 h-1 rounded-full mx-2 bg-slate-500"></span> {guide.frequency} <span className="w-1 h-1 rounded-full mx-2 bg-slate-500"></span> {guide.duration}
                                             </p>
                                             <p className="text-xs text-slate-400 flex items-center">
-                                                Prescribed by {guide.doctor_name} <span className="w-1 h-1 rounded-full mx-2 bg-slate-500"></span> {guide.prescribed_date && ` ${formatDate(guide.prescribed_date)}`}
+                                                Prescribed by <span className="font-medium ml-1">{guide.doctor_name}</span> <span className="w-1 h-1 rounded-full mx-2 bg-slate-500"></span> {guide.prescribed_date && ` ${formatDate(guide.prescribed_date)}`}
                                             </p>
                                         </div>
                                     </div>

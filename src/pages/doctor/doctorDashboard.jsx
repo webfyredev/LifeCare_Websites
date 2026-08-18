@@ -128,7 +128,7 @@ export default function DoctorDashboard() {
                     </div>
                 </div>
             </div>
-            <div className='w-full py-2 mt-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
+            <div className='w-full py-2 mt-5 grid grid-cols-2 lg:grid-cols-4 gap-5'>
                 {dashboard_stats.map((data, index) => (
                     <motion.div 
                         {...scrollRight} 

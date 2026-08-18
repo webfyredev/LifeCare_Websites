@@ -9,10 +9,37 @@ import { motion } from "framer-motion";
 import { buttonEffects } from "../animations/effects";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function RegisterPage(){
-    const { register }  = useAuth();
+    const { register, setUser }  = useAuth();
     const navigate = useNavigate();
+
+    const handleGoggleSuccess = async (credentialResponse) => {
+        try{
+            const res = await api.post('/accounts/google/', {credential : credentialResponse.credential})
+
+            localStorage.setItem('access', res.data.access)
+            localStorage.setItem('refresh', res.data.refresh)
+
+            const me = await api.get('/accounts/me/')
+            setUser(me.data)
+            if(me.data.role === 'patient'){
+                navigate('/patient/dashboard', {replace : true})
+            }else if(me.data.role === 'doctor'){
+                navigate('/doctor/dashboard', {replace : true})
+            }
+        } catch (err) {
+            console.error('Google login failed:', err)
+            setError('Google sign-in failed. Please try again.')
+        }
+
+
+    }
+
+    const handleGoogleError = () => {
+        setError('Google sign-in was cancelled or failed.')
+    }
     const [formData, setFormData] = useState({
         email : "",
         first_name : "",
@@ -126,6 +153,22 @@ export default function RegisterPage(){
                     <motion.button {...buttonEffects} type="submit" disabled={loading} className="border-1 w-full h-11 mt-2 text-sm font-semibold text-white cursor-pointer bg-blue-600 rounded-md">
                         {loading ? "Creating Account..." : "Create Account"}
                     </motion.button>
+                    <div className="flex items-center space-x-3 my-2 w-full">
+                        <div className="flex-1 h-px bg-slate-200" />
+                        <span className="text-xs text-slate-400">or continue with</span>
+                        <div  className="flex-1 h-px bg-slate-200"/>
+                    </div>
+                    <div className="flex justify-center w-full">
+                        <GoogleLogin 
+                            onSuccess={handleGoggleSuccess}
+                            onError={handleGoogleError}
+                            useOneTap={false}
+                            shape="rectangular"
+                            size="large"
+                            text="signin_with"
+                            logo_alignment="left"
+                        />
+                    </div>
                 </form>
             </div>
             {/* <Subscribe /> */}

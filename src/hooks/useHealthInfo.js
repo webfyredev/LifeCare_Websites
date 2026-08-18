@@ -11,22 +11,33 @@ export function useAllergyInfo(allergenText){
         .split(/[,;]/)
         .map(a => a.trim())
         .filter(Boolean)
+
+        console.log('Allergens parsed:', allergens)
         if (!allergens.length) return
 
         setLoading(true)
 
         Promise.all(
             allergens.map(allergen =>
-                api.get(`/patients/allergy-info/?allergen=${encodeURIComponent(allergen)}`)
-                    .then(res => res.data)
-                    .catch(() => ({
-                        found: false,
-                        allergen,
-                        general_warning: `You have a recorded allergy to ${allergen}.`
-                    }))
+                api.get(`/patients/allergy_info/?allergen=${encodeURIComponent(allergen)}`)
+                    .then(res => {
+                        console.log(`Allergy response for ${allergen}:`, res.data)
+                        return res.data
+                    })
+                    .catch(err => {
+                        console.error(`Allergy fetch failed for ${allergen}:`, err)
+                        return {
+                            found : false,
+                            allergen,
+                            general_warning : `You have a recorder allergy to ${allergen}`
+                        }
+                    })
             )
         )
-        .then(results => setData(results))
+        .then(results => {
+            console.log('All allergy results:', results),
+            setData(results)
+        })
         .finally(() => setLoading(false))
     }, [allergenText])
 

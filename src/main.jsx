@@ -3,11 +3,15 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>   {/* ← must be here, wrapping App */}
-      <App />
-    </AuthProvider>
+    <GoogleOAuthProvider clientId='437883263165-cod2k0lkqjfuuqmiefl286v2k4ouksg0.apps.googleusercontent.com'>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </GoogleOAuthProvider>
+    
   </StrictMode>,
 )

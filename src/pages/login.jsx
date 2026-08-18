@@ -10,9 +10,10 @@ import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function LoginPage(){
-    const  { login }  = useAuth()
+    const  { login, setUser }  = useAuth()
     const navigate = useNavigate();
     const location = useLocation();
     const [email, setEmail] = useState('')
@@ -20,6 +21,31 @@ export default function LoginPage(){
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    const handleGoggleSuccess = async (credentialResponse) => {
+        try{
+            const res = await api.post('/accounts/google/', {credential : credentialResponse.credential})
+
+            localStorage.setItem('access', res.data.access)
+            localStorage.setItem('refresh', res.data.refresh)
+
+            const me = await api.get('/accounts/me/')
+            setUser(me.data)
+            if(me.data.role === 'patient'){
+                navigate('/patient/dashboard', {replace : true})
+            }else if(me.data.role === 'doctor'){
+                navigate('/doctor/dashboard', {replace : true})
+            }
+        } catch (err) {
+            console.error('Google login failed:', err)
+            setError('Google sign-in failed. Please try again.')
+        }
+
+
+    }
+
+    const handleGoogleError = () => {
+        setError('Google sign-in was cancelled or failed.')
+    }
     const message = location.state?.message
     useEffect(() => {
         if (error) {
@@ -108,6 +134,22 @@ export default function LoginPage(){
                         <motion.button {...buttonEffects} type="submit" disabled={loading} className="mt-3 h-11 text-xs font-semibold bg-blue-600 text-white rounded-sm cursor-pointer">
                             {loading ? 'Signing in...' : 'Sign in'}
                         </motion.button>
+                        <div className="flex items-center space-x-3 my-2 w-full">
+                        <div className="flex-1 h-px bg-slate-200" />
+                        <span className="text-xs text-slate-400">or continue with</span>
+                        <div  className="flex-1 h-px bg-slate-200"/>
+                    </div>
+                    <div className="flex justify-center w-full">
+                        <GoogleLogin 
+                            onSuccess={handleGoggleSuccess}
+                            onError={handleGoogleError}
+                            useOneTap={false}
+                            shape="rectangular"
+                            size="large"
+                            text="signin_with"
+                            logo_alignment="left"
+                        />
+                    </div>
                         <hr  className="border-1 my-3 text-gray-100"/>
                         <p className="font-semibold text-sm">
                             New to the Patient Portal?
@@ -122,6 +164,7 @@ export default function LoginPage(){
                             Create New Account
                         </Link>
                     </motion.button>
+                    
                 </div>
                 <div className="rounded-md w-full lg:w-[45%] p-5 flex flex-col bg-white shadow-xs mt-5 lg:mt-0 overflow-hidden">
                     <h3 className="text-xl font-semibold">

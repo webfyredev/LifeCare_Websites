@@ -101,6 +101,7 @@ export default function PatientDetail() {
                         { label: 'Email', value: patient.email, type : "email" },
                         { label: 'Phone', value: patient.phone || 'N/A', type : "phone" },
                         { label: 'Date of Birth', value: patient.date_of_birth || 'N/A' },
+                        { label : 'Hospital ID', value : patient.hospital_number || 'N/A'},
                         { label: 'Address', value: patient.address || 'N/A' },
                         { label: 'Insurance', value: patient.insurance_number || 'N/A' },
                         { label: 'Emergency Contact', value: patient.emergency_contact_name ? `${patient.emergency_contact_name} - ${patient.emergency_contact_phone}` : 'N/A'},
