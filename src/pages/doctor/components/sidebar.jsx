@@ -1,6 +1,6 @@
 import  logoImg  from '../../../images/logo.png';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LuLayoutDashboard, LuCalendarClock, LuFileHeart, LuPill, LuMessageSquare, LuUserCog, LuHeadphones, LuPhone, LuBell, LuChevronDown, LuChevronUp, LuUser, LuLogOut, LuFlaskConical, LuMenu, LuX } from 'react-icons/lu'
+import { LuLayoutDashboard, LuCalendarClock, LuFileHeart, LuPill, LuMessageSquare, LuUserCog, LuHeadphones, LuPhone, LuBell, LuChevronDown, LuChevronUp, LuUser, LuLogOut, LuFlaskConical, LuMenu, LuX, LuBookHeart } from 'react-icons/lu'
 import { useAuth } from '../../../context/AuthContext';
 import { useEffect, useRef, useState } from 'react';
 import { Outlet } from "react-router-dom";
@@ -175,7 +175,7 @@ export default function Doctor_Portal_sidebar(){
                                 )}
                             </NavLink>
                             <NavLink to="/doctor/notes" className={({ isActive}) => `font-medium text-[13px] rounded-lg px-3 py-2.5 flex items-center space-x-3 ${isActive ? 'bg-blue-50 text-blue-600' : 'text-[#64748b] hover:text-[#334155] hover:bg-[#f8fafc]'}`}>
-                                <LuMessageSquare  className='mt-0.5'/>
+                                <LuFileHeart  className='mt-0.5'/>
                                 <span>Medical Notes</span>
                             </NavLink>
                             <NavLink to="/doctor/profile" className={({ isActive}) => `font-medium text-[13px] rounded-lg px-3 py-2.5 flex items-center space-x-3 ${isActive ? 'bg-blue-50 text-blue-600' : 'text-[#64748b] hover:text-[#334155] hover:bg-[#f8fafc]'}`}>
