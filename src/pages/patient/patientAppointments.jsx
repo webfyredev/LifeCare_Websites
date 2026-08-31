@@ -233,10 +233,12 @@ function BookingModal({ onClose, onBooked }){
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     useEffect(() => {
-    api.get('/appointments/doctors/')
-      .then((res) => setDoctors(res.data))
-      .catch(console.error)
-    }, [])
+        const dateParam = form.appointment_date ? `?date${form.appointment_date}` : ''
+        api.get(`/appointments/doctors/${dateParam}`)
+        .then((res) => setDoctors(res.data))
+        .catch(console.error)
+        }, 
+    [form.appointment_date])
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
     const handleSubmit = async (e) => {
@@ -245,9 +247,10 @@ function BookingModal({ onClose, onBooked }){
         setError(null)
         try {
             await api.post('/appointments/book/', form)
-        onBooked()
+            onBooked()
         } catch (err) {
-            setError('Failed to book appointment. Please try again.')
+            const mxg  = err.response?.data?.error || err.response?.data?.non_field_errors?.[0] || 'Failed to book appointment'
+            setError(mxg)
         } finally {
             setLoading(false)
         }
