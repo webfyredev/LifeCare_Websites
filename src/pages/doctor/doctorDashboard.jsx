@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../api/axios'
-import { LuUsers, LuCalendarClock, LuClock, LuShieldAlert, LuArrowRight, LuStethoscope, LuOctagonAlert, LuFileText } from 'react-icons/lu'
+import { LuUsers, LuCalendarClock, LuClock, LuShieldAlert, LuArrowRight, LuStethoscope, LuOctagonAlert, LuFileText, LuCalendar } from 'react-icons/lu'
 import { motion } from 'framer-motion'
 import { scrollRight } from '../../animations/effects'
 import { Link, useNavigate } from 'react-router-dom'
@@ -125,6 +125,32 @@ export default function DoctorDashboard() {
                         <p className='text-[10px] md:text-[12px] mt-2 text-[#dbeafe] font-medium flex items-center'>
                             {dashboard?.specialization} <span className='w-1 h-1 rounded-full bg-white mx-2 mt-0.5'></span> <Link to="/doctor/appointments" className='hover:underline hover:font-semibold hover:text-white transition-all duration-300'>{dashboard?.today_appointment_counts ?? 0} Appointments today.</Link>
                         </p>
+                        {dashboard?.available_days?.length > 0 && dashboard?.works_today && (
+                            <div className='flex md:items-center md:justify-center space-x-3 mt-2'>
+                                <div className={`px-5 py-2.5 w-auto rounded-lg text-xs font-semibold flex items-center space-x-1.5 ${dashboard?.is_fully_booked_today ? 'bg-red-500 text-white' : dashboard?.slots_left_today <=5 ? 'bg-amber-400 text-white' : 'bg-green-500 text-white'}`}>
+                                    <span>
+                                        {dashboard?.is_fully_booked_today ? 'Fully Booked Today' : `${dashboard?.slots_left_today} slots remaining today`}
+                                    </span>
+                                </div>
+
+                            </div>
+                        )}
+                        {(!dashboard?.available_days?.length) && (
+                            <div className='mt-2'>
+                                <span className='px-3 py-1.5 w-auto rounded-lg text-xs font-semibold bg-slate-400 text-white'> 
+                                    No available days set - update your profile
+                                </span>
+                            </div>
+                        )}
+                        {dashboard?.available_days?.length > 0 && !dashboard?.works_today  && (
+                            <div className='flex md:items-center md:justify-center mt-2'>
+                                <span className='w-auto flex items-center px-3 py-2 rounded-lg text-xs font-semibold bg-slate-400 text-white'> 
+                                    <LuCalendar  className='mr-1.5'/> Not working today ({dashboard?.today_name})
+                                </span>
+                            </div>
+                        )}
+                        
+                        
                     </div>
                 </div>
             </div>

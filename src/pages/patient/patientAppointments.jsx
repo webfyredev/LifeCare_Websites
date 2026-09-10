@@ -273,24 +273,36 @@ function BookingModal({ onClose, onBooked }){
 
                     <form onSubmit={handleSubmit} className='flex flex-col space-y-3'>
                         <div className='flex flex-col space-y-1'>
+                            <label className='text-xs font-semibold text-slate-600'>Date</label>
+                            <input type='date' name='appointment_date' onChange={(e) => setForm({...form, appointment_date: e.target.value, doctor_id: ''})} required
+                            min={new Date().toISOString().split('T')[0]}
+                            className='border border-slate-200 rounded-lg px-3 py-2 text-sm outline-blue-300' />
+                        </div>
+                        <div className='flex flex-col space-y-1'>
                             <label className='text-xs font-semibold text-slate-600'>Select Doctor</label>
-                            <select name='doctor_id' onChange={handleChange} required
+                            <select name='doctor_id' value={form.doctor_id} onChange={(e) => setForm({...form, doctor_id: e.target.value})} required
                                 className='border border-slate-100 rounded-lg px-3 py-2 text-sm text-slate-700 outline-blue-300'>
-                                <option value=''>Choose a doctor...</option>
+                                <option value=''>{form.appointment_date ? 'Choose a doctor...' : 'Select a date first'}.</option>
                                 {doctors.map((d) => (
-                                    <option key={d.id} value={d.id}>
-                                    {d.name} - {d.specialization}
+                                    <option 
+                                        key={d.id} 
+                                        value={d.id}
+                                        disabled={d.is_fully_booked || !d.works_on_selected_day}
+                                    >
+                                    {d.name} - {d.specialization} {d.is_fully_booked ? 'Fully booked' : !d.works_on_selected_day ? '(Not available this day)' : `${d.slots_remaining} slot${d.slots_remaining !== 1 ? 's' : ''} left`}
                                     </option>
                                 ))}
                             </select>
                         </div>
-
-                        <div className='flex flex-col space-y-1'>
-                            <label className='text-xs font-semibold text-slate-600'>Date</label>
-                            <input type='date' name='appointment_date' onChange={handleChange} required
-                            min={new Date().toISOString().split('T')[0]}
-                            className='border border-slate-200 rounded-lg px-3 py-2 text-sm outline-blue-300' />
-                        </div>
+                        {form.doctor_id && (() => {
+                            const selectedDoc = doctors.find(d => d.id === parseInt(form.doctor_id))
+                            if (!selectedDoc) return null
+                            return (
+                                <div className={`text-xs px-3 py-2 rounded-lg font-medium ${selectedDoc.is_full_booked ? 'bg-red-50 text-red-600' : selectedDoc.slots_remaining <=5 ? 'bg-amber-50 text-amber-600' : 'bg-green-50 text-green-600'}`}>
+                                    {selectedDoc.is_fully_booked ? `Fully booked on this date (${selectedDoc.max_patient_per_day}/${selectedDoc.max_patient_per_day} slots taken)` : `${selectedDoc.slots_remaining} of ${selectedDoc.max_patient_per_day} slots available`}
+                                </div>
+                            )
+                        })}
 
                         <div className='flex flex-col space-y-1'>
                             <label className='text-xs font-semibold text-slate-600'>Time</label>
@@ -307,7 +319,7 @@ function BookingModal({ onClose, onBooked }){
 
                         <motion.button 
                             {...buttonEffects}
-                            type='submit' disabled={loading}
+                            type='submit' disabled={loading || !form.doctor_id}
                             className='bg-blue-600 text-white text-sm font-medium py-2.5 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer mt-1'>
                             {loading ? 'Booking...' : 'Confirm Booking'}
                         </motion.button>

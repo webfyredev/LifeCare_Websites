@@ -29,6 +29,7 @@ export default function DoctorPofile(){
         bio: '',
         consultation_fee: '',
         available_days: '',
+        max_patient_per_day  : '',
     })
 
     const [avatarPreview, setAvatarPreview] = useState(null)
@@ -58,6 +59,7 @@ export default function DoctorPofile(){
                 bio: user.doctor_profile?.bio ?? '',
                 consultation_fee: user.doctor_profile?.consultation_fee ?? '',
                 available_days: user.doctor_profile?.available_days ?? '',
+                max_patient_per_day : user.doctor_profile?.max_patient_per_day ?? '',
             })
             setFormInitialized(true)
         }
@@ -241,6 +243,18 @@ export default function DoctorPofile(){
                                     onChange={handleUserChange}
                                     className='border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300'
                                 />
+                            </div>
+                            <div className='flex flex-col space-y-1'>
+                                <label className='text-xs font-semibold text-slate-500'>No patients per day</label>
+                                <input
+                                    name='max_patient_per_day'
+                                    value={profileForm.max_patient_per_day}
+                                    onChange={handleUserChange}
+                                    className='border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300'
+                                />
+                                <p className='text-[10px] text-slate-400'>
+                                    Once this limit is reached on a day, It will show as fully booked for that date
+                                </p>
                             </div>
                         </div>
                     </div>
