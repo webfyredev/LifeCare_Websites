@@ -4,6 +4,8 @@ import NavBar from "../components/navbar"
 import { Link } from "react-router-dom"
 import logo from '../images/logo.png'
 import { FaEnvelope } from "react-icons/fa"
+import { motion } from 'framer-motion'
+import { buttonEffects } from "../animations/effects"
 
 
 export default function ForgotPassword(){
@@ -91,19 +93,20 @@ export default function ForgotPassword(){
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder='Enter your registered email'
                                 required
-                                className='border border-slate-200 rounded-lg px-3 py-3 text-sm outline-blue-300'
+                                className='px-3 text-sm w-full h-10 outline-none rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transition'
                             />
                         </div>
 
-                        <button
+                        <motion.button
+                            {...buttonEffects}
                             type='submit'
                             disabled={loading}
                             className='w-full bg-blue-500 text-white text-sm font-semibold py-3 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer disabled:opacity-60'
                         >
                             {loading ? 'Sending...' : 'Send reset link'}
-                        </button>
+                        </motion.button>
 
-                        <Link to='/login' className='text-center text-sm text-slate-400 hover:text-slate-600'>
+                        <Link to='/login' className='text-center text-sm text-slate-400 font-medium hover:text-slate-600'>
                             Back to login
                         </Link>
                     </form>

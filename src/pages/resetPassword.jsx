@@ -87,7 +87,7 @@ export default function ResetPassword(){
                                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                                 placeholder='At least 8 characters'
                                 required
-                                className='border border-slate-200 rounded-lg px-3 py-3 text-sm outline-blue-300'
+                                className='px-3 text-sm w-full h-10 outline-none rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transition'
                             />
                         </div>
 
@@ -99,7 +99,7 @@ export default function ResetPassword(){
                                 onChange={(e) => setForm({ ...form, confirm_password: e.target.value })}
                                 placeholder='Repeat your new password'
                                 required
-                                className='border border-slate-200 rounded-lg px-3 py-3 text-sm outline-blue-300'
+                                className='px-3 text-sm w-full h-10 outline-none rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transition'
                             />
                         </div>
 

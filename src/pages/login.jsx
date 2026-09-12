@@ -21,7 +21,7 @@ export default function LoginPage(){
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const handleGoggleSuccess = async (credentialResponse) => {
+    const handleGoogleSuccess = async (credentialResponse) => {
         try{
             const res = await api.post('/accounts/google/', {credential : credentialResponse.credential})
 
@@ -36,7 +36,6 @@ export default function LoginPage(){
                 navigate('/doctor/dashboard', {replace : true})
             }
         } catch (err) {
-            console.error('Google login failed:', err)
             setError('Google sign-in failed. Please try again.')
         }
 
@@ -120,28 +119,28 @@ export default function LoginPage(){
                             Portal login
                         </h3>
                         <div className="flex flex-col w-full h-auto mb-3">
-                            <label htmlFor="" className="text-xs text-gray-700 font-semibold mb-1.5">Email *</label>
-                            <input type="email" value={email} onChange={(e) =>setEmail(e.target.value)} required className="w-full h-10 text-[11px] px-3 outline-blue-200 rounded-sm bg-gray-50 border-1 border-gray-200" placeholder="Enter your email" />
+                            <label htmlFor="" className="text-xs text-gray-700 font-semibold mb-2">Email *</label>
+                            <input type="email" value={email} onChange={(e) =>setEmail(e.target.value)} required className="px-3 text-sm w-full h-10 outline-none rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transition" placeholder="Enter your email" />
                         </div>
                         <div className="flex flex-col w-full h-auto mb-3">
                             <label htmlFor="" className="text-xs text-gray-700 font-semibold mb-1.5">Password *</label>
-                            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full h-10 text-[11px] px-3 outline-blue-200 rounded-sm bg-gray-50 border-1 border-gray-200" placeholder="Enter your password" />
+                            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="px-3 text-sm w-full h-10 outline-none rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transition" placeholder="Enter your password" />
                         </div>
                         <div className="flex flex-row justify-between w-full h-auto mb-3">
                             <p className="flex items-center text-xs"><input type="checkbox" className="mr-1 mt-0.5 bg-white text-blue-600 cursor-pointer"/> Remember me</p>
                             <Link to="/forgot-password" className="text-xs font-semibold text-blue-600">Forgot Password?</Link>
                         </div>
-                        <motion.button {...buttonEffects} type="submit" disabled={loading} className="mt-3 h-11 text-xs font-semibold bg-blue-600 text-white rounded-sm cursor-pointer">
+                        <motion.button {...buttonEffects} type="submit" disabled={loading} className="mt-3 h-11 text-xs font-semibold bg-blue-600 text-white rounded-lg cursor-pointer transition-all">
                             {loading ? 'Signing in...' : 'Sign in'}
                         </motion.button>
                         <div className="flex items-center space-x-3 my-2 w-full">
                         <div className="flex-1 h-px bg-slate-200" />
-                        <span className="text-xs text-slate-400">or continue with</span>
+                        <span className="text-xs text-slate-400">or sign in with</span>
                         <div  className="flex-1 h-px bg-slate-200"/>
                     </div>
                     <div className="flex justify-center w-full">
                         <GoogleLogin 
-                            onSuccess={handleGoggleSuccess}
+                            onSuccess={handleGoogleSuccess}
                             onError={handleGoogleError}
                             useOneTap={false}
                             shape="rectangular"
@@ -159,7 +158,7 @@ export default function LoginPage(){
                         </p>
                         
                     </form>
-                    <motion.button {...buttonEffects} className="my-3 h-12 text-xs font-semibold border-1 border-blue-600 text-blue-600 rounded-sm cursor-pointer">
+                    <motion.button {...buttonEffects} className="my-3 py-2.5 text-sm font-semibold border-1 border-blue-600 text-blue-600 rounded-lg cursor-pointer hover:bg-blue-600 hover:border-none hover:text-white transition">
                         <Link to="/register">
                             Create New Account
                         </Link>
