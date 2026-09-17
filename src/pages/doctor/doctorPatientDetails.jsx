@@ -1,16 +1,158 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { LuArrowLeft, LuPill, LuFileText, LuMessageSquare, LuX, LuPlus } from 'react-icons/lu'
+import { LuArrowLeft, LuPill, LuFileText, LuMessageSquare, LuX, LuPlus, LuDownload } from 'react-icons/lu'
 import api from '../../api/axios'
 import { motion } from 'framer-motion'
 import { buttonEffects, scrollLeft, scrollRight, scrollUp } from '../../animations/effects'
 
+
+function AddRecordModal({ patientId, patientName, onClose, onSaved}){
+    const [form, setForm] = useState({
+        title : '',
+        record_type : 'general',
+        description : '',
+        date_recorded: new Date().toISOString().split('T')[0],
+    })
+    const [file, setFile] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        setLoading(true)
+        setError(null)
+
+        try{
+            const formData = new FormData()
+            formData.append('patient_id', patientId)
+            formData.append('title', form.title)
+            formData.append('record_type', form.record_type)
+            formData.append('description', form.description)
+            formData.append('date_recorded', form.date_recorded)
+            if(file) formData.append('file', file)
+            
+                await api.post('/patients/records/add/', formData, {
+                    headers : {'Content-Type' : 'multipart/form-data'}
+                })
+                onSaved()
+        } catch (err){
+            setError(err.response?.data?.error || 'Failed to add record.')
+        } finally{
+            setLoading(false)
+        }
+    }
+
+    return(
+        <div className='fixed inset-0 bg-black/40 flex items-center justify-center z-50'>
+            <div className='bg-white rounded-xl p-6 w-full max-w-md shadow-lg'>
+                <div className='flex justify-between items-center mb-4'>
+                    <div>
+                        <h2>Add Medical Record</h2>
+                        <p className='text-xs text-slate-400'>{patientName}</p>
+                    </div>
+                    <button
+                        onClick={onClose} className='text-slate-400 hover:slate-600 cursor-pointer'
+                        >   
+                        <LuX  className='w-5 h-5' />
+                    </button>
+                </div>
+                {error && (
+                    <div className='bg-red-50 text-red-500 text-xs p-3 rounded-lg mb-3'>
+                        {error}
+                    </div>
+                )}
+                <form onSubmit={handleSubmit} className='flex flex-col space-y-3'>
+                    <div className='flex flex-col space-y-1'>
+                        <label className='text-xs font-semibold text-slate-600'>Title</label>
+                        <input 
+                            value={form.title}
+                            onChange={e => setForm({...form, title:e.target.value })}
+                            required
+                            placeholder='e.g. Blood Test Results'
+                            className='border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300'
+                        />
+                    </div>
+                    <div className='w-full grid grid-cols-2 gap-3'>
+                        <div className='flex flex-col space-y-1'>
+                            <label className='text-xs font-semibold text-slate-600'>Record Type</label>
+                            <select 
+                                value={form.record_type} 
+                                onChange={e => setForm({...form, record_type : e.target.value})}
+                                className='border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300'
+                            >
+                                <option value="lab_result">Lab Result</option>
+                                <option value="imaging">Imaging</option>
+                                <option value="diagnosis">Diagnosis</option>
+                                <option value="surgery">Surgery</option>
+                                <option value="vaccination">Vaccination</option>
+                                <option value="allergy">Allergy</option>
+                                <option value="general">General</option>
+
+                            </select>
+                        </div>
+                        <div className='flex flex-col space-y-1'>
+                            <label className='text-xs font-semibold text-slate-600'>Date</label>
+                            <input 
+                                type='date'
+                                value={form.date_recorded}
+                                onChange={e => setForm({...form, title:e.target.value })}
+                                required
+                                className='border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300'
+                            />
+                        </div>
+                        <div className='flex flex-col space-y-1'>
+                            <label className='text-xs font-semibold text-slate-600'>Description / Notes</label>
+                            <textarea 
+                                value={form.description}
+                                onChange={e => setForm({...form, description:e.target.value })}
+                                rows={3}
+                                placeholder='Clinical findings, observations...'
+                                className='border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300'
+                            />
+                        </div>
+                        <div className='flex flex-col space-y-1'>
+                            <label className='text-xs font-semibold text-slate-600'>Attach File (optional)</label>
+                            <input
+                                type='file' 
+                                accept='.pdf, .doc,.docx,.jpg,.jpeg,.png'
+                                onChange={e => setFile(e.target.files[0])}
+                                className='border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300'
+                            />
+                            {file && (
+                                <p className='text-[10px] text-slate-400'>
+                                    {file.name}
+                                </p>
+                            )}
+                        </div>
+                        <button
+                            type='button'
+                            onClick={onClose}
+                            className='flex-1 py-2.5 text-sm border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 cursor-pointer'
+                        >
+                            Cancel
+                        </button>
+                        <motion.button
+                            {...buttonEffects}
+                            type='submit'
+                            disabled={loading}
+                            className='flex-1 py-2.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer disabled:opacity-60'
+                        >
+                            {loading ? "Saving..." : 'Add Record'}
+                        </motion.button>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    )
+}
 export default function PatientDetail() {
     const { id } = useParams()
     const navigate = useNavigate()
     const [patient, setPatient] = useState(null)
     const [loading, setLoading] = useState(true)
     const [noteModal, setNoteModal] = useState(false)
+    const [recordModal, setRecordModal] = useState(false)
     const [prescribeModal, setPrescribeModal] = useState(false)
 
     useEffect(() => {
@@ -23,6 +165,8 @@ export default function PatientDetail() {
             .finally(() => setLoading(false))
     }, [id])
 
+    
+
     const getAge = (dob) => {
         if (!dob) return 'N/A'
         const diff = new Date() - new Date(dob)
@@ -34,6 +178,16 @@ export default function PatientDetail() {
         if (status === 'completed') return 'bg-green-50 text-green-600'
         if (status === 'cancelled') return 'bg-red-50 text-red-400'
         return 'bg-amber-50 text-amber-600'
+    }
+    const recordStyle = (record_type) => {
+        if(record_type === 'lab_result') return 'bg-blue-50 text-blue-600'
+        if(record_type === 'imaging') return 'bg-purple-50 text-purple-600'
+        if(record_type === 'diagnosis') return 'bg-teal-50 text-teal-600'
+        if(record_type === 'surgery') return 'bg-red-50 text-red-500'
+        if(record_type === 'vaccination') return 'bg-green-50 text-green-600'
+        if(record_type === 'allergy') return 'bg-amber-50 text-amber-600'
+        if(record_type === 'general') return 'bg-slate-50 text-slate-500'
+        
     }
 
     if (loading) return <div className='p-8 text-center text-sm text-slate-400'>Loading patient...</div>
@@ -78,6 +232,25 @@ export default function PatientDetail() {
                         <LuPill className='w-4 h-4' />
                         <span>Prescribe</span>
                     </motion.button>
+                    <motion.button
+                        {...buttonEffects}
+                        onClick={() => setRecordModal(true)}
+                        className='flex justify-center items-center space-x-1.5 text-sm font-medium px-4.5 py-2.5 md:py-2 border-1 border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 cursor-pointer transition-all duration-300'
+                    >
+                        <LuFileText className='w-4 h-4' />
+                        <span>Add Record</span>
+                    </motion.button>
+                    {recordModal && (
+                        <AddRecordModal 
+                            patientId={id}
+                            patientName={patient.name}
+                            onClose={() => setRecordModal(false)}
+                            onSaved={() => {
+                                setRecordModal(false)
+                                api.get(`/doctors/patients/${id}/`).then(res => setPatient(res.data))
+                            }}
+                        />
+                    )}
                     {patient.conversation_id && (
                         <Link
                             to='/doctor/messages'
@@ -206,6 +379,41 @@ export default function PatientDetail() {
                             </div>
                         ))}
                     </motion.div>
+
+                    {/* Medical Records */}
+                    <div className='bg-white border border-slate-100 rounded-xl p-5'>
+                        <h2 className='font-semibold text-slate-800 mb-3'>Patient Medical Records </h2>
+                        {patient.medical_records?.length === 0 ? (
+                            <p className='text-sm text-slate-400'>No medical records recorded yet.</p>
+                        ) : patient.medical_records?.map((record) => (
+                            <div key={record.id} className='flex flex-col p-2.5 bg-slate-100 rounded-lg mb-5'>
+                                <div className='flex flex-row justify-between items-center'>
+                                    <h3 className='text-sm font-semibold  text-slate-800 mb-2'>-{record.title}</h3>
+                                    <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full flex items-center justify-center capitalize ${recordStyle(record.record_type)}`}>
+                                        {record.record_type}
+                                    </span>
+                                </div>
+                                <p className='text-[13px] text-gray-500 my-1'>{record.description}</p>
+                                <p className='text-xs text-slate-400 mt-0.5 italic'>{record.date_recorded}</p>
+                                <div className='flex items-center space-x-3 mt-3'>
+                                    {record.file && (
+                                        <a
+                                            href={record.file}
+                                            target= '_blank'
+                                            rel='noreferrer'
+                                            onClick={(e) => e.stopPropagation()}
+                                            className='flex items-center space-x-1.5 text-xs font-medium px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-lg transition-all duration-300'
+                                        >
+                                            <LuDownload  className='w-3.5 h-3.5'/>
+                                            <span>Download</span>
+
+                                        </a>
+                                    )}
+                                    
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
 
