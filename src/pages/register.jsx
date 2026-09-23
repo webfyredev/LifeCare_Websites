@@ -10,6 +10,7 @@ import { buttonEffects } from "../animations/effects";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
+import api from "../api/axios";
 
 export default function RegisterPage(){
     const { register, setUser }  = useAuth();
@@ -173,14 +174,18 @@ export default function RegisterPage(){
                             <button
                                 type="button"
                                 onClick={() => setGoogleRole('patient')}
-                                className={`py-2.5 text-sm font-medium rounded-lg border transition-colors cursor-pointer ${googleRole === 'patient' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}
+                                className={`py-2.5 text-sm font-medium rounded-lg border transition-colors cursor-pointer 
+                                    ${googleRole === 'patient' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}
+                                `}
                             >
                                 I am a Patient
                             </button>
                             <button
                                 type="button"
                                 onClick={() => setGoogleRole('doctor')}
-                                className={`py-2.5 text-sm font-medium rounded-lg border transition-colors cursor-pointer ${googleRole === 'doctor' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}
+                                className={`py-2.5 text-sm font-medium rounded-lg border transition-colors cursor-pointer 
+                                    ${googleRole === 'doctor' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}
+                                `}
                             >
                                 I am a Doctor
                             </button>
@@ -196,7 +201,7 @@ export default function RegisterPage(){
                             useOneTap={false}
                             shape="rectangular"
                             size="large"
-                            text="signin_with"
+                            text="signup_with"
                             logo_alignment="left"
                         />
                     </div>

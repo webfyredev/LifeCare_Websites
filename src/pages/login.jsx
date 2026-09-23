@@ -11,6 +11,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { GoogleLogin } from "@react-oauth/google";
+import api from "../api/axios";
 
 export default function LoginPage(){
     const  { login, setUser }  = useAuth()
@@ -34,6 +35,8 @@ export default function LoginPage(){
                 navigate('/patient/dashboard', {replace : true})
             }else if(me.data.role === 'doctor'){
                 navigate('/doctor/dashboard', {replace : true})
+            }else if(me.data.role === 'admin'){
+                navigate('/admin/dashboard', {replace : true })
             }
         } catch (err) {
             setError('Google sign-in failed. Please try again.')
@@ -73,7 +76,9 @@ export default function LoginPage(){
                 navigate("/patient/dashboard", { replace: true })
             } else if(user.role === "doctor"){
                 navigate("/doctor/dashboard", { replace: true })
-            } else {
+            }else if(user.role === "admin"){
+                navigate("/admin/dashboard", {replace : true})
+            }else{
                 navigate("/login", { replace: true })
             }
         } catch(err) {
@@ -107,12 +112,12 @@ export default function LoginPage(){
                         <div className="bg-[#dcfce7] rounded-sm padding-[12px] text-[#15803d] p-3 mb-5 text-center text-sm font-semibold">
                             {message}
                         </div>
-                        )}
+                    )}
 
-                        {error && (
-                            <div className="bg-[#fee2e2] border-1 border-[#ef4444] rounded-sm padding-[12px] text-[#b91c1c] p-3 mb-5 text-center text-sm font-semibold">
-                                {error}
-                            </div>
+                    {error && (
+                        <div className="bg-[#fee2e2] rounded-lg padding-[12px] text-[#b91c1c] p-3 mb-5 text-center text-sm font-semibold">
+                            {error}
+                        </div>
                     )}
                     <form onSubmit={handleSubmit} className="w-full h-full flex flex-col space-y-2">
                         <h3 className="font-semibold text-xl mb-5">

@@ -33,6 +33,17 @@ import MyPatientDetails from './pages/doctor/doctorPatientDetails'
 import ForgotPassword from './pages/forgotPassword'
 import ResetPassword from './pages/resetPassword'
 import PatientMedications from './pages/patient/patientMedications'
+import AdminDashboard from './pages/admin/dashboard'
+import Admin_Portal_sidebar from './pages/admin/components/sidebar'
+import Lifecare_AdminDashboard from './pages/admin/dashboard'
+import Lifecare_Users from './pages/admin/users'
+import Lifecare_Doctors from './pages/admin/doctors'
+import Lifecare_Appointments from './pages/admin/appointments'
+import Lifecare_Prescriptions from './pages/admin/prescriptions'
+import Lifecare_Records from './pages/admin/records'
+import Lifecare_Messages from './pages/admin/messages'
+import Lifecare_Notifications from './pages/admin/notifications'
+import Lifecare_Settings from './pages/admin/settings'
 
   
 
@@ -88,6 +99,22 @@ function App() {
             <Route path='notifications' element={<DoctorNotifications />}></Route>
           </Route>
           
+
+          <Route path='/admin' element={<ProtectedRoute allowedRole="admin">
+                <Admin_Portal_sidebar />
+              </ProtectedRoute>
+            }
+          >
+            <Route path='dashboard' element={<Lifecare_AdminDashboard />}></Route>
+            <Route path='users' element={<Lifecare_Users />}></Route>
+            <Route path='doctors' element={<Lifecare_Doctors />}></Route>
+            <Route path='appointments' element={<Lifecare_Appointments />}></Route>
+            <Route path='prescriptions' element={<Lifecare_Prescriptions />}></Route>
+            <Route path='records' element={<Lifecare_Records />}></Route>
+            <Route path='messages' element={<Lifecare_Messages />}></Route>
+            <Route path='notifications' element={<Lifecare_Notifications />}></Route>
+            <Route path='settings' element={<Lifecare_Settings />}></Route>
+          </Route>
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
     </Router>
