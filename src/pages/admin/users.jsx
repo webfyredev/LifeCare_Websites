@@ -78,15 +78,6 @@ export default function Lifecare_Users(){
         document.title = 'Manage-Users - LifeCare (Admin Dashboard)'
     });
 
-    const message = location.state?.message
-    useEffect(() => {
-        if (message) {
-            const timer = setTimeout(() => {
-            navigate(location.pathname, { replace: true, state: {} })
-            }, 5000)
-            return () => clearTimeout(timer)
-        }
-        }, [message])
 
     useEffect(() => {
         api.get('/admin/dashboard/')
@@ -167,11 +158,7 @@ export default function Lifecare_Users(){
                         </div>
                     ))}
                 </div>
-                {message && (
-                    <div className="bg-[#dcfce7] rounded-sm padding-[12px] text-[#15803d] p-3 mb-5 text-center text-sm font-semibold w-full">
-                        {message}
-                    </div>
-                )}
+                
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                     <div className='p-4 border-b border-gray-100 flex flex-col md:flex-row gap-3 items-center justify-between'>
                         <div className="relative w-full md:w-140">
@@ -239,7 +226,7 @@ export default function Lifecare_Users(){
                         <div className="overflow-x-auto min-h-[300px]">
                             <table className="w-full text-left border-collapse">
                                 <thead>
-                                    <tr className="border-b border-gray-100 text-[11px] text-gray-400 bg-gray-50/50 tracking-wider">
+                                    <tr className="border-b border-gray-100 text-[12px] text-gray-500 bg-gray-50/50">
                                         <th className="p-4 w-10">
                                             <input type="checkbox" className="rounded" />
                                         </th>
