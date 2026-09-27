@@ -320,7 +320,7 @@ export default function Lifecare_AdminDashboard(){
                             <h3 className="text-sm font-semibold tex-gray-800">
                                 Recent Appointments
                             </h3>
-                            <Link to="/admin/users"
+                            <Link to="/admin/appointments"
                                 className="text-blue-500 text-xs font-medium cursor-pointer hover:text-blue-600 transition-all"
                             >
                                 View all

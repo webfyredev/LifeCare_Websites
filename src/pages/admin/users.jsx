@@ -258,7 +258,7 @@ export default function Lifecare_Users(){
                                             </td>
                                             <td className="p-4">
                                                 <span
-                                                    className={`px-2.5 py-1 rounded-lg text-xs font-medium capitaliza ${user.role === 'doctor' ? 'bg-purple-100 text-purple-600' : user.role === 'admin' ? 'bg-sky-100 text-sky-600' : 'bg-blue-100 text-blue-600'}`}
+                                                    className={`px-2.5 py-1 capitalize rounded-lg text-xs font-medium capitaliza ${user.role === 'doctor' ? 'bg-purple-100 text-purple-600' : user.role === 'admin' ? 'bg-sky-100 text-sky-600' : 'bg-blue-100 text-blue-600'}`}
                                                 >
                                                     {user.role}
                                                 </span>

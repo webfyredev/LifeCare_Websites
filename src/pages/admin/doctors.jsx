@@ -43,7 +43,7 @@ export default function Lifecare_Doctors(){
         fetchDoctors();
     }, [search, specialities, status, page])
 
-    const handleToggleStatus = async(doctorId, isActive) => {
+    const handleToggleStatus = async (doctorId, isActive) => {
         const endpoint = isActive ? `/admin/manage-doctors/${doctorId}/reject/` : `/admin/manage-doctors/${doctorId}/approve/`;
         try{
             const res = await api.patch(endpoint)
@@ -56,6 +56,18 @@ export default function Lifecare_Doctors(){
         }catch(err){
             console.error("Failed to change doctors status", err)
             setFeedback({message : "Failed to update doctor account status", type : "error"})
+        }
+    }
+
+    const handleDeleteDoctors = async (doctorId) => {
+        try{
+            const res = await api.delete(`/admin/manage-users/${doctorId}/`);
+            setActiveMenuId(null)
+            fetchDoctors();
+            setFeedback({message : "Doctor deleted successfully!", type: "success"})
+        }catch(err){
+            console.error('Failed to delete doctor account')
+            setFeedback({message : 'Failed to delete doctor account', type : "error"})
         }
     }
     // useEffect(() => {
@@ -161,8 +173,9 @@ export default function Lifecare_Doctors(){
                                 className="cursor-pointer px-2 py-2 border border-gray-200 rounded-lg w-45 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all"
                             >
                                 <option value="all">All Status</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="suspended">Suspended</option>
                             </select>
                             <button
                                 className="cursor-pointer p-2.5 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50"
@@ -219,52 +232,58 @@ export default function Lifecare_Doctors(){
                                 </thead>
                                 
                                 <tbody className="divide-y divide-gray-50 text-sm">
-                                    {doctors_data.map((user) => (
-                                        <tr key={user.id} className="hover:bg-ray-50/50 transition-colors">
+                                    {doctors_data.map((doctor) => (
+                                        <tr key={doctor.id} className="hover:bg-ray-50/50 transition-colors">
                                             <td className="p-4">
                                                 <input type="checkbox" className="rounded" />
                                             </td>
                                             <td className="p-4 flex flex-col">
-                                                <span className='text-gray-800 font-semibold '>{user.name}</span>
-                                                <a className="text-xs text-gray-500 font-medium hover:text-blue-600 transition-all duration-200" href={`mailto:${user.email}`}>{user.email}</a>
+                                                <span className='text-gray-800 font-semibold '>{doctor.name}</span>
+                                                <a className="text-xs text-gray-500 font-medium hover:text-blue-600 transition-all duration-200" href={`mailto:${doctor.email}`}>{doctor.email}</a>
                                             </td>
                                             <td className="p-4 text-gray-500 hover:text-blue-500 hover:underline transition-all">
                                                 {/* <a href={`mailto:${user.email}`}>{user.email}</a> */}
-                                                {user.license_number}
+                                                {doctor.license_number}
                                             </td>
                                             <td className="p-4 text-gray-500">
-                                                <a href={`tel:/${user.phone}`}>{user.phone}</a>
+                                                <a href={`tel:/${doctor.phone}`}>{doctor.phone}</a>
                                             </td>
                                             <td className="p-4">
                                                 <span
                                                     className='p-4 text-center'
                                                 >
-                                                    {user.specialization}
+                                                    {doctor.specialization}
                                                 </span>
                                             </td>
                                             <td className="p-4">
                                                 <span
-                                                    className={`px-2.5 py-1 rounded-lg text-xs font-medium ${user.is_active ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}
+                                                    className={`px-2.5 py-1 rounded-lg text-xs font-medium ${doctor.is_active ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}
                                                 >
-                                                    {user.is_active ? 'Active' : 'Inactive'}
+                                                    {doctor.is_active ? 'Active' : 'Inactive'}
                                                 </span>
                                             </td>
-                                            <td className="p-4 text-gray-500 text-xs">{user.date_joined}</td>
+                                            <td className="p-4 text-gray-500 text-xs">{doctor.date_joined}</td>
                                             <td className="p-4 text-center relative">
                                                 <button
-                                                    onClick={() => setActiveMenuId(activeMenuId === user.id ? null : user.id)}
+                                                    onClick={() => setActiveMenuId(activeMenuId === doctor.id ? null : doctor.id)}
                                                     className="p-1 hover:bg-gray-100 rounded-lg text-gray-400 cursor-pointer"
                                                 >
                                                     <LuGripVertical className="w-4 h-4" />
                                                 </button>
-                                                {activeMenuId === user.id &&(
-                                                    <div className="absolute right-6 top-10 w-36 bg-white rounded-xl shadow-lg border border-gray-100 z-10 p-1 text-left flex items-center justify-center">
+                                                {activeMenuId === doctor.id &&(
+                                                    <div className="absolute right-6 top-10 w-45 bg-white rounded-xl shadow-lg border border-gray-100 z-10 p-1 text-left flex flex-col items-center justify-center">
                                                         <button
-                                                            onClick={() => handleToggleStatus(user.id, user.is_active)}
+                                                            onClick={() => handleToggleStatus(doctor.id, doctor.is_active)}
                                                             className="w-full text-left flex items-center px-3 py-2 text-xs text-gray-700 mb-1.5 bg-amber-50/50 font-medium rounded-md hover:bg-amber-50 cursor-pointer"
                                                         >   
                                                             {/* {user.is_active ? <LuCircleAlert /> : <LuShield />}    */}
-                                                            {user.is_active ? <><LuCircleAlert  className="mr-1"/> Reject Doctor</> : <><LuShield className="mr-1" /> Approve Doctor</>}
+                                                            {doctor.is_active ? <><LuCircleAlert  className="mr-1"/> Reject Doctor</> : <><LuShield className="mr-1" /> Approve Doctor</>}
+                                                        </button>
+                                                        <button
+                                                                onClick={() => handleDeleteDoctors(doctor.id)}
+                                                                className="w-full flex font-medium items-center text-left px-3 py-2 rounded-md cursor-pointer text-xs text-rose-600 bg-rose-50/50 hover:bg-rose-50"
+                                                            >
+                                                            <LuTriangleAlert  className="mr-1"/> Delete Doctor_Account
                                                         </button>
                                                     
                                                     </div>
