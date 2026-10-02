@@ -304,7 +304,7 @@ export default function Admin_Portal_sidebar(){
                             >
                                 <FaGripLines className='w-6 h-6 text-blue-600 transition-all duration-300' />
                             </button>
-                            <div className='flex px-3 h-auto border border-gray-200 w-120 flex items-center rounded-lg text-gray-600 transition focus:ring-2 focus:ring-blue-100 focus:border-blue-300'>
+                            <div className='hidden lg:flex px-3 h-auto border border-gray-200 w-120 flex items-center rounded-lg text-gray-600 transition focus:ring-2 focus:ring-blue-100 focus:border-blue-300'>
                                 <LuSearch  size={15} className='mr-1.5 mt-0.5'/>
                                 <input type="text" placeholder='Search users, doctors, appointments' className='w-full py-2.5 h-full text-[13px] border-none outline-none' />
                             </div>
@@ -425,7 +425,7 @@ export default function Admin_Portal_sidebar(){
                                     <span>Logout</span>
                                 </button>
                             </motion.div>
-                            )}
+                        )}
                     </div>
                     <div className="w-full p-5 mt-13 bg-blue-500/5 overflow-y-auto flex-1">
                         <Outlet />

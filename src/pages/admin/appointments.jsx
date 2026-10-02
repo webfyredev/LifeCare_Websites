@@ -236,7 +236,7 @@ export default function Lifecare_Appointments(){
                         </div>
                     ) : (
                         <div className="overflow-x-auto min-h-[300px]">
-                            <table className="w-full text-left border-collapse">
+                            <table className="min-w-max w-full text-left border-collapse">
                                 <thead>
                                     <tr className="border-b border-gray-100 text-[12px] text-gray-500 bg-gray-50/50">
                                         <th className="p-4 w-10">
@@ -244,8 +244,9 @@ export default function Lifecare_Appointments(){
                                         </th>
                                         <th className="p-4">Patient</th>
                                         <th className="p-4">Doctor</th>
-                                        <th className="p-4">Date & Time</th>
+                                        <th className="p-4">Reason</th>
                                         <th className="p-4">Department</th>
+                                        <th className="p-4">Date & Time</th>
                                         <th className="p-4">Status</th>
                                         <th className="p-4 text-center">Actions</th>
                                     </tr>
@@ -271,14 +272,20 @@ export default function Lifecare_Appointments(){
                                                 </div>
                                             </td>
                                             <td className="p-4">
-                                                <span className='text-gray-800 font-semibold '>{apt.date} {apt.time}</span>
+                                                <div className='text-left text-gray-800 font-semibold '>
+                                                    {apt.reason}
+                                                </div>
                                             </td>
                                             <td className="p-4">
                                                 <span className='text-gray-800 font-semibold '>{apt.department}</span>
                                             </td>
                                             <td className="p-4">
+                                                <span className='text-gray-800 font-semibold '>{apt.date} {apt.time}</span>
+                                            </td>
+                                            <td className="p-4">
                                                 <span className={`px-3 py-1.5 rounded-lg text-[11px] font-medium capitalize ${statusStyles[apt.status]}`}>{apt.status}</span>
                                             </td>
+                                            
                                             <td className="p-4 text-center relative">
                                                 <button
                                                     onClick={() => setActiveMenuId(activeMenuId === apt.id ? null : apt.id)}
@@ -288,7 +295,8 @@ export default function Lifecare_Appointments(){
                                                 </button>
                                                 {activeMenuId === apt.id &&(
                                                     <div className="absolute right-6 top-10 w-45 bg-white rounded-xl shadow-lg border border-gray-100 z-10 p-1 text-left flex flex-col items-center space-y-1.5">
-                                                        <button
+                                                        {apt.status === 'pending' || apt.status === 'confirmed' ? 
+                                                            <button
                                                             onClick={() => {
                                                                 setRescheduleModal({
                                                                     open : true,
@@ -302,14 +310,19 @@ export default function Lifecare_Appointments(){
                                                             className='text-xs font-medium px-4 py-2 rounded-lg bg-[#F0F9FF] hover:bg-[#DBEAFE] text-slate-600 cursor-pointer transition-all duration-300'
                                                         >   
                                                             Reschedule Appointment
-                                                        </button>
-                                                        {apt.status === 'cancelled' ?
-                                                            <button
+                                                        </button>    
+                                                     : 
+                                                        <span></span>
+                                                     }
+                                                        
+                                                        {apt.status === 'cancelled' || apt.status === 'completed' ?
+                                                            <motion.button
+                                                                {...buttonEffects}
                                                                     onClick={() => deleteAppointments(apt.id)}
-                                                                    className='text-xs w-full font-medium bg-red-500 px-4 py-2 rounded-lg text-white cursor-pointer transition-all duration-300'
+                                                                    className='text-xs w-full font-medium bg-red-500 px-4 py-2 rounded-lg text-white cursor-pointer'
                                                                 >
                                                                 Delete Appointment
-                                                            </button>
+                                                            </motion.button>
                                                         
                                                         :
                                                             <button
@@ -434,11 +447,12 @@ function CreateAppointments({ onClose, onBooked}){
     }, [form.appointment_date])
 
     useEffect(() => {
-        api.get('/admin/manage-appt_users/')
+        api.get('/admin/manage-users-list/')
         .then((res) => setPatients(res.data))
         .catch((err) => console.error('Error fetchng patients:', err))
     },[])
 
+    // const patient_list = patients?.data || []
 
     const handleChange = (e) => setForm({...form, [e.target.name] : e.target.value})
 
@@ -486,7 +500,7 @@ function CreateAppointments({ onClose, onBooked}){
                                 <option value="">Choose a patient...</option>
                                     {patients.map((p) => (
                                         <option key={p.id} value={p.id}>
-                                            {p.first_name} {p.last_name} ({p.email})
+                                            {p.name} ({p.email})
                                         </option>
                                     ))}
                             </select>

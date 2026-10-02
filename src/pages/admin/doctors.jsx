@@ -214,7 +214,7 @@ export default function Lifecare_Doctors(){
                         </div>
                     ) : (
                         <div className="overflow-x-auto min-h-[300px]">
-                            <table className="w-full text-left border-collapse">
+                            <table className="min-w-max w-full text-left border-collapse">
                                 <thead>
                                     <tr className="border-b border-gray-100 text-[12px] text-gray-500 bg-gray-50/50">
                                         <th className="p-4 w-10">
@@ -222,8 +222,11 @@ export default function Lifecare_Doctors(){
                                         </th>
                                         <th className="p-4">Name</th>
                                         <th className="p-4">License Number</th>
-                                        <th className="p-4">Phone</th>
                                         <th className="p-4">Speciality</th>
+                                        <th className="p-4">Experience (Yrs)</th>
+                                        <th className="p-4">Consultation Fee ($)</th>
+                                        <th className="p-4">Phone</th>
+                                        <th className="p-4">Bio</th>
                                         <th className="p-4">Status</th>
                                         <th className="p-4">Joined On</th>
                                         <th className="p-4 text-center">Actions</th>
@@ -241,20 +244,55 @@ export default function Lifecare_Doctors(){
                                                 <span className='text-gray-800 font-semibold '>{doctor.name}</span>
                                                 <a className="text-xs text-gray-500 font-medium hover:text-blue-600 transition-all duration-200" href={`mailto:${doctor.email}`}>{doctor.email}</a>
                                             </td>
-                                            <td className="p-4 text-gray-500 hover:text-blue-500 hover:underline transition-all">
-                                                {/* <a href={`mailto:${user.email}`}>{user.email}</a> */}
-                                                {doctor.license_number}
-                                            </td>
-                                            <td className="p-4 text-gray-500">
-                                                <a href={`tel:/${doctor.phone}`}>{doctor.phone}</a>
-                                            </td>
+                                                <td className="p-4 text-gray-500  transition-all">
+                                                    {doctor.license_number || 'Not Provided'}
+                                                </td>
                                             <td className="p-4">
                                                 <span
                                                     className='p-4 text-center'
                                                 >
-                                                    {doctor.specialization}
+                                                    {doctor.specialization || 'Not specified'}
                                                 </span>
                                             </td>
+                                            {doctor.experience ? (
+                                                <td className="p-4">
+                                                    <span
+                                                        className='p-4 text-center'
+                                                    >
+                                                        {doctor.experience}
+                                                    </span>
+                                                </td>
+                                            ) : (
+                                                <td className="p-4">
+                                                    <span className='p-4 text-center'>
+                                                        N/A
+                                                    </span>
+                                                </td>
+                                            )}
+                                            <td className="p-4">
+                                                <span
+                                                    className='p-4 text-center'
+                                                >
+                                                    {doctor.consultation_fee}
+                                                </span>
+                                            </td>
+                                            <td className="p-4 text-gray-500">
+                                                <a href={`tel:/${doctor.phone}`}>{doctor.phone}</a>
+                                            </td>
+                                            {doctor.bio ? (
+                                                <td className="p-4">
+                                                <span
+                                                    className='text-center'
+                                                >
+                                                    {doctor.bio}
+                                                </span>
+                                            </td>
+                                            ): (
+                                                <td className='p-4'>
+                                                    <span>No bio available</span>
+                                                </td>
+                                            )}
+                                            
                                             <td className="p-4">
                                                 <span
                                                     className={`px-2.5 py-1 rounded-lg text-xs font-medium ${doctor.is_active ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}

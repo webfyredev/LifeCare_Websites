@@ -224,7 +224,7 @@ export default function Lifecare_Users(){
                         </div>
                     ) : (
                         <div className="overflow-x-auto min-h-[300px]">
-                            <table className="w-full text-left border-collapse">
+                            <table className="min-w-max w-full text-left border-collapse">
                                 <thead>
                                     <tr className="border-b border-gray-100 text-[12px] text-gray-500 bg-gray-50/50">
                                         <th className="p-4 w-10">
@@ -235,6 +235,7 @@ export default function Lifecare_Users(){
                                         <th className="p-4">Phone</th>
                                         <th className="p-4">Role</th>
                                         <th className="p-4">Status</th>
+                                        <th className="p-4">Address</th>
                                         <th className="p-4">Joined On</th>
                                         <th className="p-4 text-center">Actions</th>
 
@@ -269,6 +270,9 @@ export default function Lifecare_Users(){
                                                 >
                                                     {user.is_active ? 'Active' : 'Inactive'}
                                                 </span>
+                                            </td>
+                                            <td className="p-4 text-gray-500">
+                                                {user.address || 'Nill'}
                                             </td>
                                             <td className="p-4 text-gray-500 text-xs">{user.date_joined}</td>
                                             <td className="p-4 text-center relative">
