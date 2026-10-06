@@ -58,7 +58,7 @@ export default function Lifecare_Appointments(){
             fetchAppointments()
             setFeedback({message : "Appointment Deleted successfully!", type : "success"})
         }catch(err){
-            setFeedback({messsage : "Failed to delete appointment"})
+            setFeedback({messsage : "Failed to delete appointment", type: "error"})
         }
     }
     const handleReschedule = async(newDate, newTime) => {
@@ -86,11 +86,6 @@ export default function Lifecare_Appointments(){
         }
     }
 
-    // const handleDelete = async(appt_id) => {
-    //     try{
-    //         const res = await api.delete(`/admin/manage-appointments/${appt_id}`)
-    //     }
-    // }
 
     const appointments_stats = [
         {
@@ -447,7 +442,7 @@ function CreateAppointments({ onClose, onBooked}){
     }, [form.appointment_date])
 
     useEffect(() => {
-        api.get('/admin/manage-users-list/')
+        api.get('/admin/manage-patients-list/')
         .then((res) => setPatients(res.data))
         .catch((err) => console.error('Error fetchng patients:', err))
     },[])

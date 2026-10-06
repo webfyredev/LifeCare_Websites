@@ -371,7 +371,7 @@ function PrescribeModal({patientId = '', patientName = '', onClose, onSaved, isA
     const [errorMsg, setErrorMsg] = useState('')
 
     useEffect(() => {
-        api.get('/admin/manage-users-list/')
+        api.get('/admin/manage-patients-list/')
         .then(res => setPatients(res.data.results || res.data || []))
         .catch(err => console.error('Failed to fetch patients', err))
     },[]);
@@ -475,7 +475,7 @@ function PrescribeModal({patientId = '', patientName = '', onClose, onSaved, isA
                             >
                                 <option value="">Choose Patient...</option>
                                 {patients.map((p) => (
-                                    <option key={p.id} value={p.id} className="capitalize">
+                                    <option key={p.id} value={p.id}>
                                         {p.name || `${p.first_name || ''} ${p.last_name || ''}`.trim() || p.username} ({p.email})
                                     </option>
                                 ))}

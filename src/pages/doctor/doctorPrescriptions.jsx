@@ -30,6 +30,15 @@ export default function DoctorPrescriptions(){
         } catch (err) { console.error(err)}
     }
 
+    const handleDelete = async(id) => {
+        try{
+            const res = await api.delete(`/doctors/prescriptions/${id}/`);
+            fetchPrescriptions()
+        }catch (err){
+            console.error('Failed to delete prescription', err)
+        }
+    }
+
     const statusStyle = (status) => {
         if (status === 'active') return 'bg-green-50 text-green-600'
         if (status === 'completed') return 'bg-slate-100 text-slate-500'
@@ -99,6 +108,13 @@ export default function DoctorPrescriptions(){
                                     className='mt-3 lg:mt-0 text-xs font-medium px-5 py-2.5 bg-blue-500 rounded-lg text-white hover:bg-blue-600 transition-all duratin-300 cursor-pointer'
                                 >
                                     Edit Prescriptions
+                            </motion.button>
+                            <motion.button
+                                {...buttonEffects}
+                                    onClick={() => {handleDelete(p.id)}}
+                                    className='mt-3 lg:mt-0 text-xs font-medium px-5 py-2.5 bg-red-500 rounded-lg text-white hover:bg-red-600 transition-all duratin-300 cursor-pointer'
+                                >
+                                    Delete Prescriptions
                             </motion.button>
                         </div>
                         

@@ -14,7 +14,6 @@ export default function Lifecare_Records(){
     
     const fetchMedicalRecords = async () => {
         setLoading(true)
-
         try{
             const response = await api.get('/admin/manage-records/', {params : {search, recordType, page, patients}})
             setRecordsData(response.data)
@@ -33,10 +32,10 @@ export default function Lifecare_Records(){
     })
 
     useEffect(() => {
-        api.get('/admin/manage-users-list/')
+        api.get('/admin/manage-patients-list/')
         .then((res) => setPatients(res.data))
         .catch((err) => console.error('Error fetching patients', err))
-    })
+    });
     
     const records_data = recordsData?.records_data || []
     const totalCount = recordsData?.pagination?.count || 0
@@ -143,7 +142,7 @@ export default function Lifecare_Records(){
                                 <option value="diagnosis">Diagnosis</option>
                                 <option value="surgery">Surgery</option>
                                 <option value="vaccination">Vaccination</option>
-                                <option value="allergy">Allergy</option>
+                                <option  value="allergy">Allergy</option>
                                 <option value="general">General</option>
                             </select>
                             
@@ -152,9 +151,6 @@ export default function Lifecare_Records(){
                                 onChange={(e) => setPatients(e.target.value)} 
                                 className="cursor-pointer px-2 py-2.5 border border-gray-200 rounded-lg w-35 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all">
                                 <option value="all">All Patients</option>
-                                    <option key={patients.id} value={patients.id}>
-                                        {patients.first_name} {patients.last_name}
-                                    </option>
                             </select>
                             
                             <button
@@ -239,7 +235,7 @@ export default function Lifecare_Records(){
                                             {record.file ? (
                                                 <td className="p-4">
                                                     <a
-                                                    href={record.file}
+                                                    // href={record.file}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className=" p-4 text-blue-500 hover:text-blue-700 underline font-medium cursor-pointer"
@@ -254,17 +250,12 @@ export default function Lifecare_Records(){
                                                     <span className='text-gray-800 font-semibold'>No file attached</span>
                                                 </td>
                                             )}
-                                            {record.description ? (
-                                                <td className="p-4">
-                                                    <div className="w-90 text-left text-gray-800 font-medium">
-                                                        {record.description}
-                                                    </div>
-                                                </td>
-                                            ): (
-                                                <td className="p-4">
-                                                    <span className='text-gray-800 font-semibold'>N/A</span>
-                                                </td>
-                                            )}
+                                            <td className="p-4">
+                                                <div className="w-90 text-left text-gray-800 font-medium">
+                                                    {record.description || 'N/A'}
+                                                </div>
+                                            </td>
+                                            
                                             <td className="p-4">
                                                 <span className='text-center text-gray-800 font-semibold'>{formatDateTime(record.created_at)}</span>
                                             </td>
