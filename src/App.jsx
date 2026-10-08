@@ -43,7 +43,6 @@ import Lifecare_Prescriptions from './pages/admin/prescriptions'
 import Lifecare_Records from './pages/admin/records'
 import Lifecare_Messages from './pages/admin/messages'
 import Lifecare_Notifications from './pages/admin/notifications'
-import Lifecare_Settings from './pages/admin/settings'
 
   
 
@@ -113,7 +112,6 @@ function App() {
             <Route path='records' element={<Lifecare_Records />}></Route>
             <Route path='messages' element={<Lifecare_Messages />}></Route>
             <Route path='notifications' element={<Lifecare_Notifications />}></Route>
-            <Route path='settings' element={<Lifecare_Settings />}></Route>
           </Route>
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

@@ -258,7 +258,7 @@ export default function Lifecare_Prescriptions(){
                                                 <span className='text-gray-800 font-semibold'>{prep.prescribed_date}</span>
                                             </td>
                                             <td className="p-4">
-                                                <span className='text-gray-800 font-semibold'>{prep.notes}</span>
+                                                <span className='w-90 text-gray-800 font-semibold'>{prep.notes}</span>
                                             </td>
                                             <td className="p-4">
                                                 <span className={`px-3 py-1.5 rounded-lg text-[11px] font-medium capitalize ${statusStyle[prep.status]}`}>{prep.status}</span>

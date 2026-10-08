@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { LuArrowDown, LuArrowUp, LuCalendarDays, LuChevronLeft, LuChevronRight, LuCircleAlert, LuDownload, LuFoldVertical, LuGripVertical, LuMoveVertical, LuPlus, LuSearch, LuShield, LuShieldCheck, LuStethoscope, LuTriangleAlert, LuUserRound, LuUserRoundMinus, LuUserRoundX, LuUsers, LuX } from "react-icons/lu"
+import { LuArrowDown, LuArrowUp, LuCalendar, LuCalendarDays, LuChevronLeft, LuChevronRight, LuCircleAlert, LuDownload, LuFoldVertical, LuGripVertical, LuMail, LuMoveVertical, LuPhone, LuPlus, LuSearch, LuShield, LuShieldCheck, LuSquarePlus, LuStethoscope, LuTriangleAlert, LuUser, LuUserCheck, LuUserPlus, LuUserRound, LuUserRoundMinus, LuUserRoundX, LuUsers, LuX } from "react-icons/lu"
 import { motion } from 'framer-motion'
 import { buttonEffects } from "../../animations/effects"
 import api from "../../api/axios"
@@ -18,6 +18,8 @@ export default function Lifecare_Users(){
     const [page, setPage] = useState(1);
     const [activeMenuId, setActiveMenuId] = useState(null);
     const [feedback, setFeedback] = useState({message: "", type: ""})
+
+    const [selectedUserId, setSelectedUserId] = useState(null)
 
     const navigate = useNavigate();
 
@@ -285,6 +287,12 @@ export default function Lifecare_Users(){
                                                 {activeMenuId === user.id &&(
                                                     <div className="absolute right-6 top-10 w-36 bg-white rounded-xl shadow-lg border border-gray-100 z-10 p-1 text-left">
                                                         <button
+                                                            onClick={() => setSelectedUserId(user.id)} 
+                                                            className="w-full flex font-medium items-center text-left px-3 py-2 rounded-md cursor-pointer text-xs bg-blue-100 text-blue-600"
+                                                            >
+                                                             <LuUserCheck  className="mr-1"/> View Profile
+                                                        </button>
+                                                        <button
                                                             onClick={() => handleToggleStatus(user.id, user.is_active)}
                                                             className="w-full text-left flex items-center px-3 py-2 text-xs text-gray-700 mb-1.5 bg-amber-50/50 font-medium rounded-md hover:bg-amber-50 cursor-pointer"
                                                         >   
@@ -293,10 +301,11 @@ export default function Lifecare_Users(){
                                                         </button>
                                                         <button
                                                             onClick={() => handleDeleteUser(user.id)}
-                                                            className="w-full flex font-medium items-center text-left px-3 py-2 rounded-md cursor-pointer text-xs text-rose-600 bg-rose-50/50 hover:bg-rose-50"
+                                                            className="w-full flex font-medium items-center text-left px-3 py-2 rounded-md cursor-pointer text-xs text-rose-600 bg-rose-50/50 hover:bg-rose-50 mb-1.5"
                                                         >
                                                         <LuTriangleAlert  className="mr-1"/> Delete User
                                                         </button>
+                                                        
                                                     </div>
                                                 )}
                                             </td>
@@ -340,6 +349,12 @@ export default function Lifecare_Users(){
                         fetchUsers();
                         setFeedback({message : msg, type : "success"})
                     }}
+                />
+            )}
+            {selectedUserId && (
+                <UserProfileModal
+                    userId={selectedUserId}
+                    onClose={() => setSelectedUserId(null)}
                 />
             )}
         </>
@@ -466,5 +481,252 @@ function AddUserModal({ onClose, onAdded}){
                 </div>
             </div>
         </>
+    )
+}
+
+function UserProfileModal({userId, onClose}){
+    const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if(!userId) return;
+        
+        const fetchUserProfile = async() => {
+            setLoading(true)
+            try{
+                const response = await api.get(`/admin/manage-users/${userId}/`);
+                setUserData(response.data);
+            }catch(err){
+                console.error('Failed to fetch user details:', err);
+            }finally{
+                setLoading(false);
+            }
+        };
+        fetchUserProfile()
+    }, [userId])
+
+    if(!userId) return null;
+
+    return(
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+            <div className="bg-white rounded-xl p-2.5 w-full max-w-md shadow-lg h-full flex flex-col overflow-y-auto">
+                {loading ? (
+                    <div className="flex-1 flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                    </div>
+                ) : userData ? (
+                    <>
+                        <div className="px-3 py-4 border-b border-slate-200">
+                            <div className="flex justify-between items-start mb-2">
+                                <h2 className="text-md font-bold text-slate-800">User Profile</h2>
+                                <button onClick={onClose} className="cursor-pointer text-slate-400 hover:text-slate-600 p-1 transition-all duration-300">
+                                    <LuX className="w-6 h-6" />
+                                </button>
+                            </div>
+                            <hr  className="border-1 border-slate-50 mb-3"/>
+                            <div className="flex items-center space-x-3">
+                                <img 
+                                    src={userData.profile_picture || ''}
+                                    className="w-16 h-16 rounded-full object-cover border border-slate-200"
+                                />
+                                <div>
+                                    <h3 className="text-lg font-bold text-slate-900">{userData.name}</h3>
+                                    <div className="flex flex-col items-left space-y-2 mt-1">
+                                        <span className={`w-15 text-xs px-2.5 py-0.5 rounded-full font-medium capitalize ${
+                                            userData.role === 'doctor' ? 'bg-emerald-100 text-emerald-700':
+                                            userData.role === 'patient' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'
+                                        }`}>
+                                            {userData.role}
+                                        </span>
+                                        <span className="flex items-center text-xs text-emerald-600 font-medium">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1"></span>
+                                            {userData.is_active ? 'Active' : 'Inactive'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="mt-4 space-y-2.5 text-xs text-slate-500 px-2">
+                                <p className="flex items-center text-gray-500">
+                                    <LuMail className="mr-3 w-3.5 h-3.5" />
+                                    <a href={`mailto:${userData.email}`} className="font-medium hover:text-blue-500 transition-colors hover:underline">{userData.email}</a>
+                                </p>
+                                <p className="flex items-center">
+                                    <LuPhone className="mr-3 w-3.5 h-3.5" />
+                                    <a href={`tel:/${userData.phone}`} className="font-medium hover:text-blue-500 transition-colors hover:underline">{userData.phone || 'N/A'}</a>
+                                    {/* {userData.phone || 'N/A'} */}
+                                </p>
+                                <p className="flex items-center text-slate-500">
+                                    <LuCalendar className="mr-2 w-3.5 h-3.5" />
+                                    DOB: <span className="font-medium ml-1">{userData.date_of_birth || 'N/A'}</span> <span className="mx-3">|</span> Gender: <span className="font-medium ml-1 capitalize">{userData.gender || 'N/A'}</span>
+                                </p>
+                            </div>
+                            
+                            
+                        </div>
+                        <p className="text-sm font-medium text-blue-500 px-3 mt-3 mb-1.5">
+                            Overview
+                        </p>
+                        <div className="p-2 space-y-6 flex-1 bg-slate-50/50">
+                            <div className="bg-white border border-slate-200/80 rounded-xl p-4 shadow-xs space-y-3">
+                                <div className="flex items-center text-slate-600 font-semibold text-sm mb-3">
+                                    <LuUser  className="mr-2 w-4 h-4 text-slate-500"/> <span>Personal Information</span>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4 text-xs">
+                                    <div className="flex flex-col">
+                                        <span className="text-slate-400 mb-1 font-medium">Email</span>
+                                        <a href={`mailto:${userData.email}`} className="text-slate-800 font-medium hover:text-blue-700 transition-colors">{userData.email}</a>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-slate-400 mb-1 font-medium">Phone</span>
+                                        <a href={`tel:/${userData.phone}`} className="text-slate-800 font-medium hover:text-blue-700 transition-colors">{userData.phone || 'N/A'}</a>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-slate-400 mb-1 font-medium">Date of Birth</span>
+                                        <span className="text-slate-800 font-medium">{userData.date_of_birth || 'N/A'}</span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-slate-400 mb-1 font-medium">Gender</span>
+                                        <span className="text-slate-800 font-medium capitalize">{userData.gender || 'N/A'}</span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-slate-400 mb-0.5 font-medium">Address</span>
+                                        <span className="text-slate-800 font-medium">{userData.address || 'N/A'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {userData.role === 'patient' && userData.patient_profile && (
+                                <div className="bg-white border border-slate-200/80 rounded-xl p-4 shadow-xs space-y-3">
+                                    <div className="flex items-center text-slate-800 font-semibold text-sm">
+                                        <LuSquarePlus  className="mr-2 w-4 h-4 text-blue-500"/> Patient Information 
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4 text-xs">
+                                        <div className="flex flex-col">
+                                            <span className="text-slate-400 mb-1 font-medium">Hospital Number</span>
+                                            <span className="text-slate-800 font-medium">{userData.patient_profile.hospital_number}</span>
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="text-slate-400 mb-1 font-medium">Blood type</span>
+                                            <span className="text-slate-800 font-medium">{userData.patient_profile.blood_type || 'Nill'}</span>
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="text-slate-400 mb-1 font-medium">Allergies</span>
+                                            <span className="text-slate-800 font-medium">{userData.patient_profile.allergies || 'Nill'}</span>
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="text-slate-400 mb-1 font-medium">Emergency Contact</span>
+                                            <span className="text-slate-800 font-medium">{userData.patient_profile.emergency_contact_name} <a className="hover:text-blue-700 transition-colors" href={`tel:/${userData.patient_profile.emergency_contact_phone}`}>{userData.patient_profile.emergency_contact_phone}</a></span>
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="text-slate-400 mb-1 font-medium">Insurance Number</span>
+                                            <span className="text-slate-800 font-medium">{userData.patient_profile.insurance_number}</span>
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="text-slate-400 mb-1 font-medium">Medical History</span>
+                                            <span className="text-slate-800 font-medium">{userData.patient_profile.medical_history || 'Nill'}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            {userData.role === 'doctor' && userData.doctor_profile && (
+                                <>
+                                    <div className="bg-white border border-slate-200/80 rounded-xl p-4 shadow-sm space-y-3">
+                                        <div className="flex items-center text-slate-800 font-semibold text-sm">
+                                            <LuSquarePlus  className="mr-2 w-4 h-4 text-blue-500"/> Professional Information 
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4 text-xs">
+                                            <div className="flex flex-col">
+                                                <span className="text-slate-400 mb-1 font-medium">Specialization</span>
+                                                <span className="text-slate-800 font-medium">{userData.doctor_profile.specialization}</span>
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-slate-400 mb-1 font-medium">License Number</span>
+                                                <span className="text-slate-800 font-medium">{userData.doctor_profile.license_number}</span>
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-slate-400 mb-1 font-medium">Years of Experience</span>
+                                                <span className="text-slate-800 font-medium">{userData.doctor_profile.years_of_experience}years</span>
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-slate-400 mb-1 font-medium">Consultation Fee</span>
+                                                <span className="text-slate-800 font-medium">${userData.doctor_profile.consultation_fee}</span>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div className="bg-white border border-slate-200/80 rounded-xl p-4 shadow-sm space-y-3">
+                                        <div className="flex items-center text-slate-800 font-semibold text-sm">
+                                            <LuCalendar  className="mr-2 w-4 h-4 text-blue-500"/> Availability 
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4 text-xs">
+                                            <div className="flex flex-col">
+                                                <span className="text-slate-400 mb-1.5 font-medium">Available Days</span>
+                                                <div className="flex space-x-1 mt-1">
+                                                    {userData.doctor_profile.available_days.map((days) => (
+                                                        <span key={days} className="px-3 py-1 bg-blue-100 text-blue-600 rounded text-[10px] font-bold">
+                                                            {days}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <div className="flex space-x-3">
+                                                <span className="text-slate-400 mb-1 font-medium">Max Patients / Day = </span>
+                                                <span className="text-slate-800 font-medium">{userData.doctor_profile.max_patient_per_day}</span>
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-slate-400 mb-1">Is Available</span>
+                                                <span className={`w-10 py-1 font-bold  text-white flex items-center justify-center rounded-full  ${userData.doctor_profile.is_available ? 'bg-emerald-500' : 'bg-red-500'}`}>{userData.doctor_profile.is_available ? 'Yes' : 'No'}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                            {userData.role === 'admin' &&(
+                                <div className="bg-white border border-slate-200/80 rounded-xl p-4 shadow-sm space-y-3">
+                                    <div className="flex items-center text-slate-800 font-semibold text-sm">
+                                        <LuShieldCheck  className="mr-2 w-4 h-4 text-blue-500"/> Account Information 
+                                    </div>
+                                    <div className="grid grid-cols-1 gap-4 text-xs">
+                                        <div className="flex flex-col">
+                                            <span className="text-slate-400 mb-1 font-medium">Role</span>
+                                            <span className="text-slate-800 font-medium">Administrator</span>
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="text-slate-400 mb-1 font-medium">Date Joined</span>
+                                            <span className="text-slate-800 font-medium">{userData.date_joined}</span>
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="text-slate-400 mb-1 font-medium">Account Status</span>
+                                            <span className="w-2 h-2 rounded-full font-bold mr-1.5">{userData.is_active ? 'Active' : 'Inactive'}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            <div className='flex space-x-3 pt-1'>
+                                <button
+                                    type="button" 
+                                    onClick={onClose} 
+                                    className='flex-1 font-medium py-2.5 text-sm border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 cursor-pointer'
+                                    >
+                                        Cancel
+                                </button>
+                                <motion.button 
+                                    type="submit"
+                                    {...buttonEffects}
+                                    className='flex-1 font-medium py-2.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer'>
+                                        Edit User
+                                </motion.button>
+                            </div>
+                        </div>
+                    </>
+                ): (
+                    <div className="flex justify-between items-center text-center text-slate-500">
+                        <span>Failed to load user information.</span>
+                        <button onClick={onClose} className="cursor-pointer text-slate-400 hover:text-slate-600 p-1">
+                            <LuX className="w-6 h-6" />
+                        </button>
+                    </div>
+                )}
+            </div>
+        </div>
     )
 }

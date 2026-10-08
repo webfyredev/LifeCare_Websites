@@ -198,10 +198,7 @@ export default function Admin_Portal_sidebar(){
                                 <LuBell  className='mt-0.5'/>
                                 <span>Notifications</span>
                             </NavLink>
-                            <NavLink to="/admin/settings" className={({ isActive}) => `font-medium text-[13px] rounded-lg px-3 py-2.5 flex items-center space-x-3 ${isActive ? 'bg-blue-50 text-blue-600' : 'text-[#64748b] hover:text-[#334155] hover:bg-[#f8fafc]'}`}>
-                                <LuUserCog  className='mt-0.5'/>
-                                <span>Profiles & Settings</span>
-                            </NavLink>
+                            
                         </div>
                         <div className='w-[90%] p-3 flex flex-col bg-[#f8fafc] rounded-lg shadow-xs'>
                             <div className='flex space-x-1.5 items-center'>
@@ -271,11 +268,6 @@ export default function Admin_Portal_sidebar(){
                                         <NavLink to="/admin/notifications" className={({ isActive}) => `font-medium text-[13px] rounded-lg px-3 py-2.5 flex items-center space-x-3 ${isActive ? 'bg-blue-50 text-blue-600' : 'text-[#64748b] hover:text-[#334155] hover:bg-[#f8fafc]'}`}>
                                             <LuBell  className='mt-0.5'/>
                                             <span>Notifications</span>
-                                        </NavLink>
-                                        
-                                        <NavLink to="/admin/settings" className={({ isActive}) => `font-medium text-[13px] rounded-lg px-3 py-2.5 flex items-center space-x-3 ${isActive ? 'bg-blue-50 text-blue-600' : 'text-[#64748b] hover:text-[#334155] hover:bg-[#f8fafc]'}`}>
-                                            <LuUserCog  className='mt-0.5'/>
-                                            <span>Profiles & Settings</span>
                                         </NavLink>
                                     </div>
                                     <div className='w-[90%] p-3 flex flex-col bg-[#f8fafc] rounded-lg shadow-xs'>
