@@ -116,7 +116,7 @@ export default function Lifecare_Doctors(){
     return(
         <>
             <div className="w-full space-y-5">
-                <div className="flex items-center justify-between w-full">
+                <div className="md:flex md:flex-row flex flex-col md:items-center md:justify-between w-full space-y-5 md:space-y-0">
                     <div className='w-auto flex flex-col space-y-1'>
                         <h3 className='font-bold text-2xl text-[#1e293b]'>Doctors</h3>
                         <p className='text-[13px] text-[#94a3b8]'>Manage registered doctors and their information</p>
@@ -160,8 +160,8 @@ export default function Lifecare_Doctors(){
                         </div>
                         <div className="flex items-center space-x-3 w-full md:w-auto">
                             <select value={specialities} 
-                                onChange={(e) => setSpecialities(e.target.value)} 
-                                className="cursor-pointer px-2 py-2.5 border border-gray-200 rounded-lg w-35 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all">
+                                onChange={(e) => setSpecialities(e.target.value)}
+                                className="cursor-pointer px-2 py-2.5 border border-gray-200 rounded-lg w-45 md:w-35 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all">
                                 <option value="all">All Specialities</option>
                                 <option value="pediatrics">Pediatrics</option>
                                 <option value="cardiology">Cardiology</option>
@@ -170,7 +170,7 @@ export default function Lifecare_Doctors(){
                             </select>
                             <select value={status}
                                 onChange={(e) => setStatus(e.target.value)}
-                                className="cursor-pointer px-2 py-2 border border-gray-200 rounded-lg w-45 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all"
+                                className="cursor-pointer px-2 py-2 border border-gray-200 rounded-lg w-45 md:w-45 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all"
                             >
                                 <option value="all">All Status</option>
                                 <option value="pending">Pending</option>
@@ -178,8 +178,8 @@ export default function Lifecare_Doctors(){
                                 <option value="suspended">Suspended</option>
                             </select>
                             <button
-                                className="cursor-pointer p-2.5 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50"
-                                >
+                                className="cursor-pointer p-2.5 border border-gray-200 w-12 md:w-auto rounded-lg text-gray-600 hover:bg-gray-50 flex items-center justify-center"
+                            >
                                 <LuDownload className="w-4 h-4" />
                             </button>
                         </div>

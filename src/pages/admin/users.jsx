@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { LuArrowDown, LuArrowUp, LuCalendar, LuCalendarDays, LuChevronLeft, LuChevronRight, LuCircleAlert, LuDownload, LuFoldVertical, LuGripVertical, LuMail, LuMoveVertical, LuPhone, LuPlus, LuSearch, LuShield, LuShieldCheck, LuSquarePlus, LuStethoscope, LuTriangleAlert, LuUser, LuUserCheck, LuUserPlus, LuUserRound, LuUserRoundMinus, LuUserRoundX, LuUsers, LuX } from "react-icons/lu"
+import { LuArrowDown, LuArrowUp, LuCalendar, LuCalendarDays, LuChevronLeft, LuChevronRight, LuCircleAlert, LuDownload, LuFoldVertical, LuGripVertical, LuLoader, LuMail, LuMoveVertical, LuPhone, LuPlus, LuSearch, LuShield, LuShieldCheck, LuSquarePlus, LuStethoscope, LuTriangleAlert, LuUser, LuUserCheck, LuUserPlus, LuUserRound, LuUserRoundMinus, LuUserRoundX, LuUsers, LuX } from "react-icons/lu"
 import { motion } from 'framer-motion'
 import { buttonEffects } from "../../animations/effects"
 import api from "../../api/axios"
@@ -20,6 +20,16 @@ export default function Lifecare_Users(){
     const [feedback, setFeedback] = useState({message: "", type: ""})
 
     const [selectedUserId, setSelectedUserId] = useState(null)
+    const [editingUser, setEditingUser] = useState(null)
+
+    const handleOpenEditModal  = (userData) => {
+        setSelectedUserId(null);
+        setEditingUser(userData)
+    };
+
+    const handleUserUpdated = () => {
+        setEditingUser(null);
+    }
 
     const navigate = useNavigate();
 
@@ -129,7 +139,7 @@ export default function Lifecare_Users(){
     return(
         <>
             <div className="w-full space-y-5">
-                <div className="flex items-center justify-between w-full">
+                <div className="md:flex md:flex-row flex flex-col md:items-center md:justify-between w-full space-y-5 md:space-y-0">
                     <div className='w-auto flex flex-col space-y-1'>
                         <h3 className='font-bold text-2xl text-[#1e293b]'>Users</h3>
                         <p className='text-[13px] text-[#94a3b8]'>Manage all platform users (patients, doctors, and admins).</p>
@@ -175,7 +185,7 @@ export default function Lifecare_Users(){
                         <div className="flex items-center space-x-3 w-full md:w-auto">
                             <select value={role} 
                                 onChange={(e) => setRole(e.target.value)} 
-                                className="cursor-pointer px-2 py-2.5 border border-gray-200 rounded-lg w-35 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all">
+                                className="cursor-pointer px-2 py-2.5 border border-gray-200 rounded-lg w-45 md:w-35 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all">
                                 <option value="all">All Roles</option>
                                 <option value="patient">Patients</option>
                                 <option value="doctor">Doctors</option>
@@ -183,14 +193,14 @@ export default function Lifecare_Users(){
                             </select>
                             <select value={status}
                                 onChange={(e) => setStatus(e.target.value)}
-                                className="cursor-pointer px-2 py-2 border border-gray-200 rounded-lg w-45 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all"
+                                className="cursor-pointer px-2 py-2 border border-gray-200 rounded-lg w-45 md:w-45 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all"
                             >
                                 <option value="all">All Status</option>
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
                             </select>
                             <button
-                                className="cursor-pointer p-2.5 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50"
+                                className="cursor-pointer p-2.5 border border-gray-200 w-12 md:w-auto rounded-lg text-gray-600 hover:bg-gray-50 flex items-center justify-center"
                                 >
                                 <LuDownload className="w-4 h-4" />
                             </button>
@@ -285,23 +295,23 @@ export default function Lifecare_Users(){
                                                     <LuGripVertical className="w-4 h-4" />
                                                 </button>
                                                 {activeMenuId === user.id &&(
-                                                    <div className="absolute right-6 top-10 w-36 bg-white rounded-xl shadow-lg border border-gray-100 z-10 p-1 text-left">
+                                                    <div className="absolute right-6 top-10 w-40 bg-white rounded-xl shadow-lg border border-gray-100 z-10 p-2 text-left">
                                                         <button
                                                             onClick={() => setSelectedUserId(user.id)} 
-                                                            className="w-full flex font-medium items-center text-left px-3 py-2 rounded-md cursor-pointer text-xs bg-blue-100 text-blue-600"
+                                                            className="w-full flex font-medium items-center text-left px-3 py-2 rounded-md cursor-pointer mb-1.5 text-xs bg-blue-50 hover:bg-blue-100 text-blue-600 transition-all duration-200"
                                                             >
                                                              <LuUserCheck  className="mr-1"/> View Profile
                                                         </button>
                                                         <button
                                                             onClick={() => handleToggleStatus(user.id, user.is_active)}
-                                                            className="w-full text-left flex items-center px-3 py-2 text-xs text-gray-700 mb-1.5 bg-amber-50/50 font-medium rounded-md hover:bg-amber-50 cursor-pointer"
+                                                            className="w-full text-left flex items-center px-3 py-2 text-xs text-amber-700 mb-1.5 bg-amber-50/50 font-medium rounded-md hover:bg-amber-50 cursor-pointer transition-all duration-200"
                                                         >   
                                                             {/* {user.is_active ? <LuCircleAlert /> : <LuShield />}    */}
                                                             {user.is_active ? <><LuCircleAlert  className="mr-1"/> Suspend User</> : <><LuShield className="mr-1" /> Restore User</>}
                                                         </button>
                                                         <button
                                                             onClick={() => handleDeleteUser(user.id)}
-                                                            className="w-full flex font-medium items-center text-left px-3 py-2 rounded-md cursor-pointer text-xs text-rose-600 bg-rose-50/50 hover:bg-rose-50 mb-1.5"
+                                                            className="w-full flex font-medium items-center text-left px-3 py-2 rounded-md cursor-pointer text-xs text-rose-600 bg-rose-50/50 hover:bg-rose-50 mb-1.5 transition-all duration-200"
                                                         >
                                                         <LuTriangleAlert  className="mr-1"/> Delete User
                                                         </button>
@@ -355,6 +365,14 @@ export default function Lifecare_Users(){
                 <UserProfileModal
                     userId={selectedUserId}
                     onClose={() => setSelectedUserId(null)}
+                    onEditUser={handleOpenEditModal}
+                />
+            )}
+            {editingUser && (
+                <EditUserModal 
+                    userData={editingUser}
+                    onClose={() => setEditingUser(null)}
+                    onUpdated={handleUserUpdated}
                 />
             )}
         </>
@@ -484,7 +502,7 @@ function AddUserModal({ onClose, onAdded}){
     )
 }
 
-function UserProfileModal({userId, onClose}){
+function UserProfileModal({userId, onClose, onEditUser}){
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -504,6 +522,14 @@ function UserProfileModal({userId, onClose}){
         };
         fetchUserProfile()
     }, [userId])
+
+    const getImageUrl = (imagePath) => {
+        if (!imagePath) return '';
+        if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+            return imagePath;
+        }
+        return `http://localhost:8000${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+    };
 
     if(!userId) return null;
 
@@ -526,7 +552,10 @@ function UserProfileModal({userId, onClose}){
                             <hr  className="border-1 border-slate-50 mb-3"/>
                             <div className="flex items-center space-x-3">
                                 <img 
-                                    src={userData.profile_picture || ''}
+                                    src={getImageUrl(userData.profile_picture)}
+                                    onError={(e) => {
+                                        e.target.style.display = 'none';
+                                    }}
                                     className="w-16 h-16 rounded-full object-cover border border-slate-200"
                                 />
                                 <div>
@@ -636,11 +665,11 @@ function UserProfileModal({userId, onClose}){
                                         <div className="grid grid-cols-2 gap-4 text-xs">
                                             <div className="flex flex-col">
                                                 <span className="text-slate-400 mb-1 font-medium">Specialization</span>
-                                                <span className="text-slate-800 font-medium">{userData.doctor_profile.specialization}</span>
+                                                <span className="text-slate-800 font-medium">{userData.doctor_profile.specialization || 'Nill'}</span>
                                             </div>
                                             <div className="flex flex-col">
                                                 <span className="text-slate-400 mb-1 font-medium">License Number</span>
-                                                <span className="text-slate-800 font-medium">{userData.doctor_profile.license_number}</span>
+                                                <span className="text-slate-800 font-medium">{userData.doctor_profile.license_number || 'N/A'}</span>
                                             </div>
                                             <div className="flex flex-col">
                                                 <span className="text-slate-400 mb-1 font-medium">Years of Experience</span>
@@ -712,6 +741,8 @@ function UserProfileModal({userId, onClose}){
                                 <motion.button 
                                     type="submit"
                                     {...buttonEffects}
+                                    onClick={() => onEditUser(userData)}
+                                    // onClick={() => }
                                     className='flex-1 font-medium py-2.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer'>
                                         Edit User
                                 </motion.button>
@@ -726,6 +757,381 @@ function UserProfileModal({userId, onClose}){
                         </button>
                     </div>
                 )}
+            </div>
+        </div>
+    )
+}
+
+function EditUserModal({userData, onClose, onUpdated}){
+    const [loading, setLoading] = useState(false)
+    const [formData, setFormData] = useState({
+        first_name : '',
+        last_name : '',
+        email : '',
+        phone : '',
+        gender : '',
+        date_of_birth : '',
+        address : '',
+        is_active : true,
+        role : 'admin',
+        patient_profile : {},
+        doctor_profile : {},
+    })
+
+    useEffect(() => {
+        if(userData){
+            const nameParts = (userData.name || '').split(' ');
+            setFormData({
+                first_name: userData.first_name || nameParts[0] || '',
+                last_name: userData.last_name || nameParts.slice(1).join(' '),
+                email : userData.email || '',
+                phone: userData.phone || userData.phone_number || '',
+                gender : userData.gender || '',
+                date_of_birth : userData.date_of_birth || '',
+                address : userData.address || '',
+                is_active : userData.is_active ?? true,
+                role: userData.role || 'admin',
+                patient_profile: userData.patient_profile || {
+                    hospital_number : '',
+                    blood_type : '',
+                    allergies : '',
+                    emergency_contact_name : '',
+                    emergency_contact_phone : '',
+                    insurance_number : '',
+                    medical_history : '',
+                },
+                doctor_profile: userData.doctor_profile || {
+                    specialization : '',
+                    license_number : '',
+                    years_of_experience: 0,
+                    consultation_fee : 0,
+                    max_patient_per_day : 20,
+                    is_available : true,
+                    bio : ''
+                },
+            })
+        }
+    }, [userData])
+
+    const handleBaseChange = (e) => {
+        const { name, value, type , checked} = e.target;
+        setFormData((prev) => ({...prev, [name]: type === 'checkbox' ? checked : value,
+        }));
+    };
+
+    const handleNestedChange = (profileKey, field, value) => {
+        setFormData((prev) => ({...prev, [profileKey]: {...prev[profileKey], [field]: value,
+        }
+    }));
+    };
+
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        const payload = {
+            first_name : formData.first_name,
+            last_name : formData.last_name,
+            email : formData.email,
+            phone : formData.phone,
+            gender : formData.gender,
+            date_of_birth : formData.date_of_birth || null,
+            address : formData.address,
+            is_active: formData.is_active,
+            role : formData.role
+
+        };
+        if(formData.role === 'patient'){
+            payload.patient_profile = formData.patient_profile;
+        }else if(formData.role === 'doctor'){
+            payload.doctor_profile = formData.doctor_profile;
+        }
+
+        try{
+            await api.patch(`/admin/manage-users/${userData.id}/`, payload);
+            if(onUpdated) onUpdated();
+            onClose();
+        }catch(err){
+            console.error('Failed to update user profile:', err)
+        }finally{
+            setLoading(false)
+        }
+    };
+    if(!userData) return null;
+
+    return(
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden p-5">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h2 className="text-lg font-bold text-slate-800">Edit User</h2>
+                        <p className="text-xs text-slate-500">
+                            Updating account and profile data for <span className="font-semibold">{userData.name}</span>
+                        </p>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        className="text-slate-400 hover:text-slate-600 cursor-pointer transition-all duration-200"
+                    >
+                        <LuX  className="w-5 h-5"/>
+                    </button>
+                </div>
+                <form 
+                    onSubmit={handleSubmit}
+                    className="overflow-y-auto space-y-6 flex-1 mt-5 overflow-x-hidden"
+                >
+                    <div>
+                        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
+                            General Information 
+                        </h3>
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div className="flex flex-col space-y-1">
+                                <label className="text-xs font-semibold text-slate-600">First Name</label>
+                                <input
+                                    type="text"
+                                    name="first_name"
+                                    value={formData.first_name}
+                                    onChange={handleBaseChange}
+                                    required
+                                    className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                />
+                            </div>
+                            <div className="flex flex-col space-y-1">
+                                <label className="text-xs font-semibold text-slate-600">Last Name</label>
+                                <input
+                                    type="text"
+                                    name="last_name"
+                                    value={formData.last_name}
+                                    onChange={handleBaseChange}
+                                    required
+                                    className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                />
+                            </div>
+                            <div className="flex flex-col space-y-1">
+                                <label className="text-xs font-semibold text-slate-600">Email</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleBaseChange}
+                                    required
+                                    className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                />
+                            </div>
+                            <div className="flex flex-col space-y-1">
+                                <label className="text-xs font-semibold text-slate-600">Phone Number</label>
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleBaseChange}
+                                    required
+                                    className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                />
+                            </div>
+                            <div className="flex flex-col space-y-1">
+                                <label className="text-xs font-semibold text-slate-600">Date of Birth</label>
+                                <input
+                                    type="date"
+                                    name="date_of_birth"
+                                    value={formData.date_of_birth}
+                                    onChange={handleBaseChange}
+                                    required
+                                    className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                />
+                            </div>
+                            <div className='flex flex-col space-y-1'>
+                                <label className='text-xs font-semibold text-slate-600'>Gender</label>
+                                <select
+                                    name="gender"
+                                    value={formData.gender}
+                                    onChange={handleBaseChange} 
+
+                                    className='border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300'>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                            <div className="flex flex-col space-y-1">
+                                <label className="text-xs font-semibold text-slate-600">Address</label>
+                                <input
+                                    type="text"
+                                    name="address"
+                                    value={formData.address}
+                                    onChange={handleBaseChange}
+                                    required
+                                    className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                />
+                            </div>
+                            <div className="flex items-center space-x-2 pt-2">
+                                <input 
+                                    type="checkbox"
+                                    id="is_active"
+                                    name="is_active"
+                                    checked={formData.is_active}
+                                    onChange={handleBaseChange}
+                                    className="rounded text-blue-600 focus:ring-blue-500"
+                                />
+                                <label className="text-xs font-medium text-slate-700">
+                                    Account Active Status
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    {formData.role === 'patient' && (
+                        <div className="pt-4 border-t border-slate-100">
+                            <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
+                                Patient Profile Information 
+                            </h3>
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                                <div className="flex flex-col space-y-1">
+                                    <label className="text-xs font-semibold text-slate-600">Hospital Number</label>
+                                    <input
+                                        type="text"
+                                        value={formData.patient_profile.hospital_number || ''}
+                                        onChange={(e) => handleNestedChange('patient_profile', 'hospital_number', e.target.value)}
+                                        className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                    />
+                                </div>
+                                <div className="flex flex-col space-y-1">
+                                    <label className="text-xs font-semibold text-slate-600">Blood Type</label>
+                                    <input
+                                        type="text"
+                                        value={formData.patient_profile.blood_type || ''}
+                                        onChange={(e) => handleNestedChange('patient_profile', 'blood_type', e.target.value)}
+                                        className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                    />
+                                </div>
+                                <div className="flex flex-col space-y-1">
+                                    <label className="text-xs font-semibold text-slate-600">Emergency Contact Name</label>
+                                    <input
+                                        type="text"
+                                        value={formData.patient_profile.emergency_contact_name || ''}
+                                        onChange={(e) => handleNestedChange('patient_profile', 'emergency_contact_name', e.target.value)}
+                                        className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                    />
+                                </div>
+                                <div className="flex flex-col space-y-1">
+                                    <label className="text-xs font-semibold text-slate-600">Emergency Contact Phone</label>
+                                    <input
+                                        type="text"
+                                        value={formData.patient_profile.emergency_contact_phone || ''}
+                                        onChange={(e) => handleNestedChange('patient_profile', 'emergency_contact_phone', e.target.value)}
+                                        className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                    />
+                                </div>
+                                <div className="flex flex-col space-y-1">
+                                    <label className="text-xs font-semibold text-slate-600">Insurance Number</label>
+                                    <input
+                                        type="text"
+                                        value={formData.patient_profile.insurance_number || ''}
+                                        onChange={(e) => handleNestedChange('patient_profile', 'insurance_number', e.target.value)}
+                                        className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                    />
+                                </div>
+                                <div className="flex flex-col space-y-1">
+                                    <label className="text-xs font-semibold text-slate-600">Allergies</label>
+                                    <input
+                                        type="text"
+                                        value={formData.patient_profile.allergies || ''}
+                                        onChange={(e) => handleNestedChange('patient_profile', 'allergies', e.target.value)}
+                                        className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                    />
+                                </div>
+                                <div className="flex flex-col space-y-1">
+                                    <label className="text-xs font-semibold text-slate-600">Medical History</label>
+                                    <textarea
+                                        rows={2}
+                                        value={formData.patient_profile.medical_history || ''}
+                                        onChange={(e) => handleNestedChange('patient_profile', 'medical_history', e.target.value)}
+                                        className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    {formData.role === 'doctor' &&(
+                        <div className="pt-4 border-t border-slate-100">
+                            <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
+                                Doctor Profile Information 
+                            </h3>
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                                <div className="flex flex-col space-y-1">
+                                    <label className="text-xs font-semibold text-slate-600">Specialization</label>
+                                    <input
+                                        type="text"
+                                        value={formData.doctor_profile.specialization || ''}
+                                        onChange={(e) => handleNestedChange('doctor_profile', 'specialization', e.target.value)}
+                                        className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                    />
+                                </div>
+                                <div className="flex flex-col space-y-1">
+                                    <label className="text-xs font-semibold text-slate-600">License Number</label>
+                                    <input
+                                        type="text"
+                                        value={formData.doctor_profile.license_number || ''}
+                                        onChange={(e) => handleNestedChange('doctor_profile', 'license_number', e.target.value)}
+                                        className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                    />
+                                </div>
+                                <div className="flex flex-col space-y-1">
+                                    <label className="text-xs font-semibold text-slate-600">Years of Experience</label>
+                                    <input
+                                        type="number"
+                                        value={formData.doctor_profile.years_of_experience || 0}
+                                        onChange={(e) => handleNestedChange('doctor_profile', 'years_of_experience', e.target.value)}
+                                        className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                    />
+                                </div>
+                                <div className="flex flex-col space-y-1">
+                                    <label className="text-xs font-semibold text-slate-600">Consulation Fee ($)</label>
+                                    <input
+                                        type="number"
+                                        value={formData.doctor_profile.consultation_fee || 0}
+                                        onChange={(e) => handleNestedChange('doctor_profile', 'consultation_fee', e.target.value)}
+                                        className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                    />
+                                </div>
+                                <div className="flex flex-col space-y-1">
+                                    <label className="text-xs font-semibold text-slate-600">Max Patients / Day</label>
+                                    <input
+                                        type="text"
+                                        value={formData.doctor_profile.max_patient_per_day || 0}
+                                        onChange={(e) => handleNestedChange('doctor_profile', 'max_patient_per_day', e.target.value)}
+                                        className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                    />
+                                </div>
+                                <div className="flex flex-col space-y-1">
+                                    <label className="text-xs font-semibold text-slate-600">Bio</label>
+                                    <textarea
+                                        rows={2}
+                                        value={formData.doctor_profile.bio || ''}
+                                        onChange={(e) => handleNestedChange('doctor_profile', 'bio', e.target.value)}
+                                        className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    <div className='flex space-x-5 pt-1 mb-3'>
+                        <button
+                            type="button" 
+                            onClick={onClose}
+                            className='w-1/2 py-2.5 text-sm border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 cursor-pointer'
+                            >
+                                Cancel
+                        </button>
+                        <motion.button 
+                            type="submit"
+                            disabled={loading}
+                            {...buttonEffects}
+                            className='w-1/2 py-2.5 text-sm bg-blue-600 flex items-center justify-center text-white rounded-lg hover:bg-blue-700 cursor-pointer font-semibold'
+                        >
+                            {loading ? <LuLoader className="w-4 h-4 animate-spin" /> : 'Update'}
+                        </motion.button>
+                    </div>
+                </form>
             </div>
         </div>
     )

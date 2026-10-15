@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import api from "../../api/axios"
-import { LuArrowDown, LuArrowUp, LuChevronLeft, LuChevronRight, LuClipboardList, LuDownload, LuFiles, LuFlaskConical, LuGripVertical, LuPlus, LuSearch, LuShieldCheck, LuStethoscope, LuTriangleAlert, LuX } from "react-icons/lu"
+import { LuArrowDown, LuArrowUp, LuChevronLeft, LuChevronRight, LuClipboardList, LuDot, LuDownload, LuFiles, LuFlaskConical, LuFlipVertical, LuGripVertical, LuPlus, LuSearch, LuShieldCheck, LuStethoscope, LuTriangleAlert, LuX } from "react-icons/lu"
 import { motion } from 'framer-motion'
 import { buttonEffects } from "../../animations/effects"
 
@@ -72,17 +72,6 @@ export default function Lifecare_Records(){
         }
 
 
-        
-        // try{
-        //     // co
-        //     await api.patch(`/patients/records/${id}/`, updatedData)
-        //     setEditModal({open : false, records : null})
-        //     fetchMedicalRecords()
-        //     setFeedback({ message : "Record updated successfully", type : "success"})
-        // }catch(err) {
-        //     console.error(err)
-        //     setFeedback({ message : "Record updated failed", type : "error"})
-        // }
     }
 
     const handleDeleteRecords = async(id) => {
@@ -148,7 +137,7 @@ export default function Lifecare_Records(){
     return(
         <>
             <div className="w-full space-y-5">
-                <div className="flex items-center justify-between w-full">
+                <div className="md:flex md:flex-row flex flex-col md:items-center md:justify-between w-full space-y-5 md:space-y-0">
                     <div className='w-auto flex flex-col space-y-1'>
                         <h3 className='font-bold text-2xl text-[#1e293b]'>Medical Records</h3>
                         <p className='text-[13px] text-[#94a3b8]'>Access and manage patient medical records.</p>
@@ -194,7 +183,7 @@ export default function Lifecare_Records(){
                             
                             <select value={recordType}
                                 onChange={(e) => setRecordType(e.target.value)}
-                                className="cursor-pointer px-2 py-2 border border-gray-200 rounded-lg w-45 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all"
+                                className="cursor-pointer px-2 py-2 border border-gray-200 rounded-lg w-[85%] md:w-45 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all"
                             >
                                 <option value="all">All Record Types</option>
                                 <option value="lab_result">Lab Results</option>
@@ -206,8 +195,8 @@ export default function Lifecare_Records(){
                                 <option value="general">General</option>
                             </select>                            
                             <button
-                                className="cursor-pointer p-2.5 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50"
-                                >
+                                className="cursor-pointer p-2.5 border border-gray-200 w-12 md:w-auto rounded-lg text-gray-600 hover:bg-gray-50 flex items-center justify-center"
+                            >
                                 <LuDownload className="w-4 h-4" />
                             </button>
                         </div>
@@ -460,7 +449,6 @@ function EditRecordsModal({records, onClose, onSave}){
                         onChange={(e) => setForm({ ...form, file: e.target.files?.[0] || null })}
                         className='cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300' 
                     />
-                        
                 </div>
                 <div className='flex space-x-3 pt-1'>
                     <button
@@ -569,9 +557,9 @@ function AddRecordModal({patientId, patientName, onClose, onSaved, isAdmin=false
             const formData = new FormData();
 
             formData.append('patient_id', form.patient_id);
-            formData.append('title', form.title),
-            formData.append('record_type', form.record_type),
-            formData.append('description', form.description),
+            formData.append('title', form.title);
+            formData.append('record_type', form.record_type);
+            formData.append('description', form.description);
             formData.append('date_recorded', form.date_recorded);
 
             if(isAdmin){
@@ -580,10 +568,16 @@ function AddRecordModal({patientId, patientName, onClose, onSaved, isAdmin=false
             if(file){
                 formData.append("file", file);
             }
-            await api.post('/patients/records/add/', formData);
+            await api.post('/patients/records/add/', formData, {
+                headers : {
+                    "Content-Type" : 'multipart/form-data',
+                }
+            });
             setFeedback({message : "Record Added successfully", type : "success"})
-            onSaved()
-
+            if(typeof onSaved === 'function'){
+                onSaved();
+            }
+            onClose();
         }catch(err){
             // console.error('Record submission failed:', err)
             setFeedback({message : "Record submission failed", type : "error"})
@@ -720,7 +714,7 @@ function AddRecordModal({patientId, patientName, onClose, onSaved, isAdmin=false
                         <input
                              type="file"
                              accept=".pdf,.docs,.docx,.jpg,.jpeg,.png"
-                             name="date_recorded"
+                             name="file"
                              onChange={(e) => setFile(e.target.files?.[0] || null)}
                              className="cursor-pointer border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-blue-300"
                         />

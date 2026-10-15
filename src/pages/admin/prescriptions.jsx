@@ -9,13 +9,29 @@ export default function Lifecare_Prescriptions(){
     const [loading, setLoading] = useState(true)
     const [search, setSearch] = useState("")
     const [status, setStatus] = useState('all')
-    const [doctors, setDoctors] = useState('all');
     const [page, setPage] = useState(1)
     const [feedback, setFeedback] = useState({message : "", type : ""})
     const [activeMenuId, setActiveMenuId] = useState(null)
     const [editModal, setEditModal] = useState({open : false, prescription: null})
     const [createPrescription, setCreatePrescription] = useState(false)
     const [selectedPatient, setSelectedPatient] = useState({id : null, name : ""})
+    const [doctors, setDoctors] = useState('all')
+    const [fetchingDoctors, setFetchingDoctors] = useState([])
+
+
+    useEffect(() => {
+        api.get('/admin/manage-doctors-list/')
+        .then((res) => {
+            const doctorList = res.data.results || res.data || []
+            setFetchingDoctors(doctorList)
+        })
+        .catch((err) => console.error('Failed to fetch doctors:', err))
+        .finally(
+            setLoading(false)
+        )
+    },[])
+
+    
     const fetchPrescriptions = async() => {
         setLoading(true)
         try{
@@ -105,7 +121,7 @@ export default function Lifecare_Prescriptions(){
     return(
         <>
             <div className="w-full space-y-5">
-                <div className="flex items-center justify-between w-full">
+                <div className="md:flex md:flex-row flex flex-col md:items-center md:justify-between w-full space-y-5 md:space-y-0">
                     <div className='w-auto flex flex-col space-y-1'>
                         <h3 className='font-bold text-2xl text-[#1e293b]'>Prescriptions</h3>
                         <p className='text-[13px] text-[#94a3b8]'>Manage patient prescriptions and medical records.</p>
@@ -151,7 +167,7 @@ export default function Lifecare_Prescriptions(){
                             
                             <select value={status}
                                 onChange={(e) => setStatus(e.target.value)}
-                                className="cursor-pointer px-2 py-2 border border-gray-200 rounded-lg w-45 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all"
+                                className="cursor-pointer px-2 py-2.5 border border-gray-200 rounded-lg w-45 md:w-35 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all"
                             >
                                 <option value="all">All Status</option>
                                 <option value="active">Active</option>
@@ -159,22 +175,23 @@ export default function Lifecare_Prescriptions(){
                                 <option value="cancelled">Cancelled</option>
                             </select>
                             
-                            <select value={doctors} 
-                                onChange={(e) => setDoctors(e.target.value)} 
-                                className="cursor-pointer px-2 py-2.5 border border-gray-200 rounded-lg w-35 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all">
+                            <select 
+                                value={doctors} 
+                                onChange={(e) => setDoctors(e.target.value)}
+                                className="cursor-pointer px-2 py-2 border border-gray-200 rounded-lg w-45 md:w-45 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all"
+                            >
                                 <option value="all">All Doctors</option>
-                                {prescription_data ? 
-                                    <option>
-                                        {prescription_data.doctor}
+                                {fetchingDoctors.map((doc) => (
+                                    <option key={doc.id} value={doc.id}>
+                                        {doc.first_name || ''} {doc.last_name || ''}
                                     </option>
-                                    : <option>Nill</option>
-                                }
+                                ))}
                                 
                             </select>
                             
                             <button
-                                className="cursor-pointer p-2.5 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50"
-                                >
+                                className="cursor-pointer p-2.5 border border-gray-200 w-12 md:w-auto rounded-lg text-gray-600 hover:bg-gray-50 flex items-center justify-center"
+                            >
                                 <LuDownload className="w-4 h-4" />
                             </button>
                         </div>

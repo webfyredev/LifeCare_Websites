@@ -37,9 +37,19 @@ export default function RegisterPage(){
                 navigate('/doctor/dashboard', {replace : true})
             }
         } catch (err) {
-            setGoogleError('Google sign-in failed. Please try again.')
-        }
+            console.error("Google authentication failed:", err);
+            console.error("Backend response:", err.response?.data);
+            console.error("HTTP status:", err.response?.status);
 
+            const message =
+                err.response?.data?.error ||
+                err.response?.data?.detail ||
+                "Google authentication failed. Check the browser console.";
+
+            setGoogleError
+                ? setGoogleError(message)
+                : setError(message);
+        }
 
     }
 

@@ -58,12 +58,12 @@ export default function Lifecare_Notifications(){
     return(
         <>
             <div className="w-full space-y-5">
-                <div className="flex items-center justify-between w-full">
+                <div className="md:flex md:flex-row flex flex-col md:items-center md:justify-between w-full space-y-5 md:space-y-0">
                     <div className='w-auto flex flex-col space-y-1'>
                         <h3 className='font-bold text-2xl text-[#1e293b]'>Notifications</h3>
                         <p className='text-[13px] text-[#94a3b8]'>View and manage system notifications.</p>
                     </div>
-                    <div className="flex space-x-5">
+                    {/* <div className="flex space-x-5"> */}
                         <motion.button
                             onClick={() => setAddNotification(true)}
                             {...buttonEffects}
@@ -71,7 +71,7 @@ export default function Lifecare_Notifications(){
                         >
                             <LuPlus className="mr-1" /> Add Notification
                         </motion.button>
-                    </div>
+                    {/* </div> */}
                     
                 </div>
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
@@ -91,7 +91,7 @@ export default function Lifecare_Notifications(){
                             <select 
                                 value={filter_type}
                                 onChange={(e) => setFilterType(e.target.value)}
-                                className="cursor-pointer px-2 py-2 border border-gray-200 rounded-lg w-45 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all"
+                                className="cursor-pointer px-2 py-2 border border-gray-200 rounded-lg w-1/2 md:w-45 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all"
                             >
                                 <option value="all">All Filter</option>
                                 <option value="appointment">Appointments</option>
@@ -103,7 +103,7 @@ export default function Lifecare_Notifications(){
                             <select 
                                 value={status}
                                 onChange={(e) => setStatus(e.target.value)}
-                                className="cursor-pointer px-2 py-2 border border-gray-200 rounded-lg w-45 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all"
+                                className="cursor-pointer px-2 py-2 border border-gray-200 rounded-lg w-1/2 md:w-45 text-sm font-medium text-gray-600 outline-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transtion-all"
                             >
                                 <option value="all">All</option>
                                 <option value="False">Unread</option>

@@ -39,9 +39,16 @@ export default function LoginPage(){
                 navigate('/admin/dashboard', {replace : true })
             }
         } catch (err) {
-            setError('Google sign-in failed. Please try again.')
-        }
+            console.error("Google authentication failed:", err);
+            console.error("Backend response:", err.response?.data);
+            console.error("HTTP status:", err.response?.status);
 
+            setError(
+                err.response?.data?.error ||
+                err.response?.data?.detail ||
+                "Google authentication failed. Check the browser console."
+            );
+        }
 
     }
 

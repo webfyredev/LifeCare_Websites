@@ -136,8 +136,8 @@ export default function Lifecare_AdminDashboard(){
                             </p>
                         </div>
                         <div>
-                            <p className="text-[11px] font-medium text-gray-500">{currentDate}</p>
-                            <p className="text-right text-[11px] font-medium text-gray-500">{currentTime}</p>
+                            <p className="text-[10px] md:text-[11px] font-medium text-gray-500">{currentDate}</p>
+                            <p className="text-right text-[10px] md:text-[11px] font-medium text-gray-500">{currentTime}</p>
                         </div>
                     </div>
                     <div className="w-full py-2  mt-4 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3">

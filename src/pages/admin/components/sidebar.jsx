@@ -296,10 +296,10 @@ export default function Admin_Portal_sidebar(){
                             >
                                 <FaGripLines className='w-6 h-6 text-blue-600 transition-all duration-300' />
                             </button>
-                            <div className='hidden lg:flex px-3 h-auto border border-gray-200 w-120 flex items-center rounded-lg text-gray-600 transition focus:ring-2 focus:ring-blue-100 focus:border-blue-300'>
+                            {/* <div className='hidden lg:flex px-3 h-auto border border-gray-200 w-120 flex items-center rounded-lg text-gray-600 transition focus:ring-2 focus:ring-blue-100 focus:border-blue-300'>
                                 <LuSearch  size={15} className='mr-1.5 mt-0.5'/>
                                 <input type="text" placeholder='Search users, doctors, appointments' className='w-full py-2.5 h-full text-[13px] border-none outline-none' />
-                            </div>
+                            </div> */}
                             {/* <h3 className='font-semibold text-[13px] text-[#94a3b8] hidden md:flex'>{currentDate}</h3> */}
                         </div>
                         <div className='w-auto flex items-center space-x-5 lg:mr-5 relative' ref={notifRef}>
