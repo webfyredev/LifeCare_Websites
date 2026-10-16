@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL : "http://localhost:8000/api",
+    baseURL : "https://lifecare-backend-qafy.onrender.com/api",
+    // baseURL : "http://localhost:8000/api",
     headers : {
         "Content-Type" : "application/json"
     }
@@ -26,9 +27,12 @@ api.interceptors.response.use(
 
             try {
                 const refresh = localStorage.getItem('refresh')
-                const res = await axios.post('http://localhost:8000/api/accounts/token/refresh/', {
+                const res = await axios.post('https://lifecare-backend-qafy.onrender.com/api/accounts/token/refresh/', {
                 refresh,
                 })
+                // const res = await axios.post('http://localhost:8000/api/accounts/token/refresh/', {
+                // refresh,
+                // })
                 localStorage.setItem('access', res.data.access)
                 original.headers.Authorization = `Bearer ${res.data.access}`
                 return api(original)
