@@ -94,7 +94,7 @@ export default function LoginPage(){
             if (data?.email) setError(data.email)
             else if (data?.password) setError(data.password)
             else if (data?.detail) setError(data.detail)
-            else if (err.request && !err.response) setError("Cannot reach the server. Check that Django is running on port 8000.")
+            // else if (err.request && !err.response) setError("Cannot reach the server. Check that Django is running on port 8000.")
             else setError("Invalid email or password. Please try again.")
         } finally {
             setLoading(false);
