@@ -371,6 +371,7 @@ export default function Admin_Portal_sidebar(){
                                 {user?.profile_picture ? (
                                     <img
                                         src={`http://localhost:8000${user.profile_picture}`}
+                                        // src={`https://lifecare-backend-qafy.onrender.com${user.profile_picture}`}
                                         className='w-9 h-9 rounded-full object-cover'
                                         alt="profile"
                                     />
@@ -400,15 +401,11 @@ export default function Admin_Portal_sidebar(){
                                     {user?.email}
                                 </a>
                                 <span className='w-full mt-2 border-1 border-[#94a3b8]/5'></span>
-                                <Link to="/admin/settings" className="w-full mt-1.5 font-normal text-[13px] rounded-lg px-1.5 py-2 flex items-center space-x-3 text-[#475569] hover:bg-[#f8fafc]">
-                                    <LuUser className='mt-0.5'/>
-                                    <span>My Profile</span>
-                                </Link>
                                 <Link to="/admin/dashboard" className="w-full mt-1.5 font-normal text-[13px] rounded-lg px-1.5 py-2 flex items-center space-x-3 text-[#475569] hover:bg-[#f8fafc]">
                                     <LuLayoutDashboard  className='mt-0.5'/>
                                     <span>Dashboard</span>
                                 </Link>
-                                <Link to="/admin/notifications" className="w-full mt-1.5 font-normal text-[13px] rounded-lg px-1.5 py-2 flex md:hidden  items-center space-x-3 text-[#475569] hover:bg-[#f8fafc]">
+                                <Link to="/admin/notifications" className="w-full mt-1.5 font-normal text-[13px] rounded-lg px-1.5 py-2 flex items-center space-x-3 text-[#475569] hover:bg-[#f8fafc]">
                                     <LuBell  className='mt-0.5'/>
                                     <span>Notifications</span>
                                 </Link>

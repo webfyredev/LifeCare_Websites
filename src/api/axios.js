@@ -24,7 +24,6 @@ api.interceptors.response.use(
 
         if (error.response?.status === 401 && !original._retry && !isAuthRoute) {
             original._retry = true
-
             try {
                 const refresh = localStorage.getItem('refresh')
                 const res = await axios.post('https://lifecare-backend-qafy.onrender.com/api/accounts/token/refresh/', {
